@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <magicproduct>
+    <item>
+      <title><![CDATA[Mega Shop Fashion (Home7)]]></title>
+      <identifier><![CDATA[mega-shop-fashion-home7]]></identifier>
+      <type_id><![CDATA[3]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"sa5g8Breq1juKoxJ";s:15:"magicproduct_id";s:2:"28";s:5:"title";s:25:"Mega Shop Fashion (Home7)";s:5:"image";s:42:"magiccart/magicproduct/catalog//b/3/b3.jpg";s:4:"ajax";s:1:"1";s:5:"types";a:5:{i:0;s:8:"featured";i:1;s:6:"latest";i:2;s:3:"new";i:3;s:6:"random";i:4;s:4:"sale";}s:9:"activated";s:8:"featured";s:5:"limit";s:1:"8";s:6:"status";s:1:"1";s:11:"category_id";s:1:"3";s:12:"category_ids";a:14:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"5";i:3;s:2:"74";i:4;s:2:"40";i:5;s:2:"41";i:6;s:2:"42";i:7;s:1:"6";i:8;s:1:"7";i:9;s:1:"8";i:10;s:1:"9";i:11;s:2:"62";i:12;s:2:"92";i:13;s:2:"93";}s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"4";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Mega Shop Sport(Home7)]]></title>
+      <identifier><![CDATA[mega-shop-sport-home7]]></identifier>
+      <type_id><![CDATA[3]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"lBcX6uLmsV0AEJ4s";s:5:"title";s:22:"Mega Shop Sport(Home7)";s:10:"identifier";s:21:"mega-shop-sport-home7";s:4:"ajax";s:1:"1";s:5:"types";a:5:{i:0;s:8:"featured";i:1;s:6:"latest";i:2;s:3:"new";i:3;s:6:"random";i:4;s:4:"sale";}s:9:"activated";s:6:"latest";s:5:"limit";s:1:"8";s:6:"status";s:1:"1";s:11:"category_id";s:1:"6";s:12:"category_ids";a:14:{i:0;s:1:"6";i:1;s:2:"10";i:2;s:2:"11";i:3;s:2:"78";i:4;s:2:"79";i:5;s:2:"12";i:6;s:2:"17";i:7;s:2:"19";i:8;s:2:"22";i:9;s:1:"7";i:10;s:1:"8";i:11;s:1:"9";i:12;s:2:"62";i:13;s:2:"63";}s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"4";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";s:5:"image";s:42:"magiccart/magicproduct/catalog//b/4/b4.jpg";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Mega Shop Electronics(home7)]]></title>
+      <identifier><![CDATA[mega-shop-electronics-home7]]></identifier>
+      <type_id><![CDATA[3]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"lBcX6uLmsV0AEJ4s";s:5:"title";s:28:"Mega Shop Electronics(home7)";s:10:"identifier";s:27:"mega-shop-electronics-home7";s:4:"ajax";s:1:"1";s:5:"types";a:5:{i:0;s:8:"featured";i:1;s:6:"latest";i:2;s:3:"new";i:3;s:6:"random";i:4;s:4:"sale";}s:9:"activated";s:8:"featured";s:5:"limit";s:1:"8";s:6:"status";s:1:"1";s:11:"category_id";s:2:"62";s:12:"category_ids";a:14:{i:0;s:1:"3";i:1;s:1:"6";i:2;s:1:"7";i:3;s:1:"8";i:4;s:1:"9";i:5;s:2:"62";i:6;s:2:"63";i:7;s:2:"64";i:8;s:2:"81";i:9;s:3:"113";i:10;s:3:"114";i:11;s:2:"83";i:12;s:2:"84";i:13;s:2:"93";}s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"4";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";s:5:"image";s:42:"magiccart/magicproduct/catalog//b/5/b5.jpg";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Mega Shop Digital(Home7)]]></title>
+      <identifier><![CDATA[mega-shop-digital-home7]]></identifier>
+      <type_id><![CDATA[3]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"lBcX6uLmsV0AEJ4s";s:5:"title";s:24:"Mega Shop Digital(Home7)";s:10:"identifier";s:23:"mega-shop-digital-home7";s:4:"ajax";s:1:"1";s:5:"types";a:5:{i:0;s:8:"featured";i:1;s:6:"latest";i:2;s:3:"new";i:3;s:6:"random";i:4;s:4:"sale";}s:9:"activated";s:6:"latest";s:5:"limit";s:1:"8";s:6:"status";s:1:"1";s:11:"category_id";s:1:"7";s:12:"category_ids";a:14:{i:0;s:1:"6";i:1;s:1:"7";i:2;s:2:"51";i:3;s:2:"55";i:4;s:2:"56";i:5;s:2:"52";i:6;s:1:"8";i:7;s:2:"58";i:8;s:2:"59";i:9;s:1:"9";i:10;s:2:"62";i:11;s:2:"81";i:12;s:2:"84";i:13;s:2:"93";}s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"4";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";s:5:"image";s:42:"magiccart/magicproduct/catalog//b/6/b6.jpg";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Mega Shop Furniture(Home7)]]></title>
+      <identifier><![CDATA[mega-shop-furniture-home7]]></identifier>
+      <type_id><![CDATA[3]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"lBcX6uLmsV0AEJ4s";s:5:"title";s:26:"Mega Shop Furniture(Home7)";s:10:"identifier";s:25:"mega-shop-furniture-home7";s:4:"ajax";s:1:"1";s:5:"types";a:5:{i:0;s:8:"featured";i:1;s:6:"latest";i:2;s:3:"new";i:3;s:6:"random";i:4;s:4:"sale";}s:9:"activated";s:8:"featured";s:5:"limit";s:1:"8";s:6:"status";s:1:"1";s:11:"category_id";s:1:"8";s:12:"category_ids";a:14:{i:0;s:1:"3";i:1;s:1:"6";i:2;s:1:"7";i:3;s:1:"8";i:4;s:2:"58";i:5;s:2:"59";i:6;s:1:"9";i:7;s:2:"62";i:8;s:3:"100";i:9;s:2:"84";i:10;s:2:"91";i:11;s:2:"92";i:12;s:2:"93";i:13;s:3:"120";}s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"4";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";s:5:"image";s:42:"magiccart/magicproduct/catalog//b/7/b7.jpg";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Mega Shop Jewelry(Home7)]]></title>
+      <identifier><![CDATA[mega-shop-jewelry-home7]]></identifier>
+      <type_id><![CDATA[3]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"lBcX6uLmsV0AEJ4s";s:5:"title";s:24:"Mega Shop Jewelry(Home7)";s:10:"identifier";s:23:"mega-shop-jewelry-home7";s:4:"ajax";s:1:"1";s:5:"types";a:5:{i:0;s:8:"featured";i:1;s:6:"latest";i:2;s:3:"new";i:3;s:6:"random";i:4;s:4:"sale";}s:9:"activated";s:8:"featured";s:5:"limit";s:1:"8";s:6:"status";s:1:"1";s:11:"category_id";s:2:"93";s:12:"category_ids";a:14:{i:0;s:1:"3";i:1;s:2:"40";i:2;s:1:"6";i:3;s:2:"12";i:4;s:1:"7";i:5;s:1:"8";i:6;s:3:"100";i:7;s:2:"84";i:8;s:2:"87";i:9;s:2:"88";i:10;s:2:"91";i:11;s:2:"92";i:12;s:2:"93";i:13;s:3:"120";}s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"4";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";s:5:"image";s:42:"magiccart/magicproduct/catalog//b/8/b8.jpg";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Hot deals]]></title>
+      <identifier><![CDATA[hot-deals]]></identifier>
+      <type_id><![CDATA[1]]></type_id>
+      <config><![CDATA[a:31:{s:8:"form_key";s:16:"MoLeaNuZGPdGXgco";s:15:"magicproduct_id";s:2:"34";s:9:"countdown";s:10:"24-05-2022";s:5:"title";s:9:"Hot deals";s:4:"ajax";s:1:"1";s:5:"types";a:1:{i:0;s:8:"featured";}s:9:"activated";s:8:"featured";s:5:"limit";s:2:"10";s:6:"status";s:1:"1";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"3";s:8:"notebook";s:1:"3";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"5";s:5:"timer";s:1:"0";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"7";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+  </magicproduct>
+</root>

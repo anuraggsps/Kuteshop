@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="Softprodigy_Backend" translate="label" sortOrder="100">
+            <label>Softprdoigy</label>
+        </tab>
+        <section id="minimart" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>OnGoBuyo</label>
+            <tab>Softprodigy_Backend</tab>
+            <resource>Magento_Cms::config_cms</resource>
+            <group id="slider_settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Homepage Slider Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="2" showInDefault="1">
+                    <label>Enable Homepage Slider:</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[<font color="#D75508">Show content slider on homepage</font>]]></comment>
+                </field>
+                <field id="slide_one_image" translate="label" type="image" sortOrder="3" showInDefault="1">
+                    <label>Slide #1 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_one_link_type" translate="label" type="select" sortOrder="4" showInDefault="1">
+                    <label>Slide #1 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_one_link_value" translate="label" type="text" sortOrder="5" showInDefault="1">
+                    <label>Slide #1 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+                
+                <field id="slide_two_image" translate="label" type="image" sortOrder="6" showInDefault="1">
+                    <label>Slide #2 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_two_link_type" translate="label" type="select" sortOrder="7" showInDefault="1">
+                    <label>Slide #2 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_two_link_value" translate="label" type="text" sortOrder="8" showInDefault="1">
+                    <label>Slide #2 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+                
+                <field id="slide_three_image" translate="label" type="image" sortOrder="9" showInDefault="1">
+                    <label>Slide #3 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_three_link_type" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Slide #3 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_three_link_value" translate="label" type="text" sortOrder="11" showInDefault="1">
+                    <label>Slide #3 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+                
+                <field id="slide_four_image" translate="label" type="image" sortOrder="12" showInDefault="1">
+                    <label>Slide #4 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_four_link_type" translate="label" type="select" sortOrder="13" showInDefault="1">
+                    <label>Slide #4 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_four_link_value" translate="label" type="text" sortOrder="14" showInDefault="1">
+                    <label>Slide #4 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+                
+                <field id="slide_five_image" translate="label" type="image" sortOrder="15" showInDefault="1">
+                    <label>Slide #5 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_five_link_type" translate="label" type="select" sortOrder="16" showInDefault="1">
+                    <label>Slide #5 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_five_link_value" translate="label" type="text" sortOrder="17" showInDefault="1">
+                    <label>Slide #5 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+                
+                <field id="slide_six_image" translate="label" type="image" sortOrder="18" showInDefault="1">
+                    <label>Slide #6 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_six_link_type" translate="label" type="select" sortOrder="19" showInDefault="1">
+                    <label>Slide #6 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_six_link_value" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Slide #6 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+                
+                <field id="slide_seven_image" translate="label" type="image" sortOrder="21" showInDefault="1">
+                    <label>Slide #7 Image:</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">softprodigy/slider</upload_dir>
+                    <base_url type="media" scope_info="1">softprodigy/slider</base_url>
+                    <comment><![CDATA[<font color="#D75508">Image should be 320px wide by 160px high</font>]]></comment>
+                </field>
+                <field id="slide_seven_link_type" translate="label" type="select" sortOrder="22" showInDefault="1">
+                    <label>Slide #7 Link Type:</label>
+                    <source_model>Softprodigy\Minimart\Model\System\Config\Source\Dropdown\Linktype</source_model>
+                    <comment><![CDATA[specify link type that will be invoke when click on banner]]></comment>
+                </field>
+                <field id="slide_seven_link_value" translate="label" type="text" sortOrder="23" showInDefault="1">
+                    <label>Slide #7 Link Value:</label>
+                    <comment><![CDATA[specify link value, either category id/ page_url_key/ product id/ or custom url based on link type selection]]></comment>
+                </field>
+            </group>
+        </section>
+        <section id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>General</label>
+            <tab>general</tab>
+            <resource>Magento_Config::config_general</resource>
+			<group id="store_information" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Store Information</label>
+                <field id="name" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Name</label>
+                </field>
+                <field id="phone" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Phone Number</label>
+                </field>
+                <field id="hours" translate="label" type="text" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Hours of Operation</label>
+                </field>
+                <field id="country_id" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Country</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <frontend_class>countries</frontend_class>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="region_id" translate="label" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Region/State</label>
+                </field>
+                <field id="postcode" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>ZIP/Postal Code</label>
+                </field>
+                <field id="city" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>City</label>
+                </field>
+                <field id="street_line1" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Street Address</label>
+                </field>
+                <field id="street_line2" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Street Address Line 2</label>
+                </field>
+                <field id="merchant_vat_number" translate="label" type="text" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>VAT Number</label>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>  
+</config>

@@ -1,0 +1,72 @@
+<?php
+/**
+ * Magiccart 
+ * @category 	Magiccart 
+ * @copyright 	Copyright (c) 2014 Magiccart (http://www.magiccart.net/) 
+ * @license 	http://www.magiccart.net/license-agreement.html
+ * @Author: DOng NGuyen<nguyen@dvn.com>
+ * @@Create Date: 2016-02-08 22:57:12
+ * @@Modify Date: 2018-06-12 12:03:30
+ * @@Function:
+ */
+
+$menu = $this->_sysCfg->topmenu;
+$vmenu = $this->_sysCfg->vmenu;
+// drawMainMenu vs DrowMobileMenu
+$menuHtml = $this->drawMainMenu();
+$mobileMenu = $menuHtml['mobile'];
+$desktop 	= $menuHtml['desktop'];
+$vdesktop 	= $menuHtml['desktop'];
+$ids  = explode(',', $menu['notIncludeNav']);
+$vids  = explode(',', $vmenu['notIncludeNav']);
+foreach ($ids as $id) { unset($desktop[$id]); }
+foreach ($vids as $vid) { unset($vdesktop[$vid]); }
+// drawHomeMenu
+$drawHomeMenu 	= $menu['home'] ? $this->drawHomeMenu() : '';
+$vdrawHomeMenu 	= $vmenu['home'] ? $this->drawHomeMenu() : '';
+// drawMainMenu
+$drawMainMenu 	= $menu['mainCat'] ? implode("\n", $desktop) : '';
+$vdrawMainMenu 	= $vmenu['mainCat'] ? implode("\n", $vdesktop) : '';
+// drawExtMenu ExtraMenu
+$drawExtraMenu 	= $menu['extraCat'] ? $this->drawExtraMenu() : '';
+$vdrawExtraMenu = $vmenu['extraCat'] ? $this->drawExtraMenu() : '';
+?>
+<nav class="navigation navigation-mobile" role="navigation" data-action="navigation">
+	<ul class="nav-mobile" data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+		<?php echo $drawHomeMenu ?>
+		<?php echo $mobileMenu ?>
+		<?php echo $drawExtraMenu ?>
+	</ul>
+</nav>
+<?php if($vmenu['enabled']) : ?>
+<div class="vmagicmenu vertical-menu clearfix">
+    <div class="block-title block-title-vmagicmenu v-title">
+        <strong>
+            <span class="fa fa-bars"></span>
+            <span class="vmagicmenu-subtitle"><?php echo __($this->getRootName())?></span>
+        </strong>
+    </div>
+	<div class="block-vmagicmenu-content">
+	   <div class="nav-desktop-wrapper">
+			<ul class="nav-desktop vmagicmenu-narrow clearfix">
+				<?php echo $vdrawHomeMenu ?>
+				<?php echo $vdrawMainMenu ?>
+				<?php echo $vdrawExtraMenu ?>
+				<li class="all-cat"><span><?php echo __('All Categories')?></span><span style="display:none"><?php echo __('Close')?></span></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<?php endif ?>
+<div class="magicmenu clearfix">
+	<?php if($menu['enabled']) : ?>
+	<ul class="nav-desktop <?php echo $menu['sticker'] ? 'sticker' : '' ?>">
+		<?php echo $drawHomeMenu ?>
+		<?php echo $drawMainMenu ?>
+		<?php echo $drawExtraMenu ?>
+	</ul>
+	<?php endif ?>
+</div>
+<script type="text/javascript">
+	require(['jquery','magiccart/easing','magicmenu']);
+</script>

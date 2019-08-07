@@ -1,0 +1,22 @@
+{
+  "name": "softprodigy/minimart",
+  "description": "A Magento 2 module that use as app connector of store",
+  "type": "magento2-module",
+  "version": "2.0.0",
+  "license": [
+    "OSL-3.0",
+    "AFL-3.0"
+  ],
+  "require": {
+    "php": "~5.6.0|~7.0.0",
+    "magento/framework": "~100.0"
+  },
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+            "Softprodigy\\Lensform\\": ""
+    }
+  }
+}
+
+

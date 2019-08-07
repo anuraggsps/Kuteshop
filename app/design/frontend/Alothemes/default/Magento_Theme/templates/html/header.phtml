@@ -1,0 +1,186 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Magento\Theme\Block\Html\Header $block
+ */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$isLoggedIn = $customerSession->isLoggedIn();
+$msg = $isLoggedIn ? __('Welcome') .', '. $customerSession->getCustomer()->getName() : $this->getWelcome() 
+?>
+<header class="page-header alothemes">
+    <div class="header">
+		<!--<div class="header-top">
+			<div class="container">
+				<div class="row">
+					<div class="top-left col-md-6 col-sm-6 col-xs-12">
+					    <?php //echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('hotline')->toHtml();?>
+					    <?php //echo $this->getChildHtml('currency'); ?>
+						<?php //echo $this->getChildHtml('store_language'); ?>
+					</div>
+					<div class="top-right col-md-6 col-sm-6 col-xs-12">
+						<div class="header-setting">
+							<div class="settting-switcher">
+								<div class="dropdown-toggle toggle-tab">
+									<div class="text-setting"><?php //echo __('My Account'); ?></div>
+								</div>
+								<div class="dropdown-switcher toggle-content">
+									<div class="top-links-alo">
+										<div class="header-top-link">
+											<?php //echo $this->getChildHtml('header.links'); ?>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php //echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('support')->toHtml();?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+		<div class="header-content hdrcontentdiv">
+			<div class="container">
+			    <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('promotion-header')->toHtml();?>
+				<div class="row">
+				    <div class="content-logo col-md-1 col-xs-12">
+						<div class="header-logo">
+							<?php echo $this->getChildHtml('logo'); ?>
+						</div>
+					</div>
+					<div class="content-seach col-md-7 col-sm-7 col-xs-12">
+						<div class="search-area header-search">
+							<?php echo $this->getChildHtml('top.search'); ?>
+						</div>
+					</div>
+					<div class="content-cart col-md-4 col-sm-5 col-xs-12">
+					   <div class="tool-header">
+							
+							<!--<div class="menu-mobile">
+								<span data-action="toggle-nav" class="action nav-toggle"><span><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span></span>
+							</div> -->
+                            <ul>
+                            	<li><a href="#">العربية</a></li>
+                                <li><a href="#"><?php echo $this->getChildHtml('store_language'); ?></a></li>
+                            	<li><a href="#">
+								<div class="header-setting">
+							<div class="settting-switcher">
+								<div class="dropdown-toggle toggle-tab">
+									<div class="text-setting"><?php echo __('My Account'); ?></div>
+								</div>
+								<div class="dropdown-switcher toggle-content">
+									<div class="top-links-alo">
+										<div class="header-top-link">
+											<?php echo $this->getChildHtml('header.links'); ?>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php //echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('support')->toHtml();?>
+						</div>
+								</a>
+								</li>
+                                <li><a href="#"><?php echo $this->getChildHtml('minicart'); ?></a></li>
+                            </ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="header-bottom header-sticker">
+			<div class="container">
+			    <div class="border-bottom">
+					<div class="row">
+					    <div class="col-lg-12">
+							<?php echo $this->getChildHtml('navigation.sections'); ?>
+						</div>
+					</div>
+                </div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<style>
+.hdrcontentdiv .content-logo{padding:6px 0px 0 !important;}
+.hdrcontentdiv .header-logo img {
+    width: 120px;
+}
+.hdrcontentdiv .header .logo{padding:0px;}
+.hdrcontentdiv form#search_mini_form{margin-top:0px;border:0px;}
+.hdrcontentdiv .content-cart{margin-top:0px;}
+.hdrcontentdiv .header .logo{padding:0px;}
+.hdrcontentdiv .content-seach{padding-left:0px;}
+.header .form-search .catalogsearch-box span{display:none;}
+.form-search .search  , .form-search .search input{width:100%;}
+.hdrcontentdiv .tool-header ul li {
+    display: inline;
+    float: left;
+    border-right: 1px solid rgba(64,69,83,0.2) !important;
+    padding: 0px 10px;
+    line-height: 34px;margin-bottom:0px;
+}
+.minicart-wrapper .action.showcart .counter.qty{right:-20px;}
+.hdrcontentdiv .tool-header ul li span ,  .text-setting {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-right: 0;
+    border-right: 0;
+    font-family: Cairo,sans-serif;
+    padding: 0;
+}
+.hdrcontentdiv .header-logo{padding-right: 20px;
+    padding-top: 2px;}
+.catalogsearch-box {
+    display: none !important;
+}
+.header .form-search .catalogsearch input.input-text {
+    width: 100% !important;border-color:transparent !important;
+}
+.header .form-search button.button{background-color:#fff !important;height:39px !important;}
+.header .form-search button.button i{color:#000;}
+.header .logo{padding:0px !important;}
+.hdrcontentdiv .tool-header a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-right: 0;
+    border-right: 0;
+    font-family: Cairo,sans-serif;
+    padding: 0;
+}
+.magicmenu .nav-desktop .level0 .level-top {
+    padding: 0 25px;
+}
+.magicmenu .nav-desktop .level0 .level-top:before{border-right:0px;}
+.header-bottom{margin-bottom:0px;}
+.magicmenu li {
+    padding: 16px 0px !important;    margin-bottom: 0;
+}
+.magicmenu li:hover a{background:none;}
+.magicmenu li:hover{box-shadow:0 5px 4px 0 rgba(0,0,0,0.18);}
+.magicmenu .nav-desktop .level-top a:hover {
+    background-color: transparent !important;
+    color: #000 !important;
+}
+.hdrcontentdiv .container {
+    max-width: 100%;
+    padding: 0px 50px;
+}
+.hdrcontentdiv .tool-header li:last-child a{border:0px;}
+.hdrcontentdiv .tool-header ul{padding-top:8px;}
+.header-content.hdrcontentdiv{padding:10px 0px;}
+.magicmenu li a {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.cms-index-index .border-bottom:before{border-bottom:0px;}
+#maincontent.container{max-width:100%;}
+.magicmenu li a{padding:0px 25px;}
+
+</style>

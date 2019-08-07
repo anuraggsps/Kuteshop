@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <magicproduct>
+    <item>
+      <title><![CDATA[Trending]]></title>
+      <identifier><![CDATA[trending]]></identifier>
+      <type_id><![CDATA[1]]></type_id>
+      <config><![CDATA[a:31:{s:8:"form_key";s:16:"HRuutbNzHJBhvgIh";s:15:"magicproduct_id";s:1:"1";s:5:"title";s:8:"Trending";s:10:"identifier";s:8:"trending";s:4:"ajax";s:1:"1";s:5:"types";a:1:{i:0;s:8:"featured";}s:9:"activated";s:8:"featured";s:5:"limit";s:1:"6";s:6:"status";s:1:"1";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"1";s:6:"tablet";s:1:"1";s:8:"notebook";s:1:"1";s:7:"desktop";s:1:"1";s:7:"visible";s:1:"1";s:5:"timer";s:1:"0";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"2";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"0";s:7:"compare";s:1:"0";s:8:"wishlist";s:1:"0";s:6:"review";s:1:"0";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[New Arrivals In]]></title>
+      <identifier><![CDATA[new-arrivals-in]]></identifier>
+      <type_id><![CDATA[2]]></type_id>
+      <config><![CDATA[a:34:{s:8:"form_key";s:16:"bfKDzoiOItPPp6H6";s:15:"magicproduct_id";s:1:"6";s:9:"countdown";s:0:"";s:5:"title";s:15:"New Arrivals In";s:10:"identifier";s:15:"new-arrivals-in";s:5:"image";s:58:"magiccart/magicproduct/category//b/a/banner-promotion1.jpg";s:4:"ajax";s:1:"1";s:5:"types";s:3:"new";s:5:"limit";s:2:"10";s:6:"status";s:1:"1";s:12:"category_ids";a:6:{i:0;s:1:"0";i:1;s:1:"3";i:2;s:1:"4";i:3;s:2:"34";i:4;s:2:"40";i:5;s:2:"46";}s:9:"activated";s:1:"3";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"3";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"5";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Special Products]]></title>
+      <identifier><![CDATA[special-products]]></identifier>
+      <type_id><![CDATA[2]]></type_id>
+      <config><![CDATA[a:34:{s:8:"form_key";s:16:"bfKDzoiOItPPp6H6";s:15:"magicproduct_id";s:1:"7";s:9:"countdown";s:0:"";s:5:"title";s:16:"Special Products";s:10:"identifier";s:16:"special-products";s:5:"image";s:58:"magiccart/magicproduct/category//b/a/banner-promotion3.jpg";s:4:"ajax";s:1:"1";s:5:"types";s:6:"latest";s:5:"limit";s:2:"10";s:6:"status";s:1:"1";s:12:"category_ids";a:6:{i:0;s:1:"6";i:1;s:2:"10";i:2;s:2:"12";i:3;s:2:"17";i:4;s:2:"22";i:5;s:2:"30";}s:9:"activated";s:1:"6";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"3";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"5";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Recommendation For You]]></title>
+      <identifier><![CDATA[recommendation-for-you]]></identifier>
+      <type_id><![CDATA[2]]></type_id>
+      <config><![CDATA[a:34:{s:8:"form_key";s:16:"bfKDzoiOItPPp6H6";s:15:"magicproduct_id";s:1:"8";s:9:"countdown";s:0:"";s:5:"title";s:22:"Recommendation For You";s:10:"identifier";s:22:"recommendation-for-you";s:5:"image";s:58:"magiccart/magicproduct/category//b/a/banner-promotion4.jpg";s:4:"ajax";s:1:"1";s:5:"types";s:8:"featured";s:5:"limit";s:2:"10";s:6:"status";s:1:"1";s:12:"category_ids";a:5:{i:0;s:2:"93";i:1;s:3:"120";i:2;s:3:"121";i:3;s:3:"122";i:4;s:3:"123";}s:9:"activated";s:2:"93";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"3";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"5";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Top sellers In]]></title>
+      <identifier><![CDATA[top-sellers-in]]></identifier>
+      <type_id><![CDATA[2]]></type_id>
+      <config><![CDATA[a:34:{s:8:"form_key";s:16:"bfKDzoiOItPPp6H6";s:15:"magicproduct_id";s:1:"9";s:9:"countdown";s:0:"";s:5:"title";s:14:"Top sellers In";s:10:"identifier";s:14:"top-sellers-in";s:5:"image";s:58:"magiccart/magicproduct/category//b/a/banner-promotion2.jpg";s:4:"ajax";s:1:"1";s:5:"types";s:10:"bestseller";s:5:"limit";s:2:"10";s:6:"status";s:1:"1";s:12:"category_ids";a:6:{i:0;s:1:"0";i:1;s:1:"3";i:2;s:1:"4";i:3;s:2:"34";i:4;s:2:"40";i:5;s:2:"46";}s:9:"activated";s:1:"4";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"3";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"0";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"5";s:4:"cart";s:1:"1";s:7:"compare";s:1:"1";s:8:"wishlist";s:1:"1";s:6:"review";s:1:"1";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Hot deals]]></title>
+      <identifier><![CDATA[hot-deaals]]></identifier>
+      <type_id><![CDATA[2]]></type_id>
+      <config><![CDATA[a:33:{s:8:"form_key";s:16:"wYtjwnfHPkrStTdG";s:15:"magicproduct_id";s:2:"10";s:9:"countdown";s:10:"30-05-2019";s:5:"title";s:9:"Hot deals";s:10:"identifier";s:10:"hot-deaals";s:4:"ajax";s:1:"1";s:5:"types";s:6:"latest";s:5:"limit";s:2:"10";s:6:"status";s:1:"1";s:12:"category_ids";a:5:{i:0;s:2:"95";i:1;s:2:"96";i:2;s:2:"97";i:3;s:2:"98";i:4;s:2:"99";}s:9:"activated";s:2:"95";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"2";s:6:"tablet";s:1:"3";s:8:"notebook";s:1:"4";s:7:"desktop";s:1:"4";s:7:"visible";s:1:"4";s:5:"timer";s:1:"1";s:5:"slide";s:1:"1";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:4:"true";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:2:"15";s:4:"cart";s:1:"0";s:7:"compare";s:1:"0";s:8:"wishlist";s:1:"0";s:6:"review";s:1:"0";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+    <item>
+      <title><![CDATA[Custom Product Left Category]]></title>
+      <identifier><![CDATA[custom-product-left]]></identifier>
+      <type_id><![CDATA[1]]></type_id>
+      <config><![CDATA[a:32:{s:8:"form_key";s:16:"wYtjwnfHPkrStTdG";s:15:"magicproduct_id";s:2:"11";s:9:"countdown";s:0:"";s:5:"title";s:28:"Custom Product Left Category";s:10:"identifier";s:19:"custom-product-left";s:4:"ajax";s:1:"0";s:5:"types";a:1:{i:0;s:4:"sale";}s:9:"activated";s:4:"sale";s:5:"limit";s:1:"1";s:6:"status";s:1:"1";s:6:"mobile";s:1:"1";s:8:"portrait";s:1:"1";s:9:"landscape";s:1:"1";s:6:"tablet";s:1:"1";s:8:"notebook";s:1:"1";s:7:"desktop";s:1:"1";s:7:"visible";s:1:"1";s:5:"timer";s:1:"0";s:5:"slide";s:1:"0";s:8:"vertical";s:5:"false";s:8:"infinite";s:4:"true";s:8:"autoplay";s:5:"false";s:6:"arrows";s:5:"false";s:4:"dots";s:5:"false";s:4:"rows";s:1:"1";s:5:"speed";s:3:"300";s:14:"autoplay-Speed";s:4:"3000";s:7:"padding";s:1:"0";s:4:"cart";s:1:"1";s:7:"compare";s:1:"0";s:8:"wishlist";s:1:"0";s:6:"review";s:1:"0";}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+  </magicproduct>
+</root>

@@ -1,0 +1,71 @@
+body {
+	font:normal bold 14px/20px Verdana, Arial, Helvetica, sans-serif;
+	margin:0;
+	padding:0;
+	background:#b8b8b8 url(images/bg.jpg) top center no-repeat; 
+}
+
+* {
+outline:none;
+border:none;
+}
+
+#page	{
+	margin:20px;
+	margin-left:auto;
+	margin-right:auto;
+	width:800px;
+}
+
+.logo {
+text-align:center;
+margin-top:100px;
+ }
+
+.contentbox
+{
+margin:20px;
+background:#eee;
+border:1px solid #fff;
+padding:20px;
+text-align:center;
+-moz-border-radius:10px;
+-khtml-border-radius:10px;
+-webkit-border-radius:10px;
+}
+
+.para	{
+	color:#444;
+	text-align:center;
+	font: normal 18px "Trebuchet MS", Verdana, Arial, "Times New Roman";
+}
+
+.info {
+	color:#444;
+	padding:10px 0;
+	text-align:center;
+	font: normal 14px "Trebuchet MS", Verdana, Arial, "Times New Roman";
+}
+
+#countdown {
+	background:#FFFFFF;
+	-moz-border-radius:10px;
+	-khtml-border-radius:10px;
+	-webkit-border-radius:10px;
+	padding:20px;
+	border:1px dashed #CCCCCC;
+	font: normal 32px "Trebuchet MS", Verdana, Arial, "Times New Roman";
+}
+
+
+#subscribeform input[type=text]
+	{
+border:1px solid #bfbfbf;
+background:#fff url(images/bg_box.gif) repeat-x; 
+padding:10px;
+}
+
+#subscribeform input[type=image]
+	{
+vertical-align:middle;
+}

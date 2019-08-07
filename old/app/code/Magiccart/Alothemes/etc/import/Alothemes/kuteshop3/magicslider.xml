@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <magicslider>
+    <item>
+      <title><![CDATA[Slide Demo 3]]></title>
+      <identifier><![CDATA[slide3]]></identifier>
+      <config><![CDATA[{"title":"Slide Demo 3","identifier":"slide3","status":"1","mobile":"1","portrait":"1","landscape":"1","tablet":"1","notebook":"1","desktop":"1","visible":"1","vertical":"false","infinite":"true","autoplay":"true","arrows":"true","dots":"false","rows":"1","speed":"300","autoplay-Speed":"3000","padding":"0","media_gallery":{"images":{"p5tj9tp4fjj":{"position":"1","media_type":"image","video_provider":"","file":"\/s\/l\/slidev3_01.jpg","value_id":"","label":"Alotheme Kuteshop","link":"alothemes.com\/","caption":"","disabled":"0","removed":"","video_url":"","video_title":"","video_description":"","video_metadata":"","role":""},"81pln1hrvw1":{"position":"2","media_type":"image","video_provider":"","file":"\/s\/l\/slidev3_02.jpg","value_id":"","label":"Alotheme Kuteshop","link":"alothemes.com\/","caption":"","disabled":"0","removed":"","video_url":"","video_title":"","video_description":"","video_metadata":"","role":""},"hs5nb5gc1k3":{"position":"3","media_type":"image","video_provider":"","file":"\/s\/l\/slidev3_03.jpg","value_id":"","label":"Alotheme Kuteshop","link":"alothemes.com\/","caption":"","disabled":"0","removed":"","video_url":"","video_title":"","video_description":"","video_metadata":"","role":""}}}}]]></config>
+      <status><![CDATA[1]]></status>
+    </item>
+  </magicslider>
+</root>

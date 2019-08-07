@@ -1,0 +1,41 @@
+<?php
+if(!$this->getEnabled()) return;
+$selector = 'alo-content-'.rand(0,999999999);
+$testimonials = $this->getTestimonials();
+if(!count($testimonials)) return;
+?>
+<div class="<?php echo $selector ?>">
+    <div class="testimonial"
+        data-fade='true'
+    <?php foreach ($this->getFrontendCfg() as $opt) :?>
+        data-<?php echo $opt ?>='<?php echo $this->getData($opt) ?>'
+    <?php endforeach;?>  
+    >
+        <?php $i=0; foreach ($testimonials as $testimonial) :?>
+			<div class="item">
+			    <?php echo $this->getTitle() ? '<h2 class="block-title title">' . '<span>' . $this->getTitle() . '</span>' . '</h2>' : '' ?>
+				<div class="testimonial-inner">
+					<p class="name title-name"><?php echo $testimonial->getName(); ?></p>
+					<div class="customer">
+							<img class="avatar img-responsive" src="<?php echo $this->getImage($testimonial)?>" alt="<?php echo __($testimonial->getName()) ?>" title="<?php echo __($testimonial->getName()) ?>" />
+					</div>
+					<div class="testimonial_text">
+						<div class="content sub-text"><?php echo $testimonial->getText(); ?></div>
+					</div>
+				</div>
+			</div>
+        <?php endforeach ?>
+    </div>
+</div>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'magiccart/slick',
+        'alothemes',
+        ], function($, slick, alothemes){
+            var testimonial  = $('.<?php echo $selector ?> .testimonial');
+            if(testimonial.length) $('head').append(magicproduct(testimonial, '.item'));
+        });
+</script>
+
+

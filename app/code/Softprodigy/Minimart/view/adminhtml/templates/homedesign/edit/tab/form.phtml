@@ -1,0 +1,82 @@
+ <?php
+echo $this->getFormHtml();
+$editData = $block->getDesignData();
+
+$layout = (int) $this->getRequest()->getParam('layout', 9);
+if($editData and $editData->getId()){
+   $layout = (int)$editData->getLayoutCol();
+}
+?>
+<script type="text/javascript">
+require(['jquery'], function(jq){   
+    minimartHomedesign.setMaxLimit(<?php echo $layout; ?>);
+});    
+</script>
+<div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend"><?php echo __("Select Section Blocks") ?></h4>
+</div>
+
+<div id="section_form_blocks_select" class="fieldset ">
+    <blockquote><?php echo __("Category Thumbnail will be used for all selected categories") ?></blockquote>
+    <div class="hor-scroll">
+        <div id="template_forcat">
+            <table id="block_category_selection_table" class="form-list" cellspacing="10" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Sequence</th>
+                        <th>Category</th>
+                        <th>&emsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="block_category_template_tbody">
+                    <tr id="block_category_template" style="display: none;">
+                        <td>{{seq}}</td>
+                        <td>
+                            <label>Category </label>
+                            <select name="{{sel_input_name}}">
+                                <?php $options = $block->getCategoryOptions(); ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value']; ?>"><?php echo $option['label']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="delete" onclick="minimartHomedesign.removeRow(this)"><span><span>Remove</span></span></button>
+                        </td>
+                    </tr>
+                    <?php
+                    if ($editData and $editData->getId()) {
+                        $catids = unserialize($editData->getCatIds());
+                        
+                        if ($catids) {
+                            $i=1;
+                            foreach($catids as $_cat){
+                            ?>
+                            <tr id="block_category_template">
+                                <td><?php echo $i; ?></td>
+                                <td>
+                                    <label>Category </label>
+                                    <select name="category[]">
+                                        <?php $options = $this->getCategoryOptions(); ?>
+                                        <?php foreach ($options as $option): ?>
+                                            <option value="<?php echo $option['value']; ?>" <?php if($option['value']==$_cat) { echo ' selected="selected" '; } ?>><?php echo $option['label']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="button" class="delete" onclick="minimartHomedesign.removeRow(this)"><span><span>Remove</span></span></button>
+                                </td>
+                            </tr>
+                        <?php 
+                            $i++;
+                            } 
+                        
+                            }
+                    }
+                    ?>
+                </tbody>    
+            </table>
+            <button type="button" class="add" onclick="minimartHomedesign.addNewRow()"><span><span>Add New Category</span></button>
+        </div>
+    </div>
+</div>

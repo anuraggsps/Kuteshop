@@ -190,15 +190,64 @@ class Login extends \Softprodigy\Minimart\Controller\AbstractAction implements C
                 $data['quote_count'] = $this->cart->getSummaryQty();
             }
             
-            //~ $data['response_msg'] = $respMsg;
-            //~ $jsonArray['response'] = $data;
-            //~ $jsonArray['returnCode'] = array('result' => $respCode, 'resultText' => $respText);
             $status_code = 200;
             if($data['cust_id'] == ''){
 				$data = [];
 				$status_code = 201;
 			}
-            
+			
+
+            //add functionality of addto cart for withoutlogin
+            if($status_code == 200){
+				if(isset($param['token']) && $param['token'] !=''){
+					$guestitemdata = $this->GetitemsForGuestUsers($param['token']);
+						if(!empty($guestitemdata)){
+							if(!is_object($guestitemdata)){
+								foreach($guestitemdata as$itemkey=>$itemdatas){
+									if($itemdatas->product_type =='configurable'){
+										$optionsarray =array();
+										$x=0;
+										foreach($itemdatas->product_option->extension_attributes->configurable_item_options as $key=>$value){
+											$optionsarray[$x]['option_id'] = $value->option_id;
+											$optionsarray[$x]['option_value'] = $value->option_value;
+											$x++;
+										}
+										
+										$cartData = [
+											'cartItem' => [
+											"quote_id" => $data['quote_id'],
+											"sku" => $itemdatas->sku,
+											"qty" => $itemdatas->qty,
+											"product_option"=> array("extension_attributes"=>array("configurable_item_options"=>$optionsarray))
+											]
+										];
+										
+										$this->addItemInProduct($cartData,$data['token']);
+										$quoteFactory = $this->_objectManager->create('\Magento\Quote\Model\QuoteFactory');
+										$quoteids =        $this->GetQuoteIDFromGuestToken($param['token']);
+										$currentQuoteObj = $quoteFactory->create()->load($quoteids);
+										$currentQuoteObj->setIsActive(false)->save();
+									}else{
+										//for simple products
+										$cartData = [
+											'cartItem' => [
+											"quote_id" => $data['quote_id'],
+											"sku" => $itemdatas->sku,
+											"qty" => $itemdatas->qty
+											]
+										];
+										$this->addItemInProduct($cartData,$data['token']);
+										$quoteids =        $this->GetQuoteIDFromGuestToken($param['token']);
+										$quoteFactory = $this->_objectManager->create('\Magento\Quote\Model\QuoteFactory');
+										$currentQuoteObj = $quoteFactory->create()->load($quoteids);
+										$currentQuoteObj->setIsActive(false)->save();
+									}
+								}
+							}
+						}
+				}
+			}
+            //ends here
             $jsonArray['data'] = $data;
             $jsonArray['status'] =  $respText;
             $jsonArray['status_code'] =  $status_code;
@@ -221,5 +270,65 @@ class Login extends \Softprodigy\Minimart\Controller\AbstractAction implements C
     public function validateForCsrf(RequestInterface $request): ?bool{
         return true;
     }
+	
+	public function GetitemsForGuestUsers($token){
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$baseurl = $storeManager->getStore()->getBaseUrl();
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl."rest/V1/guest-carts/".$token."/items",
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "GET",
+		  CURLOPT_HTTPHEADER => array(
+			"Cache-Control: no-cache",
+			"Content-Type: application/json",
+			"Postman-Token: fd4619b3-813c-4e70-92a1-2263752a76a5"
+		  ),
+		));
+		
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		$reslutzs= (array)json_decode($response);
+		//~ echo "<pre>";print_r($reslutzs);die;
+		if(isset($reslutzs['items'])){
+			return  $reslutzs['items'];
+		}else{
+			return  $reslutzs;
+		}
+	}
+	
+	public function addItemInProduct($cartData,$token){
+		
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+        $baseurl = $storeManager->getStore()->getBaseUrl();
+		$url =$baseurl.'index.php/rest/V1/carts/mine/items';
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($cartData));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "Authorization: Bearer ".$token));
+		$result = json_decode(curl_exec($ch));
+		return $result;
+	}
+	
+	public function GetQuoteIDFromGuestToken($token){
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
+		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		$connection = $resource->getConnection();
+		$tableName = $resource->getTableName('quote_id_mask'); //gives table name with prefix
 
+		//Select Data from table
+		$sql = "Select * FROM " . $tableName ." where masked_id = '$token'";
+		$result = $connection->fetchAll($sql);
+		return $result[0]['quote_id'] ;
+	}
+	
 }

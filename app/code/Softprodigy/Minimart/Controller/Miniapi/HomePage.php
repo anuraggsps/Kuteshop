@@ -23,6 +23,8 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
             //-------------Mobile theme color------------
             /* $subs = $this->checkPackageSubcription();
              */
+            $request = $this->getRequest()->getContent();
+			$param = json_decode($request, true);
             $subs = [];
             $subs['subs_closed'] = false;
             $subs['active_package'] = 'Gold';
@@ -32,21 +34,22 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 			$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
 		    $baseurl = $storeManager->getStore()->getBaseUrl();
-		    //~ $baseurl2 = explode("index.php",$baseurl);  
-		    //~ $baseurl = $baseurl2[0];
-		  
+			$itemidsarray =[];
+			if(isset($param['user_id']) && $param['user_id'] !=''){
+				$itemidsarray = $this->GetItems($param['user_id']);
+			}else if(isset($param['token']) && $param['token'] !=''){
+				$itemidsarray = $this->GetitemsForGuestUsers($param['token']);
+			}
+		
 			$staticdata['type'] = "0";
-			$staticdata['multiple_banners'][0]['image'] ="http://dreamarkets.com/pub/media/mageplaza/bannerslider/banner/image/e/n/en_banner-01.png";
+			$staticdata['multiple_banners'][0]['image'] ="https://dreamarkets.com/pub/media/magiccart/magicslider/b/g/bg12.png";
 			$staticdata['multiple_banners'][0]['id'] = "1";
-			$staticdata['multiple_banners'][1]['image'] = "http://dreamarkets.com/pub/media/mageplaza/bannerslider/banner/image/e/n/en_cat-module-01.gif";
+			$staticdata['multiple_banners'][1]['image'] = "https://dreamarkets.com/pub/media/magiccart/magicslider/b/g/bg23.png";
 			$staticdata['multiple_banners'][1]['id'] = "2";
 			$data[] =$staticdata;
 			
-			
-
-			
 			// code for best selling products
-				$data[] = $this->getbestsellingproducts($baseurl);
+				$data[] = $this->getbestsellingproducts($baseurl,$param,$itemidsarray);
 			// ends here
 			
 			$static1data['type'] = "3";
@@ -57,24 +60,29 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$data[] =$static1data;
 			
 			// code for featured products
-				$data[] = $this->getfeaturedproducts($baseurl);
+				$data[] = $this->getfeaturedproducts($baseurl,$param,$itemidsarray);
 			// ends here
 			
+				$singleimagedata['type'] = "4";
+				$singleimagedata['onebanners'][0]['image'] = "http://demo.softprodigyphp.in/kuteshop/pub/media/wysiwyg/alothemes/static/demo1/home1-18.jpg";
+				$singleimagedata['onebanners'][0]['id'] = "1";
+				$data[] =$singleimagedata;
+			
+				
 			// code for random products
-				$data[] = $this->getrandomproducts($baseurl);
+				$data[] = $this->getrandomproducts($baseurl,$param,$itemidsarray);
 			// ends here
 
 			//code for other categories
 				$categories =array(3,6,62,7,8,93);
 				foreach ($categories as $category) {
-					$data[]  = $this->getProductCollection($category);
+					$data[]  = $this->getProductCollection($category,$param,$itemidsarray);
 				}	
 				
 				
 			//codes ends here
 		
-            //~ $jsonArray['response'] = $data;
-            //~ $jsonArray['returnCode'] = array('result' => 1, 'resultText' => 'success');
+
             
             $jsonArray['data'] = $data;
             $jsonArray['status'] =  'success';
@@ -98,7 +106,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
     }
 
 	
-	public function getProductCollection($catid){
+	public function getProductCollection($catid,$param,$itemidsarray){
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 	    $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
 		$baseurl = $storeManager->getStore()->getBaseUrl();
@@ -106,7 +114,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		$categoryId = $catid;
 		$category = $this->_categoryFactory->create()->load($categoryId);
 		$collection = $this->_productCollectionFactory->create();
-		$collection->setPageSize(10)->setCurPage(1);
+		$collection->setPageSize(4)->setCurPage(1);
 		$collection->addAttributeToSelect('*');
 		$collection->addCategoryFilter($category);
 		$collection->addAttributeToFilter('visibility', \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
@@ -119,29 +127,50 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			foreach ($collection as $item) {
 				$othercategoryproducts['products'][$x]['id'] = $item->getEntityId();
 				$othercategoryproducts['products'][$x]['image'] = $baseurl."pub/media/catalog/product".$item->getImage();
-				$othercategoryproducts['products'][$x]['company'] = "";
 				$othercategoryproducts['products'][$x]['name'] = $item->getname();
 				$othercategoryproducts['products'][$x]['original_price'] = $item->getPrice();
-				$othercategoryproducts['products'][$x]['discounted_price'] = $item->getFinalPrice();
+				$othercategoryproducts['products'][$x]['discounted_price'] = strval($item->getFinalPrice());
 				$othercategoryproducts['products'][$x]['sku'] =  $item->getSku();
 				$othercategoryproducts['products'][$x]['qty'] =  $this->GetQty($item->getEntityId());
 				$othercategoryproducts['products'][$x]['is_configurable'] = "0";
-				$othercategoryproducts['products'][$x]['configurable_attributes'] = [];
+				$othercategoryproducts['products'][$x]['is_wishlist'] = false;
+				
+				if(isset($param["user_id"]) && $param["user_id"] !=''){
+					if($this->CheckIfProductInWishList($param["user_id"],$item->getEntityId()) == 1){
+						$othercategoryproducts['products'][$x]['is_wishlist'] = true;
+					}
+				}
+				
+				//check if product is in the cart
+					$othercategoryproducts['products'][$x]['is_addtocart'] = false;
+					$othercategoryproducts['products'][$x]['item_id'] = "";
+					if(!empty($itemidsarray)){
+						if(array_key_exists($item->getSku(), $itemidsarray)){
+							$othercategoryproducts['products'][$x]['is_addtocart'] = true;
+							$othercategoryproducts['products'][$x]['item_id'] = $itemidsarray[$item->getSku()];
+						} 
+					}
+				//ends here
+			
+				
+				
+				//~ $othercategoryproducts['products'][$x]['configurable_attributes'] = [];
 				//check if product is configurable
 					$product = $objectManager->get('Magento\Catalog\Model\Product')->load($item->getEntityId());
+					$othercategoryproducts['products'][$x]['company'] = $product->getAttributeText('manufacturer');
 					$productType = $product->getTypeID();
 					if($productType == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE){
-						$product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load( $item->getEntityId());
-						$productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+						//~ $product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load( $item->getEntityId());
+						//~ $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
 						$othercategoryproducts['products'][$x]['is_configurable'] = "1";
-						$newarray = array();
-						foreach($productAttributeOptions as $option){
-							$dta['attribute_label'] =$option['label'];
-							$dta['attribute_id'] =$option['attribute_id'];
-							$dta['attribute__option'] =$option['values'];
-							$newarray[] = $dta;
-						}
-						$othercategoryproducts['products'][$x]['configurable_attributes'] = $newarray;
+						//~ $newarray = array();
+						//~ foreach($productAttributeOptions as $option){
+							//~ $dta['attribute_label'] =$option['label'];
+							//~ $dta['attribute_id'] =$option['attribute_id'];
+							//~ $dta['attribute__option'] =$option['values'];
+							//~ $newarray[] = $dta;
+						//~ }
+						//~ $othercategoryproducts['products'][$x]['configurable_attributes'] = $newarray;
 					}
 				//Ends here	
 				$x++;
@@ -150,10 +179,10 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		}
 	}
 	
-	public function getbestsellingproducts($baseurl){
+	public function getbestsellingproducts($baseurl,$param,$itemidsarray){
 		//code for getBestsellerProducts
 		$collection = $this->_objectManager->get('\Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory')->create()->setModel('Magento\Catalog\Model\Product');
-		$collection->setPageSize(10)->setCurPage(1);
+		$collection->setPageSize(4)->setCurPage(1);
 		$producIds = array();
 		foreach ($collection as $product) {
 			$producIds[] = $product->getProductId();
@@ -172,26 +201,49 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$bestsellingproducts['products'][$x]['company'] = "";
 			$bestsellingproducts['products'][$x]['name'] = $item->getname();
 			$bestsellingproducts['products'][$x]['original_price'] = $item->getMaxPrice();
-			$bestsellingproducts['products'][$x]['discounted_price'] = $item->getFinalPrice();
+			$bestsellingproducts['products'][$x]['discounted_price'] = strval($item->getFinalPrice());
 			$bestsellingproducts['products'][$x]['sku'] = $item->getSku();
 			$bestsellingproducts['products'][$x]['qty'] =  $this->GetQty($item->getEntityId());
-			$bestsellingproducts['products'][$x]['configurable_attributes'] = [];
+			$bestsellingproducts['products'][$x]['is_configurable'] = "0";
+			$bestsellingproducts['products'][$x]['is_wishlist'] = false;
+			
+			if(isset($param["user_id"]) && $param["user_id"] !=''){
+					if($this->CheckIfProductInWishList($param["user_id"],$item->getEntityId()) == 1){
+						$bestsellingproducts['products'][$x]['is_wishlist'] = true;
+					}
+				}
+			
+				//check if product is in the cart
+					$bestsellingproducts['products'][$x]['is_addtocart'] = false;
+					$bestsellingproducts['products'][$x]['item_id'] = "";
+					if(!empty($itemidsarray)){
+						if(array_key_exists($item->getSku(), $itemidsarray)){
+							$bestsellingproducts['products'][$x]['is_addtocart'] = true;
+							$bestsellingproducts['products'][$x]['item_id'] = $itemidsarray[$item->getSku()];
+						} 
+					}
+				//ends here
+			
+			
+			//~ $bestsellingproducts['products'][$x]['configurable_attributes'] = [];
 			//check if product is configurable
 				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 				$product = $objectManager->get('Magento\Catalog\Model\Product')->load($item->getEntityId());
+				$bestsellingproducts['products'][$x]['company'] = $product->getAttributeText('manufacturer');;
 				$productType = $product->getTypeID();
 				if($productType == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE){
-					$product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($item->getEntityId());
-					$productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
 					$bestsellingproducts['products'][$x]['is_configurable'] = "1";
-					$newarray = array();
-					foreach($productAttributeOptions as $option){
-						$dta['attribute_label'] =$option['label'];
-						$dta['attribute_id'] =$option['attribute_id'];
-						$dta['attribute__option'] =$option['values'];
-						$newarray[] = $dta;
-					}
-					$bestsellingproducts['products'][$x]['configurable_attributes'] = $newarray;
+					//~ $product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($item->getEntityId());
+					//~ $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+					//~ $bestsellingproducts['products'][$x]['is_configurable'] = "1";
+					//~ $newarray = array();
+					//~ foreach($productAttributeOptions as $option){
+						//~ $dta['attribute_label'] =$option['label'];
+						//~ $dta['attribute_id'] =$option['attribute_id'];
+						//~ $dta['attribute__option'] =$option['values'];
+						//~ $newarray[] = $dta;
+					//~ }
+					//~ $bestsellingproducts['products'][$x]['configurable_attributes'] = $newarray;
 				}
 			//Ends here	
 			$x++;
@@ -201,7 +253,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 	}
 	
 	
-	public function getfeaturedproducts($baseurl){
+	public function getfeaturedproducts($baseurl,$param,$itemidsarray){
 		// code for fetured list products
 		$collection = $this->_productCollectionFactory->create();
 		$collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds());
@@ -211,7 +263,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 					->addMinimalPrice()
 					->addFinalPrice()
 					->addTaxPercents()
-					->setPageSize(10)->setCurPage(1);;
+					->setPageSize(4)->setCurPage(1);;
 		$xf= 0;			
 		$featureproducts['type'] = "2";
 		$featureproducts['title'] = "fetured products";
@@ -221,26 +273,49 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$featureproducts['products'][$xf]['company'] = "";
 			$featureproducts['products'][$xf]['name'] = $items->getname();
 			$featureproducts['products'][$xf]['original_price'] = $items->getMaxPrice();
-			$featureproducts['products'][$xf]['discounted_price'] = $items->getFinalPrice();
+			$featureproducts['products'][$xf]['discounted_price'] = strval($items->getFinalPrice());
 			$featureproducts['products'][$xf]['sku'] =  $items->getSku();
 			$featureproducts['products'][$xf]['qty'] =  $this->GetQty($items->getEntityId());
-			$featureproducts['products'][$xf]['configurable_attributes'] = [];
+			$featureproducts['products'][$xf]['is_configurable'] = "0";
+			$featureproducts['products'][$xf]['is_wishlist'] = false;
+			
+			if(isset($param["user_id"]) && $param["user_id"] !=''){
+					if($this->CheckIfProductInWishList($param["user_id"],$items->getEntityId()) == 1){
+						$featureproducts['products'][$xf]['is_wishlist'] = true;
+					}
+				}
+			
+				//check if product is in the cart
+					$featureproducts['products'][$xf]['is_addtocart'] = false;
+					$featureproducts['products'][$xf]['item_id'] = "";
+					if(!empty($itemidsarray)){
+						if(array_key_exists($items->getSku(), $itemidsarray)){
+							$featureproducts['products'][$xf]['is_addtocart'] = true;
+							$featureproducts['products'][$xf]['item_id'] = $itemidsarray[$items->getSku()];
+						} 
+					}
+				//ends here
+			
+			
+			
+			//~ $featureproducts['products'][$xf]['configurable_attributes'] = [];
 			//check if product is configurable
 				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 				$product = $objectManager->get('Magento\Catalog\Model\Product')->load($items->getEntityId());
+				$featureproducts['products'][$xf]['company'] = $product->getAttributeText('manufacturer');;
 				$productType = $product->getTypeID();
 				if($productType == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE){
-					$product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($items->getEntityId());
-					$productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+					//~ $product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($items->getEntityId());
+					//~ $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
 					$featureproducts['products'][$x]['is_configurable'] = "1";
-					$newarray = array();
-					foreach($productAttributeOptions as $option){
-						$dta['attribute_label'] =$option['label'];
-						$dta['attribute_id'] =$option['attribute_id'];
-						$dta['attribute__option'] =$option['values'];
-						$newarray[] = $dta;
-					}
-					$featureproducts['products'][$x]['configurable_attributes'] = $newarray;
+					//~ $newarray = array();
+					//~ foreach($productAttributeOptions as $option){
+						//~ $dta['attribute_label'] =$option['label'];
+						//~ $dta['attribute_id'] =$option['attribute_id'];
+						//~ $dta['attribute__option'] =$option['values'];
+						//~ $newarray[] = $dta;
+					//~ }
+					//~ $featureproducts['products'][$x]['configurable_attributes'] = $newarray;
 				}
 			//Ends here	
 			$xf++;
@@ -249,7 +324,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 	    //ends
 	}
 	
-	public function getrandomproducts($baseurl){
+	public function getrandomproducts($baseurl,$param,$itemidsarray){
 		// code for random products
 		$collection = $this->_productCollectionFactory->create();
 		$collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds());
@@ -258,7 +333,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		)->addStoreFilter();
 		$collection->getSelect()->order('rand()');
 		// getNumProduct
-		$collection->setPageSize(10)->setCurPage(1);
+		$collection->setPageSize(4)->setCurPage(1);
 		$xf= 0;			
 		$randomproducts['type'] = "1";
 		$randomproducts['title'] = "random products";
@@ -268,26 +343,47 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$randomproducts['products'][$xf]['company'] = "";
 			$randomproducts['products'][$xf]['name'] = $items->getname();
 			$randomproducts['products'][$xf]['original_price'] = $items->getMaxPrice();
-			$randomproducts['products'][$xf]['discounted_price'] = $items->getFinalPrice();
+			$randomproducts['products'][$xf]['discounted_price'] = strval($items->getFinalPrice());
 			$randomproducts['products'][$xf]['sku'] = $items->getSku();
 			$randomproducts['products'][$xf]['qty'] = $this->GetQty($items->getEntityId());
-			$randomproducts['products'][$xf]['configurable_attributes'] = [];
+			$randomproducts['products'][$xf]['is_configurable'] = "0";
+			$randomproducts['products'][$xf]['is_wishlist'] = false;
+			
+				if(isset($param["user_id"]) && $param["user_id"] !=''){
+					if($this->CheckIfProductInWishList($param["user_id"],$items->getEntityId()) == 1){
+						$randomproducts['products'][$xf]['is_wishlist'] = true;
+					}
+				}
+			
+				//check if product is in the cart
+					$randomproducts['products'][$xf]['is_addtocart'] = false;
+					$randomproducts['products'][$xf]['item_id'] = "";
+					if(!empty($itemidsarray)){
+						if(array_key_exists($items->getSku(), $itemidsarray)){
+							$randomproducts['products'][$xf]['is_addtocart'] = true;
+							$randomproducts['products'][$xf]['item_id'] = $itemidsarray[$items->getSku()];
+						} 
+					}
+				//ends here
+			
+			//~ $randomproducts['products'][$xf]['configurable_attributes'] = [];
 			//check if product is configurable
 				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 				$product = $objectManager->get('Magento\Catalog\Model\Product')->load($items->getEntityId());
+				$randomproducts['products'][$xf]['company'] = $product->getAttributeText('manufacturer');;
 				$productType = $product->getTypeID();
 				if($productType == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE){
-					$product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($items->getEntityId());
-					$productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+					//~ $product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($items->getEntityId());
+					//~ $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
 					$randomproducts['products'][$xf]['is_configurable'] = "1";
-					$newarray = array();
-					foreach($productAttributeOptions as $option){
-						$dta['attribute_label'] =$option['label'];
-						$dta['attribute_id'] =$option['attribute_id'];
-						$dta['attribute__option'] =$option['values'];
-						$newarray[] = $dta;
-					}
-					$randomproducts['products'][$xf]['configurable_attributes'] = $newarray;
+					//~ $newarray = array();
+					//~ foreach($productAttributeOptions as $option){
+						//~ $dta['attribute_label'] =$option['label'];
+						//~ $dta['attribute_id'] =$option['attribute_id'];
+						//~ $dta['attribute__option'] =$option['values'];
+						//~ $newarray[] = $dta;
+					//~ }
+					//~ $randomproducts['products'][$xf]['configurable_attributes'] = $newarray;
 				}
 			//Ends here	
 			$xf++;
@@ -296,6 +392,94 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		// ends here
 	}
 	
+	public function CheckIfProductInWishList($userid,$productid){
+		$objectManager  = \Magento\Framework\App\ObjectManager::getInstance();
+		$id =  $userid;
+		$wishlist            = $objectManager->get('\Magento\Wishlist\Model\Wishlist');
+		$wishlist_collection = $wishlist->loadByCustomerId( $id , true)->getItemCollection();
+		$_in_wishlist        = "false";
+		foreach ($wishlist_collection->getData() as $key=>$wishlist_product){
+			if($productid == $wishlist_product['product_id']){
+			  $return = true;
+			  return $return;
+			}
+		}
+	}
+	
+	public function GetItems($userid){
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$baseurl = $storeManager->getStore()->getBaseUrl();
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl."rest/V1/carts/mine/items",
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "GET",
+		  CURLOPT_HTTPHEADER => array(
+			"Authorization: Bearer ".$this->Get_Token($userid),
+			"Cache-Control: no-cache",
+			"Content-Type: application/json",
+			"Postman-Token: 44bed0ca-8e40-4fd1-bf89-e70a3b3585e3"
+		  ),
+		));
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		$arary =[];
+		foreach(json_decode($response) as $key=>$value){
+			$arary[$value->sku] = $value->item_id;
+		}
+		return  (array)$arary;
+	}
+	
+	public function GetitemsForGuestUsers($token){
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$baseurl = $storeManager->getStore()->getBaseUrl();
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl."rest/V1/guest-carts/".$token."/items",
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "GET",
+		  CURLOPT_HTTPHEADER => array(
+			"Cache-Control: no-cache",
+			"Content-Type: application/json",
+			"Postman-Token: fd4619b3-813c-4e70-92a1-2263752a76a5"
+		  ),
+		));
+		
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		$reslutzs= json_decode($response);
+		
+		if(!is_object($reslutzs)){
+			$arary =[];
+			foreach(json_decode($response) as $key=>$value){
+				$arary[$value->sku] = $value->item_id;
+			}
+			return  (array)$arary;
+			
+		}
+		
+	}
+	
+	
+	public function Get_Token($userid){
+		$customerToken = $this->_tokenModelFactory->create();
+        $tokenKey = $customerToken->createCustomerToken($userid)->getToken();
+		return $tokenKey;
+	}
 	
 	public function GetQty($productId){
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();

@@ -80,12 +80,14 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
 	protected $_productCollectionFactory;
 	protected $_catalogProductVisibility;
 	protected $_categoryFactory;
+	protected $_ratingFactory;
+	protected $_reviewFactory;
 	
     /**
      * @param Context $context
      */
     public function __construct(
-    \Magento\Framework\App\Action\Context $context, \Magento\Store\Model\StoreManagerInterface $storeManager, \Magento\Framework\Session\SessionManagerInterface $session, \Softprodigy\Minimart\Helper\Data $__helper, \Magento\Catalog\Model\Config $catalogConfig, \Magento\Catalog\Model\Product $productFactory, \Magento\Catalog\Model\ResourceModel\Product\Collection $_productCollection, \Magento\Catalog\Model\ResourceModel\Product\Option\Collection $_productOptionCollection, \Magento\Cms\Model\Template\FilterProvider $filterProvider, ViewInterface $ViewInterface, \Magento\Framework\Pricing\Helper\Data $currencyHelper, \Magento\Framework\UrlInterface $actionBuilder, Logger $logger, \Magento\Quote\Model\Quote $quoteLoader, \Magento\Checkout\Model\Session $__checkoutSession, \Magento\Customer\Model\Session $__customerSession, \Magento\Checkout\Model\Cart $cart, \Magento\Catalog\Api\ProductRepositoryInterface $prodRepInf, AccountManagementInterface $customerAccountManagement, \Magento\Quote\Api\CartRepositoryInterface $quoteRepository, \Magento\Framework\Escaper $escaper, \Magento\Framework\Registry $registry, \Magento\Framework\View\LayoutFactory $layoutFactory,\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,\Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,\Magento\Catalog\Model\CategoryFactory $categoryFactory,\Magento\Integration\Model\Oauth\TokenFactory $tokenModelFactory,\Magento\Catalog\Helper\Image $imageHelper
+    \Magento\Framework\App\Action\Context $context, \Magento\Store\Model\StoreManagerInterface $storeManager, \Magento\Framework\Session\SessionManagerInterface $session, \Softprodigy\Minimart\Helper\Data $__helper, \Magento\Catalog\Model\Config $catalogConfig, \Magento\Catalog\Model\Product $productFactory, \Magento\Catalog\Model\ResourceModel\Product\Collection $_productCollection, \Magento\Catalog\Model\ResourceModel\Product\Option\Collection $_productOptionCollection, \Magento\Cms\Model\Template\FilterProvider $filterProvider, ViewInterface $ViewInterface, \Magento\Framework\Pricing\Helper\Data $currencyHelper, \Magento\Framework\UrlInterface $actionBuilder, Logger $logger, \Magento\Quote\Model\Quote $quoteLoader, \Magento\Checkout\Model\Session $__checkoutSession, \Magento\Customer\Model\Session $__customerSession, \Magento\Checkout\Model\Cart $cart, \Magento\Catalog\Api\ProductRepositoryInterface $prodRepInf, AccountManagementInterface $customerAccountManagement, \Magento\Quote\Api\CartRepositoryInterface $quoteRepository, \Magento\Framework\Escaper $escaper, \Magento\Framework\Registry $registry, \Magento\Framework\View\LayoutFactory $layoutFactory,\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,\Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,\Magento\Catalog\Model\CategoryFactory $categoryFactory,\Magento\Integration\Model\Oauth\TokenFactory $tokenModelFactory,\Magento\Catalog\Helper\Image $imageHelper,\Magento\Review\Model\ReviewFactory $reviewFactory,\Magento\Review\Model\Rating $ratingFactory
     ) {
         parent::__construct($context);
         $this->__helper = $__helper;
@@ -115,6 +117,8 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $this->_categoryFactory = $categoryFactory;
         $this->_tokenModelFactory = $tokenModelFactory;
         $this->imageHelper = $imageHelper;
+        $this->_reviewFactory = $reviewFactory;
+        $this->_ratingFactory = $ratingFactory;
     }
 
     /**
@@ -562,7 +566,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
             $products[$n]['name'] = $prod->getName();
             $products[$n]['final_price'] = number_format($this->currencyHelper->currency($prod->getFinalPrice(), false, false), 2);
             $products[$n]['price'] = number_format($this->currencyHelper->currency($prod->getPrice(), false, false), 2);
-            $products[$n]['minimal_price'] = $this->getMinimalPrice($prod);
+            //~ $products[$n]['minimal_price'] = $this->getMinimalPrice($prod);
 
             $products[$n]['inWishlist'] = '';
             try {
@@ -2045,8 +2049,12 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $resultCode = 0;
         $resultText = "fail";
         if ($inWishListEnabled) {
-            $item_id = $this->getRequest()->getParam('wishlist_item_id');
-            $customerId = $this->getRequest()->getParam('cust_id');
+			
+			$request = $this->getRequest()->getContent();
+            $param = json_decode($request, true);
+			
+            $item_id = $param['wishlist_item_id'];
+            $customerId = $param['user_id'];
             //$customer = Mage::getModel('customer/customer')->load($customerId);
             $return['enabled'] = true;
             if (!empty($customerId) and ! empty($item_id)) {
@@ -2076,8 +2084,11 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         }
 
         $finalreturn = [];
-        $finalreturn['response'] = $return['msg'];
-        $finalreturn['returnCode'] = array(
+        $finalreturn['data'] =[];
+        $finalreturn['message'] = $return['msg'];
+        $finalreturn['status'] = "success";
+        $finalreturn['status_code'] = 200;
+         array(
             "result" => $resultCode,
             "resultText" => $resultText
         );
@@ -2387,9 +2398,11 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
     }
 
     protected function _listProductReviews() {
-        $param = $this->getRequest()->getParams();
+         $request = $this->getRequest()->getContent();
+	     $param = json_decode($request, true);
+	    
         $productId = $param['prod_id'];
-        $storeId = (isset($param['store_id']) and ! empty($param['store_id'])) ? $param['store_id'] : $this->_storeManager->getStore()->getId();
+        $storeId = (isset($param['store_id']) and ! empty($param['store_id'])) ? $param['store_id'] : 6;
 
         $page_no = (isset($param['page_id']) and ! empty($param['page_id'])) ? $param['page_id'] : 1;
 
@@ -2423,10 +2436,27 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $ix = 0;
 
         foreach ($reviewsCollection as $indx => $_item) {
-
             $itData = $_item->getData();
             unset($itData['rating_votes']);
             $itData['created_at'] = date('M d, Y', strtotime($itData['created_at']));
+            
+            // review star rating according to price,qty,value
+				$resource = $this->_objectManager->get('Magento\Framework\App\ResourceConnection'); 
+				$connection = $resource->getConnection(); 
+				$tableName = $resource->getTableName('rating_option_vote');
+				$sql = "Select * FROM " . $tableName." where review_id = ".$_item->getReviewId(); 
+				$result_query = $connection->fetchAll($sql);
+				foreach($result_query as $ratingkey=>$ratingdata){
+					if($ratingdata['rating_id'] == 3){
+						$ratingdataarray['Price'] = $ratingdata['value'];
+					}else if($ratingdata['rating_id'] == 2){
+						$ratingdataarray['Value'] = $ratingdata['value'];
+					}else if($ratingdata['rating_id'] == 1){
+						$ratingdataarray['Quality'] = $ratingdata['value'];
+					}
+				}
+				$itData['rating_star'] = $ratingdataarray;
+            //ends here
             $return['reviews'][$ix] = $itData;
 
             $_votes = $_item->getRatingVotes();
@@ -2449,9 +2479,8 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
     }
 
     protected function _getReviewRatingCodes() {
-        $param = $this->getRequest()->getParams();
 
-        $storeId = (isset($param['store_id']) and ! empty($param['store_id'])) ? $param['store_id'] : $this->_storeManager->getStore()->getId();
+        $storeId = 6;
         $ratingCollection = $this->_objectManager->get('Magento\Review\Model\Rating')
                 ->getResourceCollection()
                 ->addEntityFilter('product')

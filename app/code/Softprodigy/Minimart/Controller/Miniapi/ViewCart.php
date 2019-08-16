@@ -22,77 +22,167 @@ class ViewCart extends \Softprodigy\Minimart\Controller\AbstractAction implement
 	public function execute(){
 		$request = $this->getRequest()->getContent();
 		$param = json_decode($request, true);
-		$result = $this->GetItems($param['user_id']);
-		$quoteid = $result[0]->quote_id;
-		if(!empty($result)){
-			$data =[];
-			$x = 0;
-			foreach($result as $key=>$value){
-				$data[$x]['item_id'] = $value->item_id;
-				$data[$x]['product_sku'] = $value->sku;
-				$data[$x]['qty'] = $value->qty;
-				$data[$x]['name'] = $value->name;
-				$data[$x]['price'] = $value->price;
-				$data[$x]['product_type'] = $value->product_type;
-				$data[$x]['image'] = $this->getItemImage($value->sku);
-				$data[$x]['quote_id'] = $value->quote_id;
-				$data[$x]['is_configurable'] = 0;
-				$data[$x]['optiondata'] = [];
-				if($value->product_type == 'configurable'){
-					$data[$x]['is_configurable'] = 1;
-					$res = $value->product_option->extension_attributes->configurable_item_options;
-					$data[$x]['optiondata'] = $this->GetProductOption($res,$value->item_id);
-				}
-				$x++;
-			}
-			$storeid = $this->_storeManager->getStore()->getId();
-			$quoteModel = $this->_objectManager->create('Magento\Quote\Model\Quote')->setStoreId($storeid);
-			$quote      = $quoteModel->loadActive($quoteid);
-			
-			$totals = $quote->getTotals();//Total object
-			if (isset($totals['discount']) && $totals['discount']->getValue()) {
-				$discount = $totals['discount']->getValue(); //Discount value if applied
-				$data['is_discount'] = 1;
-			} else {
-				$data['is_discount'] = 0;
-				$discount = "0";
-				
-			}
-			if (isset($totals['tax']) && $totals['tax']->getValue()) {
-				$tax = $totals['tax']->getValue(); //Tax value if present
-			} else {
-				$tax = 0.00;
-			}
+		//functionality for guest user
+		if(isset($param['token']) && $param['token'] !=''){
+			$guestitemresult ='';
+			$guestitemresults = $this->GetitemsForGuestUsers($param['token']);
 
-			if (isset($totals['shipping']) && $totals['shipping']->getValue()) {
-				$ship_method = $totals['shipping']->getValue(); //shipping if present
-			} else {
-				$ship_method = 0.00;
+			if(!is_object($guestitemresults)&&!empty($guestitemresults) ){
+					$data =[];
+					$x = 0;
+					
+					foreach($guestitemresults as $key=>$value){
+						$data1[$x]['item_id'] = $value->item_id;
+						$data1[$x]['product_sku'] = $value->sku;
+						$data1[$x]['qty'] = $value->qty;
+						$data1[$x]['name'] = $value->name;
+						$data1[$x]['price'] = $value->price;
+						$data1[$x]['product_type'] = $value->product_type;
+						$data1[$x]['image'] = $this->getItemImage($value->sku);
+						$data1[$x]['quote_id'] = $value->quote_id;
+						$data1[$x]['is_configurable'] = 0;
+						$data1[$x]['optiondata'] = [];
+						if($value->product_type == 'configurable'){
+							$data1[$x]['is_configurable'] = 1;
+							
+							$res = $value->product_option->extension_attributes->configurable_item_options;
+							$data1[$x]['optiondata'] = $this->GetProductOption($res,$value->item_id);
+						}
+						$x++;
+						$data["products"] = $data1;
+					}
+					$storeid = $this->_storeManager->getStore()->getId();
+					$quoteModel = $this->_objectManager->create('Magento\Quote\Model\Quote')->setStoreId($storeid);
+					$quote      = $quoteModel->loadActive($param['token']);
+					
+					$totals = $quote->getTotals();//Total object
+					if (isset($totals['discount']) && $totals['discount']->getValue()) {
+						$discount = $totals['discount']->getValue(); //Discount value if applied
+						$data['is_discount'] = 1;
+					} else {
+						$data['is_discount'] = 0;
+						$discount = "0";
+						
+					}
+					if (isset($totals['tax']) && $totals['tax']->getValue()) {
+						$tax = $totals['tax']->getValue(); //Tax value if present
+					} else {
+						$tax = 0.00;
+					}
+
+					if (isset($totals['shipping']) && $totals['shipping']->getValue()) {
+						$ship_method = $totals['shipping']->getValue(); //shipping if present
+					} else {
+						$ship_method = 0.00;
+					}
+					
+					$data['grandtotal'] = (string)round($quote->getGrandTotal(), 2);
+					$data['subtotal'] = (string)round($quote->getSubtotal(), 2);
+					$data['discount'] = (string)round($discount, 2);
+					$data['deposit_amount'] = (string)round($quote->getFee(), 2);
+					$data['tax'] = (string)round($tax, 2);
+					$data['ship_cost'] = (string)round($ship_method, 2);
+					$data['coupon_applied'] = $quote->getCouponCode()?'':"";
+					
+					$jsonArray['data'] = $data;
+					$jsonArray['status'] = 'success';
+					$jsonArray['status_code'] = 200;
+					$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
+					die;
+					
+			
+			}else{
+				$jsonArray['data'] = null;
+				$jsonArray['status'] = 'success';
+				$jsonArray['status_code'] = 200;
+				$jsonArray['msg'] = 'You Do not have any product in your cart';
+				$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
+				die;
 			}
-			
-			$data['grandtotal'] = (string)round($quote->getGrandTotal(), 2);
-			$data['subtotal'] = (string)round($quote->getSubtotal(), 2);
-			$data['discount'] = (string)round($discount, 2);
-			$data['deposit_amount'] = (string)round($quote->getFee(), 2);
-			$data['tax'] = (string)round($tax, 2);
-			$data['ship_cost'] = (string)round($ship_method, 2);
-			$data['coupon_applied'] = $quote->getCouponCode()?'':"";
-			
-			
-			
-			
-			$jsonArray['data'] = $data;
-			$jsonArray['status'] = 'success';
-			$jsonArray['status_code'] = '200';
-			$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
-			die;
 		}else{
-			$jsonArray['data'] = [];
-			$jsonArray['status'] = 'success';
-			$jsonArray['status_code'] = '200';
-			$jsonArray['msg'] = 'You Do not have any product in your cart';
-			$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
-			die;
+			$result = $this->GetItems($param['user_id']);
+			if(!empty($result)){
+				if(is_object($result)){
+					$jsonArray['data'] = [];
+					$jsonArray['status'] = 'success';
+					$jsonArray['status_code'] = 200;
+					$jsonArray['msg'] = $result->message;
+					$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
+					die;
+				}else{
+					$quoteid = $result[0]->quote_id;
+					$data =[];
+					$x = 0;
+					foreach($result as $key=>$value){
+						$data1[$x]['item_id'] = $value->item_id;
+						$data1[$x]['product_sku'] = $value->sku;
+						$data1[$x]['qty'] = $value->qty;
+						$data1[$x]['name'] = $value->name;
+						$data1[$x]['price'] = $value->price;
+						$data1[$x]['product_type'] = $value->product_type;
+						$data1[$x]['image'] = $this->getItemImage($value->sku);
+						$data1[$x]['quote_id'] = $value->quote_id;
+						$data1[$x]['is_configurable'] = 0;
+						$data1[$x]['optiondata'] = [];
+						if($value->product_type == 'configurable'){
+							$data1[$x]['is_configurable'] = 1;
+							$res = $value->product_option->extension_attributes->configurable_item_options;
+							$data1[$x]['optiondata'] = $this->GetProductOption($res,$value->item_id);
+						}
+						$x++;
+						$data["products"] = $data1;
+					}
+					$storeid = $this->_storeManager->getStore()->getId();
+					$quoteModel = $this->_objectManager->create('Magento\Quote\Model\Quote')->setStoreId($storeid);
+					$quote      = $quoteModel->loadActive($quoteid);
+					
+					$totals = $quote->getTotals();//Total object
+					if (isset($totals['discount']) && $totals['discount']->getValue()) {
+						$discount = $totals['discount']->getValue(); //Discount value if applied
+						$data['is_discount'] = 1;
+					} else {
+						$data['is_discount'] = 0;
+						$discount = "0";
+						
+					}
+					if (isset($totals['tax']) && $totals['tax']->getValue()) {
+						$tax = $totals['tax']->getValue(); //Tax value if present
+					} else {
+						$tax = 0.00;
+					}
+
+					if (isset($totals['shipping']) && $totals['shipping']->getValue()) {
+						$ship_method = $totals['shipping']->getValue(); //shipping if present
+					} else {
+						$ship_method = 0.00;
+					}
+					
+					$data['grandtotal'] = (string)round($quote->getGrandTotal(), 2);
+					$data['subtotal'] = (string)round($quote->getSubtotal(), 2);
+					$data['discount'] = (string)round($discount, 2);
+					$data['deposit_amount'] = (string)round($quote->getFee(), 2);
+					$data['tax'] = (string)round($tax, 2);
+					$data['ship_cost'] = (string)round($ship_method, 2);
+					$data['coupon_applied'] = $quote->getCouponCode()?'':"";
+					
+					
+					
+					
+					$jsonArray['data'] = $data;
+					$jsonArray['status'] = 'success';
+					$jsonArray['status_code'] = 200;
+					$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
+					die;
+				}	
+			}else{
+				$jsonArray['data'] = null;
+				$jsonArray['status'] = 'success';
+				$jsonArray['status_code'] = 200;
+				$jsonArray['msg'] = 'You Do not have any product in your cart';
+				$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
+				die;
+			}
+		
 		}	
 	}	
 	
@@ -159,6 +249,47 @@ class ViewCart extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		$err = curl_error($curl);
 		curl_close($curl);
 		return  json_decode($response);
+	}
+	
+	public function GetitemsForGuestUsers($token){
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$baseurl = $storeManager->getStore()->getBaseUrl();
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl."rest/V1/guest-carts/".$token."/items",
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "GET",
+		  CURLOPT_HTTPHEADER => array(
+			"Cache-Control: no-cache",
+			"Content-Type: application/json",
+			"Postman-Token: fd4619b3-813c-4e70-92a1-2263752a76a5"
+		  ),
+		));
+		
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		$reslutzs= json_decode($response);
+		
+		if(is_object($reslutzs)){
+			return  $reslutzs;
+		}else{
+			$reslutzss= (array)json_decode($response);
+			if(isset($reslutzss['items'])){
+				return  $reslutzss['items'];
+			}else{
+				return  $reslutzss;
+			}
+			
+		}
+		
+		
 	}
 	
 	public function Get_Token($userid){

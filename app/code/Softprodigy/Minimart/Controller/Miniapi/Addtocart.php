@@ -43,32 +43,67 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 					$x++;
 				}
 				
-				$cartData = [
-					'cartItem' => [
-					"quote_id" => $this->createQuote($baseurl,$param['user_id']),
-					"sku" => $param['sku'],
-					"qty" => $param['qty'],
-					"product_option"=> array("extension_attributes"=>array("configurable_item_options"=>$optionsarray))
-					]
-				];
+				if(isset($param['is_login']) && $param['is_login'] == 0){
+					$cartData = [
+						'cartItem' => [
+						"quote_id" => $this->GetGuestCartToken(),
+						"sku" => $param['sku'],
+						"qty" => $param['qty'],
+						"product_option"=> array("extension_attributes"=>array("configurable_item_options"=>$optionsarray))
+						]
+					];
+				}else{
+					$cartData = [
+						'cartItem' => [
+						"quote_id" => $this->createQuote($baseurl,$param['user_id']),
+						"sku" => $param['sku'],
+						"qty" => $param['qty'],
+						"product_option"=> array("extension_attributes"=>array("configurable_item_options"=>$optionsarray))
+						]
+					];
+				}
+
 			// Here we are checking the product if it is bundlle product	
 			}else if(isset($productType) && $productType == 'bundle' && $productType == \Magento\ConfigurableProduct\Model\Product\Type\Bundle::TYPE_CODE){
 				
 			// Here we are checking the product either virtual or simple    
 			}else{
-				$cartData = [
-					'cartItem' => [
-					"quote_id" => $this->createQuote($baseurl,$param['user_id']),
-					"sku" => $param['sku'],
-					"qty" => $param['qty'],
-					]
-				];
+				
+				if(isset($param['is_login']) && $param['is_login'] == 0){
+					$cartData = [
+						'cartItem' => [
+						"quote_id" => $this->GetGuestCartToken(),
+						"sku" => $param['sku'],
+						"qty" => $param['qty'],
+						]
+					];
+				}else{
+					$cartData = [
+						'cartItem' => [
+						"quote_id" => $this->createQuote($baseurl,$param['user_id']),
+						"sku" => $param['sku'],
+						"qty" => $param['qty'],
+						]
+					];
+				}
+				
+
 			} 
-			$resultobj = $this->addItemInProduct($baseurl,$cartData,$param['user_id']);
+			
+			//functionality for without login user add to cart
+				if(isset($param['is_login']) && $param['is_login'] == 0){
+					$resultobj = $this->AddTogUESTCart($param,$cartData);
+					$name = $resultobj['name'];
+				}else{
+					$resultobj = $this->addItemInProduct($baseurl,$cartData,$param['user_id']);
+					$name = $resultobj->name;
+				}
+			//ends here
+
 			$jsonArray['data'] = $resultobj;
 			$jsonArray['status'] =  'success';
 			$jsonArray['status_code'] =  200;
-			$jsonArray['msg'] = 'You added '. $resultobj->name . ' in your cart';
+			$jsonArray['msg'] = 'You added '. $name . ' in your cart';
 			$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
 			die;
             
@@ -125,5 +160,62 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 		$result = json_decode(curl_exec($ch));
 		return $result;
 	}
+	// functionality for guest user
+		//create guest-cart token
+			public function GetGuestCartToken(){
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+				$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+				$baseurl = $storeManager->getStore()->getBaseUrl();
+				$curl = curl_init();
+				curl_setopt_array($curl, array(
+				  CURLOPT_URL => $baseurl."rest/V1/guest-carts",
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => "",
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 30,
+				  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				  CURLOPT_CUSTOMREQUEST => "POST",
+				  CURLOPT_HTTPHEADER => array(
+					"Cache-Control: no-cache",
+					"Content-Type: application/json",
+				  ),
+				));
+				$response = curl_exec($curl);
+				$err = curl_error($curl);
+				curl_close($curl);
+				return json_decode($response);
+			}
+			public function AddTogUESTCart($param,$cartData){
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+				$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+				$baseurl = $storeManager->getStore()->getBaseUrl();
+				return $this->addItemInProductForGuestUsers($baseurl,$cartData);
+			}
+			public function addItemInProductForGuestUsers($baseurl,$cartData){
+				 $token = $cartData['cartItem']['quote_id'];
+				 $curl = curl_init();
+				curl_setopt_array($curl, array(
+				  CURLOPT_URL => $baseurl."rest/V1/guest-carts/".$token."/items",
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => "",
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 30,
+				  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				  CURLOPT_CUSTOMREQUEST => "POST",
+				  CURLOPT_POSTFIELDS => json_encode($cartData),
+				  CURLOPT_HTTPHEADER => array(
+					"Cache-Control: no-cache",
+					"Content-Type: application/json",
+					"Postman-Token: ff073211-c355-4d8d-8465-39edfa110b90"
+				  ),
+				));
 
+				$response = curl_exec($curl);
+				$err = curl_error($curl);
+				curl_close($curl);
+				//~ echo "<pre>";print_r(json_decode($response));die;
+				return array_merge(array("token"=>$token),(array)json_decode($response));
+			}
+			
+	//ends here
 }

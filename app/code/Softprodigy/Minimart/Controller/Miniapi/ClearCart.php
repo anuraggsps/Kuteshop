@@ -24,12 +24,10 @@ class ClearCart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 			$request = $this->getRequest()->getContent();
 		    $param = json_decode($request, true);
 			$customer = $this->_objectManager->get("Magento\Customer\Model\Customer")->load($param['user_id']);
-			if ($customer->getEntityId() == $param['user_id']) {
-				
-				$custModel = $this->_objectManager->get("Magento\Customer\Model\Customer");
-				$customerObj = $custModel->load($param['user_id']);
-				$quote = $this->_quoteLoader->loadByCustomer($customerObj);
-			 	$quoteId = $quote->getId(); 
+			if(isset($param['token']) && $param['token'] !=''){
+				$quoteId = $this->GetitemsForGuestUsers($param['token']);
+				$quoteFactory = $this->_objectManager->create('\Magento\Quote\Model\QuoteFactory');
+				$quote = $quoteFactory->create()->load($quoteId);
 				
 				$jsonArray = array();
 				$allItems = $quote->getAllVisibleItems();
@@ -50,16 +48,45 @@ class ClearCart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 					$string  = "Cart is not empty";
 					$jsonArray ['message'] = $string;
 					$jsonArray ['status_code'] = 201;
-					$jsonArray ['status'] = "Failure";
-				}		
+				}	
 			}else{
-				
-				$jsonArray['data'] = "";
-				$string  = "User is not authorised";
-				$jsonArray['message'] = $string;
-				$jsonArray['status'] = "Failure";
-				$jsonArray['status_code'] = 401;
-				
+				if ($customer->getEntityId() == $param['user_id']) {
+					
+					$custModel = $this->_objectManager->get("Magento\Customer\Model\Customer");
+					$customerObj = $custModel->load($param['user_id']);
+					$quote = $this->_quoteLoader->loadByCustomer($customerObj);
+					$quoteId = $quote->getId(); 
+					
+					$jsonArray = array();
+					$allItems = $quote->getAllVisibleItems();
+					foreach ($allItems as $item) {
+						$itemId = $item->getItemId();
+						$quote->removeItem($itemId);
+						$quote->collectTotals()->save();
+					}
+					if($quote){
+						$jsonArray ['data'] = '';
+						$string  = "Cart is empty";
+						$jsonArray ['message'] = $string;
+						$jsonArray ['status_code'] = 200;
+						$jsonArray ['status'] = "Success";
+						
+					}else{
+						$jsonArray ['data'] = '';
+						$string  = "Cart is not empty";
+						$jsonArray ['message'] = $string;
+						$jsonArray ['status_code'] = 201;
+						$jsonArray ['status'] = "Failure";
+					}		
+				}else{
+					
+					$jsonArray['data'] = "";
+					$string  = "User is not authorised";
+					$jsonArray['message'] = $string;
+					$jsonArray['status'] = "Failure";
+					$jsonArray['status_code'] = 401;
+					
+				}	
 			}	
 		} catch (\Exception $e) {
             $jsonArray['data'] = null;
@@ -79,4 +106,33 @@ class ClearCart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
     public function validateForCsrf(RequestInterface $request): ?bool{
         return true;
     }
+    
+    public function GetitemsForGuestUsers($token){
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$baseurl = $storeManager->getStore()->getBaseUrl();
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => $baseurl."rest/V1/guest-carts/".$token,
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "GET",
+		  CURLOPT_HTTPHEADER => array(
+			"Cache-Control: no-cache",
+			"Content-Type: application/json",
+			"Postman-Token: fd4619b3-813c-4e70-92a1-2263752a76a5"
+		  ),
+		));
+		
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		$reslutzs= (array)json_decode($response);
+		return  $reslutzs['id'];
+	}
+    
 }

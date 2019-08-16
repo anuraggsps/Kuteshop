@@ -1,6 +1,9 @@
 <?php
 
 namespace Softprodigy\Minimart\Controller\Miniapi;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,12 +16,19 @@ namespace Softprodigy\Minimart\Controller\Miniapi;
  *
  * @author mannu
  */
-class RemoveWishListItem extends \Softprodigy\Minimart\Controller\AbstractAction {
+class RemoveWishListItem extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface {
 
     public function execute() { //
         $finalreturn = $this->_removeWishListItem();
         $this->getResponse()->setBody(json_encode($finalreturn))->sendResponse();
         die;
     }
+	
+	public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
+        return null;
+    }
 
+    public function validateForCsrf(RequestInterface $request): ?bool{
+        return true;
+    }
 }

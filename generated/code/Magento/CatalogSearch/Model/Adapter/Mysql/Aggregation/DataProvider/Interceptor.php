@@ -26,4 +26,17 @@ class Interceptor extends \Magento\CatalogSearch\Model\Adapter\Mysql\Aggregation
             return $this->___callPlugins('getDataSet', func_get_args(), $pluginInfo);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(\Magento\Framework\DB\Select $select)
+    {
+        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'execute');
+        if (!$pluginInfo) {
+            return parent::execute($select);
+        } else {
+            return $this->___callPlugins('execute', func_get_args(), $pluginInfo);
+        }
+    }
 }

@@ -147,6 +147,16 @@ class ViewAll extends \Softprodigy\Minimart\Controller\AbstractAction implements
 			$collection
 		)->addStoreFilter()->addAttributeToFilter('entity_id', array('in' => $producIds))->setOrder('ASC');
 		
+		//~ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		//~ $productCollection = $objectManager->create('Magento\Reports\Model\ResourceModel\Report\Collection\Factory'); 
+		//~ $collection = $productCollection->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection'); 
+
+		//~ $collection->setPeriod('year');
+		//~ $collection->setOrder('product_id', 'ASC');
+		//~ $collection->setPageSize($limit)->setCurPage($page);
+		//$collection->setPeriod('month');
+		//$collection->setPeriod('day');
+		
 		$bestsellingproducts['type'] = "1";
 		$bestsellingproducts['title'] = "best selling";
 		$bestsellingproducts =[] ;;

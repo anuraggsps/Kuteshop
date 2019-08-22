@@ -1,0 +1,81 @@
+<?php
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_CsProAssign
+ * @author    CedCommerce Core Team <connect@cedcommerce.com >
+ * @copyright Copyright CEDCOMMERCE (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+
+namespace Ced\CsProAssign\Controller\Adminhtml\Assign;
+
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
+class Remove extends \Magento\Backend\App\Action
+{
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
+    protected $modelFactory;
+    protected $_scopeConfig;
+    protected $_storeManager;
+
+    /**
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     */
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+    )
+    {
+        parent::__construct($context);
+        $this->_scopeConfig = $scopeConfig;
+        $this->resultPageFactory = $resultPageFactory;
+        $this->resultRedirectFactory = $context->getResultRedirectFactory();
+    }
+
+    /**
+     * Index action
+     *
+     * @return void
+     */
+    public function execute()
+    {
+        $enable = $this->_scopeConfig->getValue(
+            'ced_csmarketplace/general/csproassignactivation',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+        if ($enable) {
+            $vendor_id = $this->getRequest()->getParam('vendor_id');
+            $product_ids = $this->getRequest()->getParam('id');
+            if ($product_ids) {
+                $vproductModel = $this->_objectManager->create('Ced\CsMarketplace\Model\Vproducts')
+                    ->getCollection()
+                    ->addFieldToFilter('vendor_id', $vendor_id)
+                    ->addFieldToFilter('product_id', $product_ids)->getFirstItem();
+                try {
+                    $vproductModel->delete();
+                    $this->messageManager->addSuccess(__("Product was successfully removed from vendor"));
+                } catch (\Exception $e) {
+                    $this->messageManager->addError($e->getMessage());
+                }
+            }
+            $this->_redirect('csmarketplace/vendor/edit/vendor_id/' . $vendor_id . '/');
+        }
+    }
+}
+
+

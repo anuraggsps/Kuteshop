@@ -157,9 +157,25 @@ define([
 
 		// add Js
 		var $toggleTab  = $('.toggle-tab');
-		$toggleTab.click(function(){
-			$(this).parent().toggleClass('toggle-visible').find('.toggle-content').slideToggle(300).toggleClass('visible');
+	    var $toggleContent  = $('.toggle-content');
+		$(document).on("click", '.toggle-tab', function(){
+			$(this).parent().toggleClass('toggle-visible').find('.toggle-content').toggleClass('visible');
 		});
+	    $(window).click(function(event) {
+	        if (!$toggleContent.is(event.target) && $toggleContent.has(event.target).length === 0) 
+	        {
+				if(!$toggleTab.is(event.target) && $toggleTab.has(event.target).length === 0){
+		            $toggleTab.each(function() {
+		                $(this).parent().removeClass('toggle-visible').find('.toggle-content').removeClass('visible');
+		            });	
+				}
+
+	        }
+	    });
+	    var $closeTab = $('.closetab .btn-close');
+	    $closeTab.click(function() {
+	        $(this).closest('.alo-toggle').removeClass('toggle-visible').find('.dropdown-switcher').removeClass('visible');
+	    });
 
 
 		function _increaseJnit(){

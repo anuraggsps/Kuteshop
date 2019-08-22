@@ -1,5 +1,0 @@
-a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1565684103;s:6:"expire";i:1565687703;s:4:"tags";s:43:"898_STORE,898_CMS_B,898_BLOCK_HTML,898_MAGE";}
-<div class="debugging-hints" style="position: relative; border: 1px dotted red; margin: 6px 2px; padding: 18px 2px 2px 2px;">
-<div class="debugging-hint-template-file" style="position: absolute; top: 0; padding: 2px 5px; font: normal 11px Arial; background: red; left: 0; color: white; white-space: nowrap;" onmouseover="this.style.zIndex = 999;" onmouseout="this.style.zIndex = 'auto';" title="/var/www/html/kuteshop/vendor/magento/module-theme/view/frontend/templates/html/absolute_footer.phtml">/var/www/html/kuteshop/vendor/magento/module-theme/view/frontend/templates/html/absolute_footer.phtml</div>
-
-</div>

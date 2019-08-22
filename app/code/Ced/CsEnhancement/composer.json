@@ -1,0 +1,19 @@
+{
+    "name": "ced/module-csenhancement",
+    "description": "Extension which will add enhncements to multi-vendor marketplace module.",
+    "require": {
+        "php": "~5.5.0|~5.6.0|~7.0.0"
+    },
+    "type": "magento2-module",
+    "version": "1.0.2",
+    "license": [
+        "EULA"
+    ],
+    "autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+            "Ced\\CsEnhancement\\": ""
+        }
+    }
+}
+

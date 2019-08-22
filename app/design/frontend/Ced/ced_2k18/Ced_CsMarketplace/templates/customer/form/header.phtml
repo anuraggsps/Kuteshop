@@ -1,0 +1,56 @@
+<?php 
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsMarketplace
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license     http://cedcommerce.com/license-agreement.txt
+ */
+?>
+<?php 
+$helper = $this->helper('Ced\CsMarketplace\Helper\Tool\Image');
+$logo = $helper->getStoreConfig("ced_loginsignup/header/logo", $this->getCurrentStoreId()) ? "ced/csmarketplace/".$helper->getStoreConfig("ced_loginsignup/header/logo",$this->getCurrentStoreId()) : ''; 
+$logoImage = $helper->getResizeImage($logo, 'logo', 335, 106); 
+$footerContent = $helper->getStoreConfig("ced_csmarketplace/general/footer_content",$this->getCurrentStoreId());
+$isfooterEnable = $helper->getStoreConfig("ced_csmarketplace/general/enable_footer",$this->getCurrentStoreId());
+?>
+<div class="ced_vendor_header">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pull-left">
+					<div class="v_header_logo">
+						<?php if($logo):?>
+							<a href="<?php echo $this->getBaseUrl(); ?>" target="_blank">
+								<img src="<?php echo $logoImage ?>" alt="vendor panel logo">
+							</a>
+						<?php else:?>
+							<a href="<?php echo $this->getBaseUrl(); ?>" target="_blank">
+							<img src="<?php echo $block->getViewFileUrl('images/demo.png'); ?>" alt="vendor panel logo">
+							</a>
+						<?php endif;?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--  Script for header-->
+<script type="text/javascript">
+	 require(['jquery', 'jquery/ui'], function($){ 
+ 		jQuery(document).ready(function(){
+		var hh= jQuery('.ced_vendor_header').height();
+		jQuery('.page-wrapper').css("padding-top", hh+20);
+	});
+ });
+</script>

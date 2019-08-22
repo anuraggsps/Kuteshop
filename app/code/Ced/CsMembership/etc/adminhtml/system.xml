@@ -1,0 +1,61 @@
+<!--
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsMembership
+ * @author 		CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Config/etc/system_file.xsd">
+    <system>
+		<section id="ced_csmarketplace" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+			<group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+				<field id="activation_csmembership" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Enable Vendor Membership System</label>
+					<config_path>ced_csmembership/general/activation</config_path>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>				
+			</group>
+			<group id="membership_form_fields" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+				<label>Vendor Membership Rates</label>
+				<frontend_model>Ced\CsMembership\Block\Adminhtml\System\Config\Frontend\Fieldset</frontend_model>
+				<field id="product_price" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Per Product Price(s)</label>
+					<validate>validate-number validate-zero-or-greater</validate>
+				</field>
+				<field id="category_price" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Per Category Price(s)</label>
+					<validate>validate-number validate-zero-or-greater</validate>
+				</field>
+				<field id="base_membership_fee" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Basic Charges</label>
+					<validate>validate-number validate-zero-or-greater</validate>
+				</field>
+	            <field id="duration" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+					<label>Duration Price</label>
+					<backend_model>Ced\CsMembership\Model\Backend\System\Config\Duration</backend_model>
+					<config_path>ced_csmarketplace/membership_form_fields/duration</config_path>
+					<frontend_model>Ced\CsMembership\Block\Adminhtml\Form\Field\Duration</frontend_model>
+					<comment>Duration Price Details.</comment>
+				</field>
+				<field id="category_prices" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+	                   <label>Category Wise</label>
+					   <config_path>ced_csmarketplace/membership_form_fields/category_prices</config_path>
+					   <backend_model>Ced\CsMembership\Model\Backend\System\Config\Category</backend_model>
+					   <frontend_model>Ced\CsMembership\Block\Adminhtml\Form\Field\Category</frontend_model>
+					   <comment>Category Price Details.</comment>
+	                </field>
+			</group>
+        </section>
+	</system>
+</config>

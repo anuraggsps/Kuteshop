@@ -1,0 +1,1 @@
+[03-Aug-2019 09:53:14 UTC] PHP Parse error:  syntax error, unexpected 'foreach' (T_FOREACH) in /home/dreamarkets/public_html/app/code/Ced/CsMultiShipping/Model/Shipping.php on line 219

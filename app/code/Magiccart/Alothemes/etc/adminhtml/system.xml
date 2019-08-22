@@ -19,14 +19,14 @@
             <label>ALO Themes</label>
             <tab>Magiccart</tab>
             <resource>Magiccart_Alothemes::config_alothemes</resource>
-<!--             <group id="rtl" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="rtl" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Enable RTL</label>
-                <field id="rtl" translate="label comment" type="select" sortOrder="0"  showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="enabled" translate="label comment" type="select" sortOrder="0"  showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>RTL</label>
                     <comment>Enable RTL</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-            </group> -->
+            </group>
             <group id="grid" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Grid Category</label>
                 <field id="mobile" translate="label comment" type="select" sortOrder="0"  showInDefault="1" showInWebsite="1" showInStore="1">

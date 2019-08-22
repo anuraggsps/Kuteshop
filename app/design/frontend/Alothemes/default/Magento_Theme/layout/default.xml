@@ -39,7 +39,7 @@
            template="account/link/authorization.phtml"/>
 		 </referenceBlock>
 		<referenceContainer name="page.wrapper">
-			<block class="Magento\Theme\Block\Html\Header" name="alothemes_header" template="html/header.phtml" before="-">
+			<block class="Magento\Theme\Block\Html\Header" name="alothemes_header" template="html/header.phtml" before="-" cacheable="false">
 				<block class="Magento\Framework\View\Element\Html\Links" name="header.links">
                     <arguments>
                         <argument name="css_class" xsi:type="string">links</argument>

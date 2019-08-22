@@ -102,7 +102,6 @@ class GridProduct extends \Magento\Catalog\Block\Product\AbstractProduct
 
 
     public function getBestsellerProducts(){
-	
 		/* Cach 1 */
 		//$collection = $this->_objectManager->create('\Magento\Reports\Model\ResourceModel\Report\Collection\Factory');
 		//$collection = $collection->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection');
@@ -122,9 +121,6 @@ class GridProduct extends \Magento\Catalog\Block\Product\AbstractProduct
         $collection = $this->_addProductAttributesAndPrices(
             $collection
         )->addStoreFilter()->addAttributeToFilter('entity_id', array('in' => $producIds));
-		
-		
-		
 		
         return $collection;
         

@@ -170,10 +170,10 @@
 {
     content: "\f104";
 }
-[dir='rtl'] .slick-prev:before
+/* [dir='rtl'] .slick-prev:before
 {
     content: '?';
-}
+} */
 .slick-next{right: -50px;}
 [dir='rtl'] .slick-next
 {
@@ -184,10 +184,10 @@
 {
     content: "\f105";
 }
-[dir='rtl'] .slick-next:before
+/* [dir='rtl'] .slick-next:before
 {
     content: '?';
-}
+} */
 /* Dots */
 .slick-slider{ margin-bottom: 30px;}
 .slick-dots{position: absolute;bottom: -45px;display: block;width: 100%;padding: 0;list-style: none;text-align: center;}

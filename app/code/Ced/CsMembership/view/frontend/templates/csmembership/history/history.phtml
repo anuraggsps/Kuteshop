@@ -1,0 +1,121 @@
+<?php 
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsMembership
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+?>
+
+<div class="vendor-dashboard">
+	<div class="row">
+		<div class="col-md-12" style="margin-top:10px;">
+			<div class="panel panel-default">
+				<div class="panel-heading col-md-12 uptransform" style="line-height:31px;font-weight:bold;padding:4px 15px;font-size:17px;">
+					<?php echo __('Vendor Resources'); ?>
+				</div>
+				<div style="clear:both"></div>
+				<div class="panel-body">
+					<?php $collection = $this->getCollection(); 
+					?>
+					<table cellpadding="10%" width="100%" align="center" bgcolor="yellow" style="padding:1%">
+						<tr>
+							<td><span><b><?php echo __('Product Limit:'); ?></b></span></td>
+							<td><?php echo $limit = $this->_scopeConfig->getValue('ced_vproducts/general/limit', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?></td>
+							<td><b><span><?php echo __('Remaining Product:'); ?></span></b></td>
+							<td><span><?php echo $limit-count($this->_objectManager->create('Ced\CsMarketplace\Model\Vproducts')->getVendorProductIds($this->customerSession->getVendorId())); ?></span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="panel panel-default">	
+				<div class="panel-heading col-md-12 uptransform" style="line-height:31px;font-weight:bold;padding:4px 15px;font-size:17px;">
+					<?php echo __('Vendor Subscription History'); ?>
+				</div>
+				<div style="clear:both"></div>
+				<div class="panel-body">
+					<div class="col-md-12">
+					<h1 align="center"><?php echo __('Your Subscription History'); ?> </h1>
+					<div style="clear:both"></div>
+						<div class="order-items order-details table-responsive">
+						<?php 
+						echo $this->getPagerHtml(); 
+						?>
+							<table class="table table-bordered table-hover table-striped" id="my-orders-table">
+							    <col width="1" />
+							    <col width="1"/>
+							    <col width="1"/>
+							    <col width="1"/>
+							    <col width="1"/>
+							    <col width="1"/>
+							    <col width="1"/>
+							    <col width="1"/>
+									<thead>
+										<tr class="first">
+											<th class="head"><?php echo __('ID') ?></th>
+											<th class="head"><?php echo __('Name') ?></th>
+											<th class="head"><?php echo __('Start Date') ?></th>
+											<th class="head"><?php echo __('Expire Date') ?></th>
+											<th class="head"><?php echo __('Order Id') ?></th> 
+									        <th class="head"><?php echo __('Payment Method') ?></th>
+									        <th class="head"><?php echo __('Status') ?></th>
+											<th class="head"><?php echo __('Transaction Id') ?></th>
+										</tr>
+
+							    	</thead>
+							    
+								<?php if(count($collection)>0): ?>
+								<tbody>	
+							        <?php $_odd = ''; ?>
+							        <?php foreach ($collection as $_report): 
+							        ?>
+							        <tr>
+							            <td class="number"><?php echo __($_report->getSubscriptionId());?></td>
+							            <td class="number"><?php echo __($_report->getName());?></td>
+							            <td class="date"><?php echo __($_report->getStartDate());?></td>
+							            <td class="date"><?php echo __($_report->getEndDate());?></td>
+							            <td class="status"><?php echo __($_report->getOrderId());?></td>
+							            <td class="status"><?php echo __($_report->getPaymentName());?></td>
+							            <td class="number"><?php echo __($_report->getStatus());?></td>
+										<td class="number"><?php echo __($_report->getTransactionId());?></td>
+							        </tr>
+							        <?php endforeach; ?>
+							    </tbody>
+										<?php else: ?>
+										<tbody>
+					    					<tr class="first last odd">
+												<td colspan="8" class="last">
+													<div>
+														<p><?php echo __('No Membership Subscription records found'); ?></p>
+													</div>
+												</td>
+											</tr>		
+									    </tbody>	
+									<?php endif ?>
+							</table>
+							<?php 
+							echo $this->getPagerHtml(); 
+							?>
+						</div>	
+					</div>
+			</div>		
+		</div>
+	</div>	
+</div>
+<style>
+.pager .limiter{
+	float: right !important;
+}
+</style>
+

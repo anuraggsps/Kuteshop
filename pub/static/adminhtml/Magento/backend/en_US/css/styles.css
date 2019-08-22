@@ -8808,6 +8808,16 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 .modal-slide .media-gallery-modal #new_folder {
   margin-right: 10px;
 }
+@font-face {
+  font-family: 'Glyphter';
+  src: url('../Ced_CsMarketplace/fonts/glyphter.woff2') format('woff2'), url('../Ced_CsMarketplace/fonts/glyphter.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+.admin__menu .item-csmarketplace.parent.level-0 > a:before {
+  font-family: 'Glyphter';
+  content: "\0043 \0045 \0044";
+}
 /**
  * Mageplaza
  *

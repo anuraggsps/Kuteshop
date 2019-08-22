@@ -20,6 +20,20 @@ class Filters extends \Softprodigy\Minimart\Controller\AbstractAction implements
 	
 		public function execute() {
 			try{
+				
+				//~ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//~ $productCollection = $objectManager->create('Magento\Reports\Model\ResourceModel\Report\Collection\Factory'); 
+//~ $collection = $productCollection->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection'); 
+//~ $collection->setOrder('product_id', 'ASC');
+//~ $collection->setPeriod('year');
+//~ $collection->setPeriod('month');
+//~ $collection->setPeriod('day');
+
+//~ foreach ($collection as $item) {
+    //~ print_r($item->getData());
+//~ }
+				
+				die;
 				$request = $this->getRequest()->getContent();
 				$param = json_decode($request, true);
 				

@@ -61,7 +61,7 @@
             </container>
         </referenceContainer>
         <referenceContainer name="page.top">
-            <block class="Magento\Framework\View\Element\Template" name="navigation.sections" before="-" template="Magento_Theme::html/sections.phtml">
+            <block class="Magento\Framework\View\Element\Template" name="navigation.sections" before="-" template="Magento_Theme::html/sections.phtml" cacheable="false">
                 <arguments>
                     <argument name="group_name" xsi:type="string">navigation-sections</argument>
                     <argument name="group_css" xsi:type="string">nav-sections</argument>

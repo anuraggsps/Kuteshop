@@ -1,0 +1,239 @@
+"It is impossible to log user action","It is impossible to log user action"
+"Error message","Error message"
+"An error occurred while logging process.","An error occurred while logging process."
+"Release Notification","Release Notification"
+"What’s new with Magento 2.2.4","What’s new with Magento 2.2.4"
+",module,Magento_ReleaseNotification
+<p>Magento 2.2.4 provides powerful new tools to help reduce cart abandonment and simplify store operations:</p>,module,Magento_ReleaseNotification
+<br />,module,Magento_ReleaseNotification
+<div class=""trusted-payments-highlight"">,module,Magento_ReleaseNotification
+<h3>Trusted Payment Options</h3>,module,Magento_ReleaseNotification
+<p>Online or on the go, your shoppers can easily purchase in a familiar, trusted way with Amazon Pay.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""flexible-payments-highlight"">,module,Magento_ReleaseNotification
+<h3>Flexible Payment Terms</h3>,module,Magento_ReleaseNotification
+<p>Increase sales by providing shoppers with the flexibility to pay now, later, or in installments using Klarna&#8217;s integrated payment option.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""tax-automation-highlight"">,module,Magento_ReleaseNotification
+<h3>Sales and Use Tax Automation</h3>,module,Magento_ReleaseNotification
+<p>Merchants can now automatically perform instant and accurate sales tax calculations on shopping cart items with Vertex Cloud.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<p>To learn more, see the <a href=""http://devdocs.magento.com/guides/v2.2/release-notes/bk-release-notes.html"" target=""_blank"">Release Notes</a> and the <a href=""http://docs.magento.com/m2/ce/user_guide/getting-started.html"" target=""_blank"">Magento User Guide</a>.</p>,module,Magento_ReleaseNotification
+",",module,Magento_ReleaseNotification
+<p>Magento 2.2.4 provides powerful new tools to help reduce cart abandonment and simplify store operations:</p>,module,Magento_ReleaseNotification
+<br />,module,Magento_ReleaseNotification
+<div class=""trusted-payments-highlight"">,module,Magento_ReleaseNotification
+<h3>Trusted Payment Options</h3>,module,Magento_ReleaseNotification
+<p>Online or on the go, your shoppers can easily purchase in a familiar, trusted way with Amazon Pay.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""flexible-payments-highlight"">,module,Magento_ReleaseNotification
+<h3>Flexible Payment Terms</h3>,module,Magento_ReleaseNotification
+<p>Increase sales by providing shoppers with the flexibility to pay now, later, or in installments using Klarna&#8217;s integrated payment option.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""tax-automation-highlight"">,module,Magento_ReleaseNotification
+<h3>Sales and Use Tax Automation</h3>,module,Magento_ReleaseNotification
+<p>Merchants can now automatically perform instant and accurate sales tax calculations on shopping cart items with Vertex Cloud.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<p>To learn more, see the <a href=""http://devdocs.magento.com/guides/v2.2/release-notes/bk-release-notes.html"" target=""_blank"">Release Notes</a> and the <a href=""http://docs.magento.com/m2/ce/user_guide/getting-started.html"" target=""_blank"">Magento User Guide</a>.</p>,module,Magento_ReleaseNotification
+"
+"Trusted Payment Options","Trusted Payment Options"
+"<p>With <a href=""http://docs.magento.com/m2/ce/user_guide/payment/amazon-pay.html"" target=""_blank"">Amazon Pay</a>, we make it simple for the hundreds of millions of Amazon customers worldwide to easily log in and purchase from your store using information already stored their Amazon account. With easy setup in Magento 2.2.4, Amazon Pay provides your customers with a trusted and familiar checkout experience. In just a few taps, they can complete a transaction without ever leaving your site.</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Your customers use one familiar login to identify themselves and transact anywhere Amazon Pay is offered.</span></li>,module,Magento_ReleaseNotification
+<li><span>Checkout experience is covered by the Amazon A-to-z Guarantee at no additional cost.</span></li>,module,Magento_ReleaseNotification
+<li><span>Built on years of Amazon eCommerce innovation, and trusted by merchants and buyers alike.</span></li>,module,Magento_ReleaseNotification
+<li><span>Available across platforms and devices, in the home and on the go.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+","<p>With <a href=""http://docs.magento.com/m2/ce/user_guide/payment/amazon-pay.html"" target=""_blank"">Amazon Pay</a>, we make it simple for the hundreds of millions of Amazon customers worldwide to easily log in and purchase from your store using information already stored their Amazon account. With easy setup in Magento 2.2.4, Amazon Pay provides your customers with a trusted and familiar checkout experience. In just a few taps, they can complete a transaction without ever leaving your site.</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Your customers use one familiar login to identify themselves and transact anywhere Amazon Pay is offered.</span></li>,module,Magento_ReleaseNotification
+<li><span>Checkout experience is covered by the Amazon A-to-z Guarantee at no additional cost.</span></li>,module,Magento_ReleaseNotification
+<li><span>Built on years of Amazon eCommerce innovation, and trusted by merchants and buyers alike.</span></li>,module,Magento_ReleaseNotification
+<li><span>Available across platforms and devices, in the home and on the go.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+"
+"Flexible Payment Terms","Flexible Payment Terms"
+",module,Magento_ReleaseNotification
+<p>With <a href=""http://docs.magento.com/m2/ce/user_guide/payment/klarna.html"" target=""_blank"">Klarna</a>, reduce purchase stress and improve your shopping experience with several retail finance and direct-payment options that are easily integrated into your existing buying journey. Shoppers can choose to pay now by online payment or direct debit, pay later by invoice, or pay in installments.</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Customers never leave your site, and enjoy a smoother shopping experience.</span></li>,module,Magento_ReleaseNotification
+<li><span>Easy application process with the ability to pay over time increases average order value and conversion rates.</span></li>,module,Magento_ReleaseNotification
+<li><span>Assumes all credit and fraud risk, and ensures you are paid for ordered goods.</span></li>,module,Magento_ReleaseNotification
+<li><span>Ready for all devices, and enables shoppers to use their Klarna account at any Klarna merchant with just a few clicks.</span></li>,module,Magento_ReleaseNotification
+<li><span>Fast and easy setup, right from the Magento Admin.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+",",module,Magento_ReleaseNotification
+<p>With <a href=""http://docs.magento.com/m2/ce/user_guide/payment/klarna.html"" target=""_blank"">Klarna</a>, reduce purchase stress and improve your shopping experience with several retail finance and direct-payment options that are easily integrated into your existing buying journey. Shoppers can choose to pay now by online payment or direct debit, pay later by invoice, or pay in installments.</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Customers never leave your site, and enjoy a smoother shopping experience.</span></li>,module,Magento_ReleaseNotification
+<li><span>Easy application process with the ability to pay over time increases average order value and conversion rates.</span></li>,module,Magento_ReleaseNotification
+<li><span>Assumes all credit and fraud risk, and ensures you are paid for ordered goods.</span></li>,module,Magento_ReleaseNotification
+<li><span>Ready for all devices, and enables shoppers to use their Klarna account at any Klarna merchant with just a few clicks.</span></li>,module,Magento_ReleaseNotification
+<li><span>Fast and easy setup, right from the Magento Admin.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+"
+"Sales and Use Tax Automation","Sales and Use Tax Automation"
+",module,Magento_ReleaseNotification
+<p><a href=""http://docs.magento.com/m2/ce/user_guide/tax/vertex.html"" target=""_blank"">Vertex Cloud</a> combines sophisticated software with an exceptional team of tax experts to help Magento merchants simplify the sales tax process, and comply with ever-changing tax laws. Merchants can easily access and configure Vertex Cloud from the Magento Admin to meet complex tax challenges.</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Seamless integration with award-winning support for simple-to-complex tax needs.</span></li>,module,Magento_ReleaseNotification
+<li><span>Automatically comply with the latest tax rules for each product and every jurisdiction.</span></li>,module,Magento_ReleaseNotification
+<li><span>Perform tax calculations and generate signature-ready PDF returns in one solution.</span></li>,module,Magento_ReleaseNotification
+<li><span>No penalty to merchants for tax estimates from abandoned carts.</span></li>,module,Magento_ReleaseNotification
+<li><span>Flexible deployment options fit the needs of your organization in the cloud, or on premises.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+",",module,Magento_ReleaseNotification
+<p><a href=""http://docs.magento.com/m2/ce/user_guide/tax/vertex.html"" target=""_blank"">Vertex Cloud</a> combines sophisticated software with an exceptional team of tax experts to help Magento merchants simplify the sales tax process, and comply with ever-changing tax laws. Merchants can easily access and configure Vertex Cloud from the Magento Admin to meet complex tax challenges.</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Seamless integration with award-winning support for simple-to-complex tax needs.</span></li>,module,Magento_ReleaseNotification
+<li><span>Automatically comply with the latest tax rules for each product and every jurisdiction.</span></li>,module,Magento_ReleaseNotification
+<li><span>Perform tax calculations and generate signature-ready PDF returns in one solution.</span></li>,module,Magento_ReleaseNotification
+<li><span>No penalty to merchants for tax estimates from abandoned carts.</span></li>,module,Magento_ReleaseNotification
+<li><span>Flexible deployment options fit the needs of your organization in the cloud, or on premises.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+"
+"What's new with Magento 2.2.2","ما الجديد في Magento ٢.٢.٢"
+",module,Magento_ReleaseNotification
+<p>Magento 2.2.2 offers advanced new features, including:</p>,module,Magento_ReleaseNotification
+<br />,module,Magento_ReleaseNotification
+<div class=""analytics-highlight"">,module,Magento_ReleaseNotification
+<h3>Advanced Reporting</h3>,module,Magento_ReleaseNotification
+<p>Gain valuable insights through a dynamic suite of product, order, and customer reports,,module,Magento_ReleaseNotification
+powered by Magento Business Intelligence.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""instant-purchase-highlight"">,module,Magento_ReleaseNotification
+<h3>Instant Purchase</h3>,module,Magento_ReleaseNotification
+<p>Simplify ordering and boost conversion rates by allowing your customers to use stored,module,Magento_ReleaseNotification
+payment and shipping information to skip tedious checkout steps.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""email-marketing-highlight"">,module,Magento_ReleaseNotification
+<h3>Email Marketing Automation</h3>,module,Magento_ReleaseNotification
+<p>Send smarter, faster email campaigns with marketing automation from dotmailer, powered by,module,Magento_ReleaseNotification
+your Magento store's live data.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<p>Release notes and additional details can be found at,module,Magento_ReleaseNotification
+<a href=""http://devdocs.magento.com/"" target=""_blank"">Magento DevDocs</a>.,module,Magento_ReleaseNotification
+</p>,module,Magento_ReleaseNotification
+",",module,Magento_ReleaseNotification
+<p>Magento 2.2.2 offers advanced new features, including:</p>,module,Magento_ReleaseNotification
+<br />,module,Magento_ReleaseNotification
+<div class=""analytics-highlight"">,module,Magento_ReleaseNotification
+<h3>Advanced Reporting</h3>,module,Magento_ReleaseNotification
+<p>Gain valuable insights through a dynamic suite of product, order, and customer reports,,module,Magento_ReleaseNotification
+powered by Magento Business Intelligence.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""instant-purchase-highlight"">,module,Magento_ReleaseNotification
+<h3>Instant Purchase</h3>,module,Magento_ReleaseNotification
+<p>Simplify ordering and boost conversion rates by allowing your customers to use stored,module,Magento_ReleaseNotification
+payment and shipping information to skip tedious checkout steps.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<div class=""email-marketing-highlight"">,module,Magento_ReleaseNotification
+<h3>Email Marketing Automation</h3>,module,Magento_ReleaseNotification
+<p>Send smarter, faster email campaigns with marketing automation from dotmailer, powered by,module,Magento_ReleaseNotification
+your Magento store's live data.</p>,module,Magento_ReleaseNotification
+</div>,module,Magento_ReleaseNotification
+<p>Release notes and additional details can be found at,module,Magento_ReleaseNotification
+<a href=""http://devdocs.magento.com/"" target=""_blank"">Magento DevDocs</a>.,module,Magento_ReleaseNotification
+</p>,module,Magento_ReleaseNotification
+"
+"Advanced Reporting","التقارير المتقدمة"
+"<p>Advanced Reporting,module,Magento_ReleaseNotification
+provides you with a dynamic suite of reports with rich insights about the health of your,module,Magento_ReleaseNotification
+business.</p><br /><p>As part of the Advanced Reporting service, we may also use your customer,module,Magento_ReleaseNotification
+data for such purposes as benchmarking, improving our products and services, and providing you,module,Magento_ReleaseNotification
+with new and improved analytics.</p><br /><p>By using Magento 2.2.2, you agree to the Advanced,module,Magento_ReleaseNotification
+Reporting <a href=""https://magento.com/legal/terms/privacy"" target=""_blank"">Privacy Policy</a>,module,Magento_ReleaseNotification
+and <a href=""https://magento.com/legal/terms/cloud-terms"" target=""_blank"">Terms,module,Magento_ReleaseNotification
+of Service</a>. You may opt out at any time from the Stores Configuration page.</p>,module,Magento_ReleaseNotification
+","<p>Advanced Reporting,module,Magento_ReleaseNotification
+provides you with a dynamic suite of reports with rich insights about the health of your,module,Magento_ReleaseNotification
+business.</p><br /><p>As part of the Advanced Reporting service, we may also use your customer,module,Magento_ReleaseNotification
+data for such purposes as benchmarking, improving our products and services, and providing you,module,Magento_ReleaseNotification
+with new and improved analytics.</p><br /><p>By using Magento 2.2.2, you agree to the Advanced,module,Magento_ReleaseNotification
+Reporting <a href=""https://magento.com/legal/terms/privacy"" target=""_blank"">Privacy Policy</a>,module,Magento_ReleaseNotification
+and <a href=""https://magento.com/legal/terms/cloud-terms"" target=""_blank"">Terms,module,Magento_ReleaseNotification
+of Service</a>. You may opt out at any time from the Stores Configuration page.</p>,module,Magento_ReleaseNotification
+"
+"Instant Purchase","شراء فوري"
+",module,Magento_ReleaseNotification
+<p>Now you can deliver an Amazon-like experience with a new, streamlined checkout option.,module,Magento_ReleaseNotification
+Logged-in customers can use previously-stored payment credentials and shipping information,module,Magento_ReleaseNotification
+to skip steps, making the process faster and easier, especially for mobile shoppers. Key,module,Magento_ReleaseNotification
+features include:,module,Magento_ReleaseNotification
+</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Configurable “Instant Purchase” button to place orders.</span></li>,module,Magento_ReleaseNotification
+<li><span>Support for all payment solutions using Braintree Vault, including Braintree Credit,module,Magento_ReleaseNotification
+Card, Braintree PayPal, and PayPal Payflow Pro.</span></li>,module,Magento_ReleaseNotification
+<li><span>Shipping to the customer’s default address using the lowest cost, available shipping,module,Magento_ReleaseNotification
+method.</span></li>,module,Magento_ReleaseNotification
+<li><span>Ability for developers to customize the Instant Purchase business logic to meet,module,Magento_ReleaseNotification
+merchant needs.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+",",module,Magento_ReleaseNotification
+<p>Now you can deliver an Amazon-like experience with a new, streamlined checkout option.,module,Magento_ReleaseNotification
+Logged-in customers can use previously-stored payment credentials and shipping information,module,Magento_ReleaseNotification
+to skip steps, making the process faster and easier, especially for mobile shoppers. Key,module,Magento_ReleaseNotification
+features include:,module,Magento_ReleaseNotification
+</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>Configurable “Instant Purchase” button to place orders.</span></li>,module,Magento_ReleaseNotification
+<li><span>Support for all payment solutions using Braintree Vault, including Braintree Credit,module,Magento_ReleaseNotification
+Card, Braintree PayPal, and PayPal Payflow Pro.</span></li>,module,Magento_ReleaseNotification
+<li><span>Shipping to the customer’s default address using the lowest cost, available shipping,module,Magento_ReleaseNotification
+method.</span></li>,module,Magento_ReleaseNotification
+<li><span>Ability for developers to customize the Instant Purchase business logic to meet,module,Magento_ReleaseNotification
+merchant needs.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+"
+"Email Marketing Automation","أتمتة التسويق عبر البريد الإلكتروني"
+",module,Magento_ReleaseNotification
+<p>Unlock an unparalleled level of insight and control of your eCommerce marketing with,module,Magento_ReleaseNotification
+dotmailer Email Marketing Automation. Included with Magento 2.2.2 for easy set-up, dotmailer,module,Magento_ReleaseNotification
+ensures every customer’s journey is captured, segmented, and personalized, enabling you to,module,Magento_ReleaseNotification
+deliver customer-centric campaigns that beat your results over and over again. Benefits include:,module,Magento_ReleaseNotification
+</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>No obligation 14-day trial.</span></li>,module,Magento_ReleaseNotification
+<li><span>Automation campaigns using your live Magento store data that drive revenue,,module,Magento_ReleaseNotification
+including abandoned cart, abandoned browse, product replenishment, and many more.</span></li>,module,Magento_ReleaseNotification
+<li><span>Built-in solution for transactional emails.</span></li>,module,Magento_ReleaseNotification
+<li><span>Telephone support and advice from marketing experts included.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+",",module,Magento_ReleaseNotification
+<p>Unlock an unparalleled level of insight and control of your eCommerce marketing with,module,Magento_ReleaseNotification
+dotmailer Email Marketing Automation. Included with Magento 2.2.2 for easy set-up, dotmailer,module,Magento_ReleaseNotification
+ensures every customer’s journey is captured, segmented, and personalized, enabling you to,module,Magento_ReleaseNotification
+deliver customer-centric campaigns that beat your results over and over again. Benefits include:,module,Magento_ReleaseNotification
+</p>,module,Magento_ReleaseNotification
+<ul>,module,Magento_ReleaseNotification
+<li><span>No obligation 14-day trial.</span></li>,module,Magento_ReleaseNotification
+<li><span>Automation campaigns using your live Magento store data that drive revenue,,module,Magento_ReleaseNotification
+including abandoned cart, abandoned browse, product replenishment, and many more.</span></li>,module,Magento_ReleaseNotification
+<li><span>Built-in solution for transactional emails.</span></li>,module,Magento_ReleaseNotification
+<li><span>Telephone support and advice from marketing experts included.</span></li>,module,Magento_ReleaseNotification
+</ul>,module,Magento_ReleaseNotification
+"
+"Sorry, we had a problem loading our “What’s new” content.","Sorry, we had a problem loading our “What’s new” content."
+",module,Magento_ReleaseNotification
+<p>We’ll try to show it again the next time you sign in to Magento Admin.</p>,module,Magento_ReleaseNotification
+<p>To learn more about new features, see our latest Release Notes in,module,Magento_ReleaseNotification
+<a href=""http://devdocs.magento.com/magento-release-information.html"",module,Magento_ReleaseNotification
+target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotification
+</p>",",module,Magento_ReleaseNotification
+<p>We’ll try to show it again the next time you sign in to Magento Admin.</p>,module,Magento_ReleaseNotification
+<p>To learn more about new features, see our latest Release Notes in,module,Magento_ReleaseNotification
+<a href=""http://devdocs.magento.com/magento-release-information.html"",module,Magento_ReleaseNotification
+target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotification
+</p>"
+",module,Magento_ReleaseNotification
+<p>We’ll try to show it again the next time you sign in to Magento Admin.</p>,module,Magento_ReleaseNotification
+<p>To learn more about new features, see our latest Release Notes in,module,Magento_ReleaseNotification
+<a href=""https://devdocs.magento.com/magento-release-information.html"",module,Magento_ReleaseNotification
+target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotification
+</p>",",module,Magento_ReleaseNotification
+<p>We’ll try to show it again the next time you sign in to Magento Admin.</p>,module,Magento_ReleaseNotification
+<p>To learn more about new features, see our latest Release Notes in,module,Magento_ReleaseNotification
+<a href=""https://devdocs.magento.com/magento-release-information.html"",module,Magento_ReleaseNotification
+target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotification
+</p>"

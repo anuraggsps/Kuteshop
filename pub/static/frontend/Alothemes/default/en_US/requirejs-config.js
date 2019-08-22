@@ -502,17 +502,8 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            orderReview: 'Magento_Paypal/js/order-review',
-            'Magento_Paypal/order-review': 'Magento_Paypal/js/order-review',
-            paypalCheckout: 'Magento_Paypal/js/paypal-checkout'
-        }
-    },
-    paths: {
-        paypalInContextExpressCheckout: 'https://www.paypalobjects.com/api/checkout'
-    },
-    shim: {
-        paypalInContextExpressCheckout: {
-            exports: 'paypal'
+            transparent: 'Magento_Payment/js/transparent',
+            'Magento_Payment/transparent': 'Magento_Payment/js/transparent'
         }
     }
 };
@@ -528,8 +519,17 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            transparent: 'Magento_Payment/js/transparent',
-            'Magento_Payment/transparent': 'Magento_Payment/js/transparent'
+            orderReview: 'Magento_Paypal/js/order-review',
+            'Magento_Paypal/order-review': 'Magento_Paypal/js/order-review',
+            paypalCheckout: 'Magento_Paypal/js/paypal-checkout'
+        }
+    },
+    paths: {
+        paypalInContextExpressCheckout: 'https://www.paypalobjects.com/api/checkout'
+    },
+    shim: {
+        paypalInContextExpressCheckout: {
+            exports: 'paypal'
         }
     }
 };
@@ -832,6 +832,267 @@ var config = {
             'Amazon_Payment/js/action/place-order': {
                 'Amazon_Payment/js/model/place-order-mixin': true
             }
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsMarketplace
+ * @author 		CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+var config = {
+    map: {
+        '*': {
+            csjquery: "Ced_CsMarketplace/dist/js/jquery.min",
+            csnoconflict: "Ced_CsMarketplace/js/ced/csmarketplace/noconflict",
+            csvendor: "Ced_CsMarketplace/js/ced/csmarketplace/vendor",
+            csbootstrap: "Ced_CsMarketplace/bower_components/bootstrap/dist/js/bootstrap",
+            metismenu : "Ced_CsMarketplace/bower_components/metisMenu/dist/metisMenu.min",
+            csvendorpanel: "Ced_CsMarketplace/dist/js/sb-admin-2",
+            checkoutbalance:    'Magento_Customer/js/checkout-balance',
+            captcha: 'Magento_Captcha/js/captcha',
+            flot: "Ced_CsMarketplace/js/ced/csmarketplace/flot/jquery.flot",
+            flotResize: "Ced_CsMarketplace/js/ced/csmarketplace/flot/jquery.flot.resize.min",
+            raphael : "Ced_CsMarketplace/bower_components/raphael/raphael-min",
+            morrisMin : "Ced_CsMarketplace/js/ced/csmarketplace/morris.min",
+            csvmap : "Ced_CsMarketplace/js/ced/csmarketplace/jqvmap/jquery.vmap",
+            csvmapworld : "Ced_CsMarketplace/js/ced/csmarketplace/jqvmap/maps/jquery.vmap.world",
+            ceddropdown : "Ced_CsMarketplace/js/view/header"    
+        }
+    },
+    deps: [
+        "jquery",
+        "jquery/ui",
+        "jquery/validate",
+        "mage/translate"
+    ]
+};
+
+
+
+require.config(config);
+})();
+(function() {
+
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_CsMultiShipping
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CedCommerce (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+
+var config = {
+    map: {
+        '*': {
+            regionUpdater:   'Magento_Checkout/js/region-updater'
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * CedCommerce
+  *
+  * NOTICE OF LICENSE
+  *
+  * This source file is subject to the End User License Agreement (EULA)
+  * that is bundled with this package in the file LICENSE.txt.
+  * It is also available through the world-wide-web at this URL:
+  * http://cedcommerce.com/license-agreement.txt
+  *
+  * @category    Ced
+  * @package     Ced_CsOrder
+  * @author      CedCommerce Core Team <connect@cedcommerce.com >
+  * @copyright   Copyright CEDCOMMERCE (http://cedcommerce.com/)
+  * @license      http://cedcommerce.com/license-agreement.txt
+  */
+
+
+var config = {
+    map: {
+        '*': {
+            "mage/backend/tabs" : 'mage/backend/tabs',
+            "floatingHeader":       "mage/backend/floating-header",
+            "Magento_Sales/order/giftoptions_tooltip" : "Ced_CsOrder/js/giftoptions_tooltip"
+        }
+    },
+    deps: [
+        "jquery",
+        "jquery/ui",
+        "jquery/validate",
+        "mage/translate"
+    ]
+};
+
+
+
+require.config(config);
+})();
+(function() {
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsProduct
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+var config = {
+"bundles": {
+        "js/theme": [
+            "globalNavigation",
+            "globalSearch",
+            "modalPopup",
+            "useDefault",
+            "loadingPopup",
+            "collapsable"
+        ]
+    },
+    map: {
+        '*': {
+        	
+        	"Magento_CatalogInventory/js/components/use-config-settings":"Ced_CsProduct/js/components/use-config-settings",
+        	"Magento_CatalogInventory/js/components/qty-validator-changer":"Ced_CsProduct/js/components/qty-validator-changer",
+        	"Magento_CatalogInventory/js/components/use-config-min-sale-qty":"Ced_CsProduct/js/components/use-config-min-sale-qty",
+        	"Magento_Downloadable/js/components/is-downloadable-handler":"Ced_CsProduct/js/components/is-downloadable-handler",
+        	"Magento_Bundle/js/components/bundle-input-type":"Ced_CsProduct/js/components/bundle-input-type",
+        	"Magento_Catalog/js/bundle-proxy-button":"Ced_CsProduct/js/bundle-proxy-button",	
+        	"Magento_Catalog/js/custom-options-type":"Ced_CsProduct/js/custom-options-type",
+        	"Magento_Catalog/component/static-type-input":"Ced_CsProduct/component/static-type-input",
+        	"Magento_Downloadable/js/components/file-uploader":"Ced_CsProduct/js/components/file-uploader",
+        	"Magento_Downloadable/js/components/upload-type-handler":"Ced_CsProduct/js/components/upload-type-handler",
+        	"Magento_Downloadable/js/components/price-handler":"Ced_CsProduct/js/components/price-handler",
+        	"Magento_Bundle/js/components/bundle-checkbox":"Ced_CsProduct/js/components/bundle-checkbox",
+        	"Magento_Bundle/js/components/bundle-option-qty":"Ced_CsProduct/js/components/bundle-option-qty",   
+        	//"Magento_Ui/js/form/client":"Ced_CsProduct/js/form/client",
+        	
+        	"Magento_Backend/js/media-uploader":"Ced_CsProduct/js/media-uploader",
+        	"Magento_Catalog/js/components/new-category":"Ced_CsProduct/js/components/new-category",
+        	"Magento_Catalog/js/components/dynamic-rows-import-custom-options":"Ced_CsProduct/js/components/dynamic-rows-import-custom-options",
+        	"Magento_Catalog/js/components/attribute-set-select":"Ced_CsProduct/js/components/attribute-set-select",
+        	"Magento_Catalog/js/components/import-handler":"Ced_CsProduct/js/components/import-handler",
+        	//"mage/tabs" : "mage/backend/tabs",
+          "Magento_Catalog/catalog/type-events" : "Ced_CsProduct/catalog/type-events",
+	     "Magento_Catalog/js/product/weight-handler" : "Ced_CsProduct/js/product/weight-handler",
+	     "Magento_Catalog/catalog/apply-to-type-switcher" : "Ced_CsProduct/catalog/apply-to-type-switcher",
+	     form : "mage/backend/form",
+	     calendar : "mage/calendar",
+	     productGallery : 'Ced_CsProduct/js/product-gallery',
+	     newCategoryDialog:  'Ced_CsProduct/js/new-category-dialog',
+	     baseImage : 'Ced_CsProduct/catalog/base-image-uploader',
+	     suggest : "mage/backend/suggest",
+	     "floatingHeader" : "mage/backend/floating-header",
+	     "button" : "mage/backend/button",
+	   
+	   // "jquery/jquery.tabs" : "jquery/jquery.tabs",
+	     //"toolbar_entry" : "Ced_CsProduct/catalog/toolbar_entry",
+	     "backend/bootstrap" : "mage/backend/bootstrap",
+	     "globals" : "mage/adminhtml/globals",
+	     "dropdown-old" : "mage/dropdown_old",
+	     "product-attributes" : "Ced_CsProduct/catalog/product-attributes",
+	     "select" : "Magento_Ui/js/form/element/select",
+	     "integration" : "Ced_CsProduct/catalog/integration",
+	     "notification" : "mage/backend/notification",
+	     "productAttributes" : "Ced_CsProduct/catalog/product-attributes",
+	     
+	  
+	     "Magento_Downloadable/template/components/file-uploader.html":"Ced_CsProduct/template/components/file-uploader.html",
+
+	     "Magento_Downloadable/downloadable-type-handler" : "Ced_CsProduct/js/DownloadableProduct/downloadable-type-handler",
+
+	    "mage/adminhtml/browser":"Ced_CsProduct/js/adminhtml/browser",
+	     
+	     "Magento_Bundle/js/bundle-product" : "Ced_CsProduct/js/BundleProduct/bundle-product",
+          "Magento_Bundle/js/bundle-type-handler" : "Ced_CsProduct/js/BundleProduct/bundle-type-handler",
+
+	     "groupedProduct" : "Ced_CsProduct/js/GroupedProduct/grouped-product",
+
+	     "Magento_Theme/js/sortable" : "Ced_CsProduct/js/Theme/sortable",
+
+	     //"js/theme" : "Ced_CsProduct/js/Theme_admin_backend/theme",
+
+	     "Magento_Catalog/js/custom-options" : "Ced_CsProduct/js/custom-options",
+
+	     "mediabrowser" : "jquery/jstree/jquery.jstree",
+	     "folderTree" : "Ced_CsProduct/js/folder-tree",
+
+	     "Magento_Variable/variables" : "Ced_CsProduct/js/variables",
+	     "treeSuggest" : "mage/backend/tree-suggest",
+	     "jstree" : "jquery/jstree/jquery.jstree",
+	     "actionLink" : "mage/backend/action-link",
+	   
+	     newVideoDialog : "Ced_CsProduct/js/video/new-video-dialog",
+	     openVideoModal:  "Ced_CsProduct/js/video/video-modal",
+	     "Magento_ProductVideo/js/get-video-information" : "Ced_CsProduct/js/video/get-video-information",
+
+	     "global" : "mage/adminhtml/globals"
+        }
+    }
+    
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * CedCommerce
+  *
+  * NOTICE OF LICENSE
+  *
+  * This source file is subject to the End User License Agreement (EULA)
+  * that is bundled with this package in the file LICENSE.txt.
+  * It is also available through the world-wide-web at this URL:
+  * http://cedcommerce.com/license-agreement.txt
+  *
+  * @category  Ced
+  * @package   Ced_CsVendorProductAttribute
+  * @author    CedCommerce Core Team <connect@cedcommerce.com >
+  * @copyright Copyright CEDCOMMERCE (http://cedcommerce.com/)
+  * @license      http://cedcommerce.com/license-agreement.txt
+  */
+
+var config = {
+    map: {
+        '*': {
+             "Magento_Catalog/js/options" : "Ced_CsVendorProductAttribute/js/options",
+	        "global" : "mage/adminhtml/globals",
+	        "Magento_Catalog/catalog/product/attribute/unique-validate":"Ced_CsVendorProductAttribute/js/unique-validate",
+	        eavInputTypes: 'Ced_CsVendorProductAttribute/js/input-types'
         }
     }
 };

@@ -1,0 +1,275 @@
+<?php 
+
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsMultiShipping
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license     http://cedcommerce.com/license-agreement.txt
+ */
+?>
+<?php
+
+	$isFirst = !count($block->getObjectManager()->get('Ced\CsMarketplace\Model\Vproducts')->getVendorProducts('',$block->getVendor()->getId()));
+	
+	$vendor = $block->getVendor();
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+	$helper = $objectManager->get('Ced\CsMultiShipping\Helper\Data');
+	
+	$vendorMethods = $helper->getVendorMethods($block->getVendor()->getId());
+	$vendorAddress = $helper->getVendorAddress($block->getVendor()->getId());
+
+?>
+<!-- /.navbar-header -->
+
+<ul class="nav navbar-top-links navbar-right in">
+<?php 
+	try{
+?>
+	<?php echo $block->getChildHtml('sidebar'); ?>
+	<!-- /.dropdown -->
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			<i class="fa fa-tasks fa-fw"></i>
+			<span id="dropdown-tasks-label" class="label label-success"></span>
+			<i class="fa fa-caret-down"></i>
+		</a>
+		<ul class="dropdown-menu dropdown-tasks">
+			<?php  if($block->getVendorId() && $block->getVendor()->getStatus() == \Ced\CsMarketplace\Model\Vendor::VENDOR_APPROVED_STATUS ) { ?>
+				<?php echo $block->getChildHtml('task_links')?>
+				<li>
+					<?php 
+						 echo $block->getLayout()
+								->createBlock('Ced\CsMarketplace\Block\Vendor\Navigation\Statatics','csmarketplace_vendor_navigation_statatics_header')
+								->setTemplate('Ced_CsMarketplace::vendor/navigation/statatics.phtml')->toHtml(); 
+					?>
+				</li>
+			<?php } ?>
+		</ul>
+	</li>
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			<i class="fa fa-bell fa-fw"></i> 
+			<span id="dropdown-alerts-label" class="label label-warning"></span>
+			<i class="fa fa-caret-down"></i>
+		</a>
+		<ul class="dropdown-menu dropdown-alerts">
+			<?php  if($block->getVendorId() && $block->getVendor()->getStatus() == \Ced\CsMarketplace\Model\Vendor::VENDOR_APPROVED_STATUS ) { ?>
+				<?php echo $block->getChildHtml('notification_links')?>
+				<?php if(!$block->getVendor()->getProfilePicture()) { ?>
+					<li>
+						<a href="<?php echo $block->getUrl('csmarketplace/vendor/profile',array('_secure' => true)); ?>" title="<?php echo __('Add Profile Picture') ?>">
+							<div>
+								<i class="fa fa-bell fw"></i>
+								<?php echo __('Add Profile Picture') ?>
+								<span class="pull-right text-muted small">..</span>
+							</div>
+						</a>
+					</li>
+					<li class="divider"></li>
+				<?php } ?>
+				<?php if(!$block->getObjectManager()->get('Ced\CsMarketplace\Helper\Data')->isShopEnabled($block->getVendor())) { ?>	
+					<li>	
+						<a href="#" title="<?php echo __('Your Shop is disabled By Admin') ?>">
+							<div>
+								<i class="fa fa-bell fw"></i>
+								<?php echo __('Your Shop is disabled By Admin') ?>
+								<span class="pull-right text-muted small">..</span>
+							</div>
+						</a>
+					</li>
+					<li class="divider"></li>
+				<?php } ?>
+				<?php if(!$block->getVendor()->getCompanyLogo()) { ?>	
+					<li>
+						<a href="<?php echo $block->getUrl('csmarketplace/vendor/profile',array('_secure' => true)); ?>" title="<?php echo __('Add Company Logo') ?>">
+							<div>
+								<i class="fa fa-bell fw"></i>
+								<?php echo __('Add Company Logo') ?>
+								<span class="pull-right text-muted small">..</span>
+							</div>
+						</a>
+					</li>
+					<li class="divider"></li>
+				<?php } ?>
+				<?php if(!$block->getVendor()->getCompanyBanner()) { ?>
+					<li>
+						<a href="<?php echo $block->getUrl('csmarketplace/vendor/profile',array('_secure' => true)); ?>" title="<?php echo __('Add Company Banner') ?>">
+							<div>
+								<i class="fa fa-bell fw"></i>
+								<?php echo __('Add Company Banner') ?>
+								<span class="pull-right text-muted small">..</span>
+							</div>
+						</a>	
+					</li>
+					<li class="divider"></li>
+				<?php } ?>
+				<?php if($isFirst) { ?>
+					<li>
+						<a href="<?php echo $block->getUrl('csmarketplace/vproducts/new',array('_secure' => true)); ?>" title="<?php echo __('Add Your First Product') ?>">
+							<div>
+								<i class="fa fa-bell fw"></i>
+								<?php echo __('Add Your First Product') ?>
+								<span class="pull-right text-muted small">..</span>
+							</div>
+						</a>	
+					</li>
+					<li class="divider"></li>
+				<?php } ?>
+				<?php if(!$block->isPaymentDetailAvailable()) { ?>
+					<li>
+						<a href="<?php echo $block->getUrl('csmarketplace/vsettings/index',array('_secure' => true)); ?>" title="<?php echo __('Add your Payment Details') ?>">
+							<div>
+								<i class="fa fa-bell fw"></i>
+								<?php echo __('Add your Payment Details') ?>
+								<span class="pull-right text-muted small">..</span>
+							</div>
+						</a>	
+					</li>
+					<li class="divider"></li>
+				<?php } ?>
+			 <?php } else { ?>
+				<li>
+					<a class="text-center" href="#">
+						<strong><?php echo __('No Alerts');?></strong>
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</li>
+			 <?php } ?>
+			<?php if(!$helper->validateAddress($vendorAddress)){?>
+				<li>
+					<a href="<?php echo $block->getUrl('csmultishipping/settings/index')?>" title="<?php echo __('Complete Shipping Origin Setting') ?>">
+						<div>
+							<i class="fa fa-bell fw"></i>
+							<?php echo __('Complete Shipping Origin Setting') ?>
+							<span class="pull-right text-muted small">..</span>
+						</div>
+					</a>
+				</li>
+				<li class="divider"></li>
+			<?php } ?>
+			<?php if (count($vendorMethods) == 0){ ?>
+				<li class="last">
+					<a href="<?php echo $block->getUrl('csmultishipping/methods/index')?>" title="<?php echo __('Setup Shipping Methods Details') ?>">
+						<div>
+							<i class="fa fa-bell fw"></i>
+							<?php echo __('Setup Shipping Methods Details') ?>
+							<span class="pull-right text-muted small">..</span>
+						</div>
+					</a>
+				</li>
+				<li class="divider"></li>
+			<?php } ?>		
+		</ul>
+		
+		<!-- /.dropdown-alerts -->
+	</li>
+	<!-- /.dropdown -->
+	<li class="dropdown vendor_profile_image">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			<!-- <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i> -->
+			
+			<?php if ($vendor && $vendor->getId()) { ?>
+				<?php $vendorUrl = $block->getObjectManager()->create('Ced\CsMarketplace\Helper\Tool\Image')
+									->getResizeImage($vendor->getData('profile_picture'), 'logo', 50, 50); ?>
+				<div class="pull-left image">
+					<img alt="User Image" class="img-circle" src="<?php echo $vendorUrl; ?>">
+				</div>
+			<?php } ?>
+		</a>
+		<ul class="dropdown-menu dropdown-user">
+			<li class="vendor_profile_name"><?php echo $vendor->getName(); ?></li>
+			<li class="vendor_status_info">
+				<?php if($vendor->getStatus() == \Ced\CsMarketplace\Model\Vendor::VENDOR_APPROVED_STATUS) { ?>
+					<i class="fa fa-circle text-success"></i> <?php echo __('Approved'); ?>
+				<?php } elseif($vendor->getStatus() == \Ced\CsMarketplace\Model\Vendor::VENDOR_DISAPPROVED_STATUS) { ?>
+					<i class="fa fa-circle text-danger"></i> <?php echo __('Disapproved'); ?>
+				<?php } else { ?>
+					<i class="fa fa-circle text-warning"></i> <?php echo __('New'); ?>
+				<?php } ?>
+			</li>
+			<li><a href="<?php echo $block->getUrl('csmarketplace/vendor/profileview/',array('_secure'=>true))?>"><i class="fa fa-user fa-fw"></i> <?php echo __('User Profile')?></a>
+			</li>
+			<li><a href="<?php echo $block->getUrl('csmarketplace/vsettings/',array('_secure'=>true))?>"><i class="fa fa-gear fa-fw"></i> <?php echo __('Settings')?></a>
+			</li>
+			<li class="divider"></li>
+			<li><a href="<?php echo $block->getUrl('csmarketplace/account/logout/',array('_secure'=>true))?>"><i class="fa fa-sign-out fa-fw"></i> <?php echo __('Logout')?></a>
+			</li>
+		</ul>
+		<!-- /.dropdown-user -->
+	</li>
+	<?php  if($block->getVendorId() && $block->getVendor()->getStatus() == \Ced\CsMarketplace\Model\Vendor::VENDOR_APPROVED_STATUS ) { ?>
+	<li class="dropdown">
+		<a target="_blank" class="dropdown-toggle" href="<?php echo $block->getVendor()->getVendorShopUrl(); ?>" title="<?php echo __('Go to Shop') ?>">
+			<i class="fa fa-external-link fw"></i>
+		</a>
+		<!-- /.dropdown-user -->
+	</li>
+	<?php } ?>
+	<!-- /.dropdown -->
+</ul>
+<style>
+.navbar-top-links > li > a > span.label{
+    font-size: 9px !important;
+    line-height: 0.9;
+    padding: 2px 3px;
+    position: absolute;
+    right: 22px;
+    text-align: center;
+    top: 10px;
+}
+</style>
+<script type="text/javascript">
+	var childLis = document.getElementsByClassName("dropdown-tasks");
+	if(childLis && childLis[0] && childLis[0].childNodes && childLis.length > 0) {
+		childLis = childLis[0].childNodes;
+		var lisCnt = 0;
+		for(var i=0; i<childLis.length ; i++){
+			if(childLis[i].innerHTML != undefined && childLis[i].innerHTML != ''){
+				lisCnt++;
+			}
+		}
+		if(lisCnt > 0){
+			var labelElement = document.getElementById('dropdown-tasks-label');
+			if(labelElement){
+				labelElement.innerHTML = lisCnt;
+			}
+		}
+	}
+
+	var childLis = document.getElementsByClassName("dropdown-alerts");
+	if(childLis && childLis[0] && childLis[0].childNodes && childLis.length > 0) {
+		childLis = childLis[0].childNodes;
+		var lisCnt = 0;
+		for(var i=0; i<childLis.length ; i++){
+			if(childLis[i].innerHTML != undefined && childLis[i].innerHTML != ''){
+				lisCnt++;
+			}
+		}
+		if(lisCnt > 0){
+			var labelElement = document.getElementById('dropdown-alerts-label');
+			if(labelElement){
+				labelElement.innerHTML = lisCnt;
+			}
+		}
+	}
+	
+</script>
+<?php
+	} catch(Exception $e) {
+		echo $e->getMessage();die;
+	}
+?>
+
+
+

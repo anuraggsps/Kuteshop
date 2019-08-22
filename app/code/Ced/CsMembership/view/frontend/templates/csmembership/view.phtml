@@ -1,0 +1,166 @@
+<?php 
+/**
+ * CedCommerce
+  *
+  * NOTICE OF LICENSE
+  *
+  * This source file is subject to the End User License Agreement (EULA)
+  * that is bundled with this package in the file LICENSE.txt.
+  * It is also available through the world-wide-web at this URL:
+  * http://cedcommerce.com/license-agreement.txt
+  *
+  * @category    Ced
+  * @package     Ced_CsMembership
+  * @author       CedCommerce Core Team <connect@cedcommerce.com >
+  * @copyright   Copyright CEDCOMMERCE (http://cedcommerce.com/)
+  * @license      http://cedcommerce.com/license-agreement.txt
+  */
+?>
+<?php 
+		$helper = $this->_objectManager->get('Ced\CsMembership\Helper\Data');
+		$store = $this->_objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
+		$Collection = $this->getMembershipDetails();
+		$check_assignedMembership = $block->checkAssignedMembership();
+
+?>
+	<div class="row">
+		<div class="col-md-12" style="margin-top:10px;">
+		<div class="panel panel-default">
+			<div class="panel-heading col-md-12 uptransform" style="line-height:31px;font-weight:bold;padding:4px 15px;font-size:17px;">
+				<i class="fa fa-user fa-fw"></i><?php echo __('Membership Details') ?>
+			</div>
+				<div class="panel panel-body">
+						<div class="col-md-12" style="margin-top:10px;">
+							<div class="row">
+								<div class="col-md-12" style="margin-top:10px;">
+			               		<div class="col-lg-6">
+			                    	<div class="panel panel-default">
+			                       		<div class="panel-heading">
+			                            	<?php echo __('Membership')?>
+			                        	</div>
+			                        	<div class="panel-body">
+			                            
+			                        		<?php
+											$phtml = '';
+											$ihtml = '';
+														$imgUrl = $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA).$Collection->getData('image');
+													if(strlen($Collection->getData('image'))==0)
+														$imgUrl= $this->getViewFileUrl('Ced_CsMembership::images/logo.jpg');	
+													$phtml .= '<img style="display: inline;" width="73%%" class="small-image-preview v-middle" alt="Profile Picture" title="Profile Picture" id="image" src="'.$imgUrl.'" />';			
+											?>
+											<div class="col-1 addresses-primary">		
+												<?php echo $phtml; ?>
+											</div>
+			                        	</div>
+			                        </div>
+			                	</div>
+			                	<div class="col-lg-6">
+				                    <div class="panel panel-default">
+				                        <div class="panel-heading">
+				                            <?php echo __('Allowed Category'); ?>
+				                        </div>
+				                        <div class="panel-body">
+				                           	<div class="col-2 addresses-primary">		
+				                           		<?php echo $this->getAllowedCatagories(); ?>
+											</div>
+				                        </div>
+				                    </div>
+				                </div>
+			                </div>
+			            </div>
+			            
+			            <div class="row">
+								<div class="col-md-12" style="margin-top:10px;">
+			               		<div class="col-lg-6">
+			                    	<div class="panel panel-default">
+			                       		<div class="panel-heading">
+			                            	<?php echo __('Allowed No of Products '); ?>
+			                        	</div>
+			                        	<div class="panel-body">
+											<?php echo __($Collection->getProductLimit().'</br>'); ?>
+			                        	</div>
+			                        </div>
+			                	</div>
+
+			                <div class="col-lg-6">
+			                    <div class="panel panel-default">
+			                        <div class="panel-heading">
+			                            <?php echo __('Duration of Package '); ?>
+			                        </div>
+			                        	<div class="panel-body">
+			                           		<div class="col-2 addresses-primary">		
+												<?php echo __($Collection->getDuration().'  Month(s)'); ?>
+											</div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			            <div class="row">
+								<div class="col-md-12" style="margin-top:10px;">
+			               		<div class="col-lg-6">
+			                    	<div class="panel panel-default">
+			                       		<div class="panel-heading">
+			                            	<?php echo __('Price(s)  '); ?>
+			                        	</div>
+			                        	<div class="panel-body">
+			                            	<div class="product-shop">
+												<div class="price-box">
+													<?php if($Collection->getSpecialPrice()!='0'){ ?>
+													<div class="product-info">
+													<span class="regular-price" style="text-decoration: line-through;" ><?php echo __('Price : '); ?></span><span class="regular-price" style="text-decoration: line-through;"><?php echo  $Collection->getPrice()?></span>
+													</div>
+													<?php }else{?>
+														<div class="product-info">
+													<span class="regular-price" ><?php echo __('Price : '); ?></span><span class="regular-price" ><?php echo  $Collection->getPrice(); ?></span>
+													</div>
+													<?php } ?>
+													<?php if($Collection->getSpecialPrice()!='0'){ ?>
+													<div class="product-info">
+													<span class="special-price" style="font-size: 10px; font-weight: bold !important; color: #eb0404 !important;"><?php echo __('Special Price : '); ?></span><span class="regular-price"><?php echo  $Collection->getSpecialPrice() ?></span>
+													</div>
+													<?php } ?>
+												</div>
+											</div>
+			                        	</div>
+			                        </div>
+			                	</div>
+			                <div class="col-lg-6">
+			                    <div class="panel panel-default">
+			                        <div class="panel-heading">
+			                            <?php echo __('Subscribe This One'); ?>
+			                        </div>
+			                        	<div class="panel-body">
+			                        		<?php if(empty($check_assignedMembership)){?>
+			                        				<?php if($Collection->getQty()){?>
+			                           		<button type="button" title="<?php echo __('Add to Cart') ?>" class="btn btn-warning" onclick="window.location.href='<?php echo $this->getUrl('csmembership/membership/addToCart', array('_secure' => true,'id'=>$this->getRequest()->getParam('id')));
+?>'"><span><?php echo __('Add to Cart') ?></span></button>
+													<?php }
+													else{?>
+															<span style="color:red;"><?php echo __('Subscribed to Maximum Limit') ?></span>
+													<?php }?>
+
+											<?php }else{?>
+												<button type="button" title="<?php echo __('Already Subscribed') ?>" class="btn btn-warning" disabled="disabled"><span><?php echo __('Already Subscribed') ?></span></button>
+
+											<?php }?>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="row">
+					<div class="col-md-12" style="margin-left:5%;margin-bottom:2%;">
+						<div class="col-lg-6">
+							<button class="btn btn-danger" onclick="window.location.href='<?php echo $this->escapeUrl($this->getBackUrl()) ?>';" type="button"><?php echo __('Back')?></button>
+						</div>	
+					</div>
+				</div>	    
+		</div>
+
+            
+
+
+

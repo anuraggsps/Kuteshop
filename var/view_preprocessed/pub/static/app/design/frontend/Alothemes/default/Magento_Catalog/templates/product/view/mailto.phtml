@@ -1,0 +1,21 @@
+<?php /** * Copyright © 2016 Magento. All rights reserved. * See COPYING.txt for license details. */ ?> <?php $_product = $block->getProduct() ?> <div class="form-share"><p class="print"><a href="javascript:print();"><i class="fa fa-print"></i> <?php echo __('Print') ?></a></p><?php if ($block->canEmailToFriend()): ?> <a href="<?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Product')->getEmailToFriendUrl($_product) ?>" class="action mailto friend"><i class="fa fa-envelope-o"></i><span><?php /* @escapeNotVerified */ echo __('Email') ?></span></a> <?php endif; ?></div><div class="addit"><div class="alo-social-links clearfix"><div class="so-facebook so-social-share"><div id="fb-root"></div><div class="fb-like" data-href="<?php echo $_product->getProductUrl();?>" data-send="false" data-layout="button_count" data-width="20" data-show-faces="false"></div></div><div class="so-twitter so-social-share"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-dnt="true">Tweet</a></div><div class="so-plusone so-social-share"><div class="g-plusone" data-size="medium"></div><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script></div></div></div><script type="text/javascript">
+//<![CDATA[
+	 (function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=115245961994281";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		!function(d,s,id){
+			var js,fjs=d.getElementsByTagName(s)[0];
+			if(!d.getElementById(id)){
+				js=d.createElement(s);
+				js.id=id;
+				js.src="//platform.twitter.com/widgets.js";
+				fjs.parentNode.insertBefore(js,fjs);
+			}
+		}(document,"script","twitter-wjs");
+//]]>
+</script>

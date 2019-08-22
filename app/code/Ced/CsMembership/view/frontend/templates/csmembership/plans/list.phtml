@@ -1,0 +1,196 @@
+<?php 
+/**
+ * CedCommerce
+  *
+  * NOTICE OF LICENSE
+  *
+  * This source file is subject to the End User License Agreement (EULA)
+  * that is bundled with this package in the file LICENSE.txt.
+  * It is also available through the world-wide-web at this URL:
+  * http://cedcommerce.com/license-agreement.txt
+  *
+  * @category    Ced
+  * @package     Ced_CsMembership
+  * @author       CedCommerce Core Team <connect@cedcommerce.com >
+  * @copyright   Copyright CEDCOMMERCE (http://cedcommerce.com/)
+  * @license      http://cedcommerce.com/license-agreement.txt
+  */
+?>
+<?php 
+$this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$this->_scopeConfig = $this->_objectManager->create('Magento\Framework\App\Config\ScopeConfigInterface');
+$store = $this->_objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
+?>
+<div class="vendor-dashboard">
+
+	<div class="row">
+		<div class="col-md-12" style="margin-top:10px;">
+			<div class="panel panel-default">
+				<?php 
+					 echo $this->getChildhtml('csmembership_list_transaction');
+					 //echo $this->getChildhtml('membership_list_toolbar_pager');
+				?>
+			</div>	
+			<div class="panel panel-default">
+				<div class="panel-heading col-md-12 uptransform" style="line-height:31px;font-weight:bold;padding:4px 15px;font-size:17px;">
+				<?php echo __('Vendor Membership Plans'); ?>
+				</div>
+				<div style="clear:both"></div>
+				<div class="panel-body">
+		<?php 
+		$memberships = $this->getLoadedMembershipCollection();
+		?>
+		 
+			<?php if(!$memberships->count()): ?>
+			<p class="note-msg"><?php echo __('There are no Membership plan available.') ?></p>
+			<?php else: ?>
+		
+		<div class="order-items order-details">			
+			<div class="category-products">
+				<div class="page_limiter">
+					<?php echo $this->getToolbarHtml(); ?>
+				</div>
+				<?php $assigned_membership = $block->getAssignedMembershipCollection();?>
+				<?php // List mode ?>
+				<?php if($this->getMode()!='grid'):?>
+				<?php $_iterator = 0; ?>
+				<?php // product image have same vendor settings 
+							$width = (int)$this->_scopeConfig->getValue('ced_csmarketplace/vshops/list_image_width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+							$height = (int)$this->_scopeConfig->getValue('ced_csmarketplace/vshops/list_image_height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+							$width = $width ? $width : 135;
+							$height = $height ? $height : 135;
+				?>
+				
+				<?php foreach ($memberships as $membership):?>
+				<div class="row">
+					<div class="panel-body">
+						<div class="col-lg-4">
+						    <a href="<?php echo $this->getUrl('csmembership/membership/view', array('_secure' => true,'id' => $membership->getId())) ?>" 
+						    	title="<?php echo $membership->getName(); ?>" class="product-image vendor-logo-image">
+						    	<img src="<?php if($membership->getData('image')!=""){ echo $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA).$membership->getData('image');}else { echo $this->getViewFileUrl('Ced_CsMembership::images/logo.jpg');} ?>" alt="<?php echo $membership->getName() ?>"  height="<?php echo $height; ?>" width="<?php echo $width; ?>" /></a>				
+							
+						</div>
+						<div class="col-lg-4">		
+									<div class="product-shop">
+									<div class="f-fix">
+									<div class="product-primary ">
+									<p>	<?php $membershipNameStripped = $membership->getName(); ?>
+										<a href="<?php echo $this->getUrl('csmembership/membership/view', array('_secure' => true,'id'=>$membership->getId()));
+			?>" title="<?php echo $membershipNameStripped; ?>"><?php echo __($membership->getName()); ?></a></p>
+									</div>
+								</div>
+							</div>
+									<div class="product-info">
+									<?php if(!in_array($membership->getId(), $assigned_membership)){?>
+									<?php if($membership->getQty()>'0'){?>
+									<p><button type="button" title="<?php echo __('Add to Cart') ?>" class="btn btn-warning" onclick="document.location.href='<?php echo $this->getUrl('csmembership/membership/addToCart', array('_secure' => true,'id'=>$membership->getId()));
+			?>'"><span><span><?php echo __('Add to Cart') ?></span></span></button></p>
+							<?php }else{?>
+							<span style="color:red;"><?php echo __('Subscribed to Maximum Limit') ?></span>
+							<?php } ?>
+							<?php }else{?>
+								<p><button type="button" title="<?php echo __('Already Subscribed') ?>" class="btn btn-warning" disabled="disabled"><span><span><?php echo __('Already Subscribed') ?></span></span></button></p>
+							<?php }?>
+							</div>
+							<div class="product-shop">
+							<div class="price-box">
+									<?php if($membership->getSpecialPrice()!='0'){ ?>
+									<div class="product-info">
+									<span class="regular-price" style="text-decoration: line-through;" ><?php echo __('Price : '); ?></span><span class="regular-price" style="text-decoration: line-through;"><?php echo  $this->_objectManager->get('Magento\Framework\Pricing\Helper\Data')->currency($membership->getPrice() , true, false); ?></span>
+									</div>
+									<?php }else{?>
+										<div class="product-info">
+									<span class="regular-price" ><?php echo __('Price : '); ?></span><span class="regular-price" ><?php echo  $this->_objectManager->get('Magento\Framework\Pricing\Helper\Data')->currency($membership->getPrice() , true, false); ?></span>
+									</div>
+									<?php } ?>
+									<?php if($membership->getSpecialPrice()!='0'){ ?>
+									<div class="product-info">
+									<span class="special-price" style="font-size: 10px; font-weight: bold !important; color: #eb0404 !important;"><?php echo __('Special Price : '); ?></span><span class="regular-price"><?php echo  $this->_objectManager->get('Magento\Framework\Pricing\Helper\Data')->currency($membership->getSpecialPrice() , true, false); ?></span>
+									</div>
+									<?php } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+				<?php endforeach; ?>
+		
+	</div>
+	</div>
+	<?php else: ?>
+		<div class="order-items order-details">				
+				<?php // Grid Mode ?>
+				<?php $_collectionSize = $memberships->count() ?>
+				<?php $_columnCount = $this->getColumnCount(); ?>
+				<?php 
+								$width = 180;
+								$height = 180;
+				?>
+				<?php $i=0; foreach ($memberships as $membership): ?>
+					
+					<?php if (($i++ % $_columnCount) == 0): ?>
+					<div class="row">
+						<?php endif ?>
+							<div class="col-lg-4">
+								<div class="panel-body">
+									<div class="panel-body-inside" style="padding:10%">
+									<div class="product-image">
+										<p>
+											<a href="<?php echo $this->getUrl('csmembership/membership/view', array('_secure' => true,'id'=>$membership->getId()));
+			?>" title="<?php echo $membership->getName();?>" class="product-image vendor-logo-image"><img src="<?php if($membership->getData('image')!=""){ echo $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA).$membership->getData('image');}else { echo $this->getViewFileUrl('Ced_CsMembership::images/logo.jpg');} ?>" alt="<?php echo __($membership->getName()) ?>"  height="<?php echo $height; ?>" width="<?php echo $width; ?>" />
+											</a>
+										</p>
+									</div>
+									<div class="product-name">  <p><a href="<?php echo $this->getUrl('csmembership/membership/view', array('_secure' => true,'id'=>$membership->getId()));
+			?>" title="<?php echo $membership['name'] ?>"><?php echo __($membership->getName()); ?></a>
+									</p>
+									</div>
+									
+									 <div class="product-info">
+									 <?php if(!in_array($membership->getId(), $assigned_membership)){?>
+										 <?php if($membership->getQty()>'0'){?> 
+										 <p><button type="button" title="<?php echo __('Add to Cart') ?>" class="btn btn-warning" onclick="document.location.href='<?php echo $this->getUrl('csmembership/membership/addToCart', array('_secure' => true,'id'=>$membership->getId()));
+				?>'"><span><span><?php echo __('Add to Cart') ?></span></span></button></p>
+										 <?php }else{?>
+										 <span style="color:red;"><?php echo __('Subscribed to Maximum Limit') ?></span>
+										<?php } ?>
+									<?php }else{?>
+										<p><button type="button" title="<?php echo __('Already Subscribed') ?>" class="btn btn-warning" disabled="disabled"><span><span><?php echo __('Already Subscribed') ?></span></span></button></p>
+									<?php }?>
+									 </div>
+									 <div class="product-shop">
+										 <div class="price-box">
+											<?php if($membership->getSpecialPrice()!='0'){ ?>
+											<div class="product-info">
+											<span class="regular-price" style="text-decoration: line-through;" ><?php echo __('Price : '); ?></span><span class="regular-price" style="text-decoration: line-through;"><?php echo $this->_objectManager->get('Magento\Framework\Pricing\Helper\Data')->currency($membership->getPrice() , true, false); ?></span>
+											</div>
+											<?php }else{?>
+												<div class="product-info">
+											<span class="regular-price" ><?php echo __('Price : '); ?></span><span class="regular-price" ><?php echo  $this->_objectManager->get('Magento\Framework\Pricing\Helper\Data')->currency($membership->getPrice() , true, false); ?></span>
+											</div>
+											<?php } ?>
+											<?php if($membership->getSpecialPrice()!='0'){ ?>
+											<div class="product-info">
+											<span class="special-price" style="font-size: 10px; font-weight: bold !important; color: #eb0404 !important;"><?php echo __('Special Price : '); ?></span><span class="regular-price"><?php echo $this->_objectManager->get('Magento\Framework\Pricing\Helper\Data')->currency($membership->getSpecialPrice() , true, false); ?></span>
+											</div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+								</div>
+							</div>	
+							<?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+					</div>
+					<?php endif ?>
+				<?php endforeach ?>
+		</div>
+	
+			<?php endif ?>
+	<?php endif; ?>
+	
+</div>
+</div>
+</div>
+</div>
+</div>
+

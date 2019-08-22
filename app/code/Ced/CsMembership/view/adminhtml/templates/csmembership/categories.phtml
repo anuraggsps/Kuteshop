@@ -1,0 +1,243 @@
+<?php
+
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_CsMembership
+ * @author 		CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license      http://cedcommerce.com/license-agreement.txt
+ */
+?>
+<?php 
+$helper = $block->_objectManager->get('Ced\CsMarketplace\Helper\Data');
+$category_ids = $block->getCategoryIds();
+?>
+		<div class="form-group col-md-6">
+			<legend class="admin__legend legend">
+                <span><?php echo __('Product Categories') ?></span>
+            </legend>
+			<div class="field category">
+				<input class="category_ids test" name="category_ids" id="product_categories" type="hidden" value="<?php echo $block->getIdsString() ?>"/>
+				<div class="tree-holder">
+					<div id="tree-div" class="tree-wrapper">
+			        <?php $groups=array();
+		         	$allowed_categories=array();
+		         	$category_mode=0;
+		         	$category_mode = $this->_objectManager->get('Ced\CsMarketplace\Helper\Data')->getStoreConfig('ced_vproducts/general/category_mode',0);
+		         	if($category_mode)
+						$allowed_categories = explode(',',$this->_objectManager->get('Ced\CsMarketplace\Helper\Data')->getStoreConfig('ced_vproducts/general/category',0));
+
+
+					$category_helper = $block->_objectManager->get('Ced\CsMarketplace\Helper\Vproducts\Category');
+
+					$category_model =  $block->_objectManager->get('Magento\Catalog\Model\Category')->setStoreId($this->getRequest()->getParam('store',0));
+
+					if($this->_objectManager->get('Ced\CsMarketplace\Helper\Data')->isSharingEnabled()){
+						$groups=$this->_objectManager->get('Magento\Store\Model\Group')->getCollection()->addFieldToFilter('group_id',array('neq'=>0))->setOrder('website_id','ASC');
+					}else {
+						$vendor=$this->_objectManager->get('Ced\CsMarketplace\Model\Vendor')->load($this->_objectManager->get('Ced\CsMarketplace\Model\Session')->getVendorId());
+								if($vendor && $vendor->getId())
+								/*$websiteId=$vendor->getWebsiteId();*/
+						$websiteId=$this->_objectManager->get('Magento\Store\Model\StoreManagerInterface')->getWebsite()->getId();
+						$websiteId = 1;
+						$groups=$this->_objectManager->get('Magento\Store\Model\Group')->getCollection()->addFieldToFilter('website_id',$websiteId)->setOrder('group_id','ASC');
+					}
+							
+					$rootCategories=array();
+					$groupNames=array();
+					if($this->getRequest()->getParam('store'))
+						$groups->addFieldToFilter('default_store_id',$this->getRequest()->getParam('store'));
+															
+					$groups->getData();
+					foreach ($groups as $group){
+						if(isset($groupNames[$group->getRootCategoryId()]))
+							$groupNames[$group->getRootCategoryId()][]=$group->getName();
+						else{ 
+							$groupNames=array();
+							$groupNames[$group->getRootCategoryId()][]=$group->getName();
+						}
+						$rootCategories[$group->getRootCategoryId()]=$groupNames;
+					}
+					$categories_loop = 0;
+					echo '<ul class="root-category root-category-wrapper" style="margin-left: 0px;><div class="root-node">';
+					foreach ($rootCategories as $rootCategory=>$cat_group){
+						if(is_array($cat_group[$rootCategory]))
+							$groupname=implode(',',$cat_group[$rootCategory]);
+						$activeCategories=$category_model->getResource()
+							->getChildrenCategories($category_model->load($rootCategory));
+						if($category_mode){
+							$storeflag=false;
+							foreach ($activeCategories as $row){
+								if(in_array($row->getEntityId(),$allowed_categories)){
+									$storeflag=true;
+									break;
+								}
+							}
+						}
+						else{
+							$storeflag=true;
+						}
+							
+						$_categories = $category_helper->getStoreCategories($rootCategory);
+						foreach($_categories as $_category)	{
+							if($category_mode && !in_array($_category['entity_id'], $allowed_categories))
+								continue;
+							if($category_mode)
+								$childrens=count(array_intersect($category_model->getResource()->getAllChildren($category_model->load($_category['entity_id'])),$allowed_categories))-1;
+							else 
+								$childrens=count($category_model->getResource()->getAllChildren($category_model->load($_category['entity_id'])))-1;
+									$_category=$category_model->load($_category['entity_id']);
+							if($childrens > 0){ ?>
+								<li class="tree-node">
+									<div class="tree-node-el ced-folder tree-node-collapsed">
+										<span class="tree-node-indent"></span>
+										<img class="tree-ec-icon tree-elbow-plus" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+										<img unselectable="on" class="tree-node-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+										<input class="elements" type="checkbox" name="category[]" <?php echo in_array($_category['entity_id'],$category_ids)?'checked':'' ?> value='<?php echo $_category['entity_id'] ?>'/>
+										<span class="elements cat_name"><?php echo $_category->getName()." (".$this->_objectManager->get('Ced\CsMembership\Model\Vproducts')->getProductCount($_category['entity_id']).")" ?></span>
+									</div>
+									<ul class="root-category root-category-wrapper" style="display:none;margin-left: 0px;"></ul>
+								</li>
+									
+							<?php } else { ?>
+								<li class="tree-node">
+									<div class="tree-node-el ced-folder tree-node-leaf">
+										<span class="tree-node-indent"></span>
+										<img class="tree-ec-icon tree-elbow-end" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+										<img unselectable="on" class="tree-node-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+										<input class="elements" type="checkbox" name="category[]" <?php echo in_array($_category['entity_id'],$category_ids)?'checked':'' ?> value='<?php echo $_category['entity_id'] ?>'/>
+										<span class="elements cat_name"><?php echo $_category->getName()." (".$this->_objectManager->get('Ced\CsMembership\Model\Vproducts')->getProductCount($_category['entity_id']).")" ?></span>
+									</div>
+								</li>
+							<?php }
+						}                                  									   
+					} ?>
+					<?php echo '</div></ul>'; ?>
+					</div>							 
+				</div>
+			</div>
+		</div>
+<script>
+require([
+	'jquery',
+	'mage/mage'
+], function($){
+	var categoryids=<?php echo json_encode($category_ids)?>;
+	jQuery(document).ready(function(){
+		jQuery(".category_ids").val(categoryids);
+	});
+	jQuery("#tree-div").on('click', "li img.tree-ec-icon ", function(){
+		var current = jQuery(this);
+		if(jQuery(this).hasClass('tree-elbow-plus')) {
+			jQuery(this).parent().removeClass('tree-node-collapsed');
+			jQuery(this).parent().addClass('tree-node-loading');
+			jQuery.ajax({
+				url  	:   "<?php echo $this->getUrl('csmembership/membership/categorytree/',array('store'=>$this->getRequest()->getParam('store',0)));?>",
+				type 	:   "POST",
+				data 	:   {categoryId:jQuery(this).parent().children("input").val(), category_ids:categoryids},
+				dataType:   "html",
+				success :   function(content){
+					
+					current.parent().siblings("ul.root-category-wrapper").html(content);
+					/*jQuery( ".elements" ).click(function() {
+						if(jQuery(this).is(':checked')==true){
+								var ids = document.getElementById('product_categories').value.split(',');
+								ids.push(jQuery(this).val());
+								document.getElementById('product_categories').value = ids.join(',');
+						}
+						else{
+							 var ids = document.getElementById('product_categories').value.split(',');
+								// bug #7654 fixed
+								while (-1 != ids.indexOf(jQuery(this).val())) {
+									ids.splice(ids.indexOf(jQuery(this).val()), 1);
+								}
+								document.getElementById('product_categories').value = ids.join(',');
+						} 
+					});*/
+					current.parent().siblings("ul.root-category-wrapper").slideDown(300);
+					current.parent().removeClass('tree-node-loading');
+					current.parent().addClass('tree-node-expanded');
+					current.removeClass('tree-elbow-plus');
+					current.addClass('tree-elbow-minus');
+				}
+			});
+		} else if(jQuery(this).hasClass('tree-elbow-minus')) {
+			
+			current.parent().removeClass('tree-node-expanded');
+			current.parent().addClass('tree-node-collapsed');
+			current.removeClass('tree-elbow-minus');
+			current.addClass('tree-elbow-plus');
+			current.parent().siblings("ul.root-category-wrapper").slideUp(300);	
+			
+		}	
+	});
+	jQuery(document).ready(function(){
+		//jQuery(document).on('change','.elements' ,function() {
+		//jQuery(".tree-node .elements").change(function() {
+			/*if(jQuery(this).is(':checked')==true){alert(jQuery(this).val());
+					var ids = document.getElementById('product_categories').value.split(',');
+					ids.push(jQuery(this).val());
+					document.getElementById('product_categories').value = ids.join(',');
+			}
+			else{alert('aaa');
+				 var ids = document.getElementById('product_categories').value.split(',');
+					// bug #7654 fixed
+				while (-1 != ids.indexOf(jQuery(this).val())) {
+					ids.splice(ids.indexOf(jQuery(this).val()), 1);
+				}
+				document.getElementById('product_categories').value = ids.join(',');
+			} */
+			//getTotal();
+			jQuery(document).on('change','.tree-node .elements' ,function() {
+			//jQuery( ".tree-node .elements" ).click(function() {
+							if(jQuery(this).is(':checked')==true){
+									var ids = document.getElementById('product_categories').value.split(',');
+									ids.push(jQuery(this).val());
+									document.getElementById('product_categories').value = ids.join(',');
+							}
+							else{
+								 var ids = document.getElementById('product_categories').value.split(',');
+									// bug #7654 fixed
+									while (-1 != ids.indexOf(jQuery(this).val())) {
+										ids.splice(ids.indexOf(jQuery(this).val()), 1);
+									}
+									document.getElementById('product_categories').value = ids.join(',');
+							} 
+							getTotal();
+						});
+
+		//});
+	});
+
+});
+</script>
+<style>
+input.elements{
+	float:left;
+}
+.form-group > .legend {
+    border-bottom: 1px solid #cac3b4;
+    box-sizing: border-box;
+    float: left;
+    margin: 0 0 18px;
+    padding: 0;
+    position: static;
+    width: 100%;
+}
+.form-group{
+	width: 415%;
+}
+#tree-div{
+	padding-left: 85px;
+}
+
+</style>

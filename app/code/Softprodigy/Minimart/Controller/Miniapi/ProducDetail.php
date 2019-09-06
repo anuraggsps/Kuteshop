@@ -26,7 +26,8 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
             $prod_id = $param['prod_id'];
             $user_id = $param['user_id'];
             $pro_data = [];
-
+			
+			
             $product = $this->productFactory->load($prod_id);
             $this->_view->loadLayout();
             if (($product->getId()) && ($product->getStatus() == 1)) {
@@ -35,15 +36,19 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
 				$data['title'] = $getData['name'];
 				$data['sku'] =  $getData['sku'];
 				$product = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($product->getId());
-				$data['company'] = $product->getAttributeText('manufacturer');;
+				$data['company'] = $product->getAttributeText('manufacturer')?$product->getAttributeText('manufacturer'):'';;
 				$product = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($product->getId());
 				$productType = $product->getTypeID();
-				$data['price'] = number_format(strval($product->getPrice()),2);
+				
+				
+				
+				
+				$data['price'] = number_format(strval($this->GetConvertedPrice($param,$product->getPrice())?$this->GetConvertedPrice($param,$product->getPrice()):$product->getPrice()),2);
 				$data['is_configurable'] = "0";
 				$data['config_attributes'] =[];
 					if($productType == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE){
 						$data['is_configurable'] = "1";
-						$data['price'] = strval($product->getFinalPrice());
+						$data['price'] = strval($this->GetConvertedPrice($param,$product->getFinalPrice())?$this->GetConvertedPrice($param,$product->getFinalPrice()):$product->getFinalPrice());
 						//--------Get option array for Configurable product--------
 						$product = $this->_objectManager->create('Magento\Catalog\Model\ProductFactory')->create()->load($product->getId());
 						$productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
@@ -74,20 +79,21 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
 						}
 						$data['config_attributes'] = $newarray;
 					}
-				$data['discountedPrice'] = strval($product->getFinalPrice());
-				if($user_id == ''){
-					$data['isFavorite'] = "0";
-				}else{
-					$res = $this->_getWishlistItems($user_id);
-					if(!empty($res['return']['products'])){
-						foreach($res['return']['products'] as $key=>$value){
-							if($value['product_id'] == $product->getId()){
-								$data['isFavorite'] ="1";
-							}
-						}
-					}
-				}
-				$data['final_price'] = strval($product->getFinalPrice());
+					//~ echo "<pre>";print_r($product->getSpecialPrice());die;
+				$data['discountedPrice'] = strval($this->GetConvertedPrice($param,$product->getFinalPrice())?$this->GetConvertedPrice($param,$product->getFinalPrice()):$product->getFinalPrice());
+				//~ if($user_id == ''){
+					//~ $data['isFavorite'] = "0";
+				//~ }else{
+					//~ $res = $this->_getWishlistItems($user_id);
+					//~ if(!empty($res['return']['products'])){
+						//~ foreach($res['return']['products'] as $key=>$value){
+							//~ if($value['product_id'] == $product->getId()){
+								//~ $data['isFavorite'] ="1";
+							//~ }
+						//~ }
+					//~ }
+				//~ }
+				$data['final_price'] = strval($this->GetConvertedPrice($param,$product->getFinalPrice())?$this->GetConvertedPrice($param,$product->getFinalPrice()):$product->getFinalPrice());
 				
 				$currentproduct = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($product->getId());
 				$str = str_replace(PHP_EOL, '', strip_tags($currentproduct->getDescription()));
@@ -124,8 +130,35 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
                 $addtional_info = array_merge($addtional_info, $infoOptions);
                 $data['specification'] = $addtional_info;
                 
+                 //check if product is in the cart
+					$cart = $this->_objectManager->get('\Magento\Checkout\Model\Session')->getQuote();
+					$result = $cart->getAllVisibleItems();
+					$itemsIds = array();
+					foreach ($result as $cartItem) {
+						array_push($itemsIds, $product->getId());
+					}
+					if(in_array($product->getId(), $itemsIds)){
+						$data['is_addtocart'] = true;
+					}else{
+						$data['is_addtocart'] = false;
+					}
+				//ends here
+				
+				$data['is_wishlist'] = false;
+				$data['wishlist_item_id'] = '';
+				if(isset($param['user_id']) && $param['user_id'] !=''){
+					 //echo "<pre>";print_r($this->checkInWishilist($prod_id, $param['user_id']));die;
+					 
+					if($wishlist_itemid = $this->CheckIfProductInWishList($param['user_id'],$param['prod_id'])){
+						
+						$data['is_wishlist'] = true;
+						$data['wishlist_item_id'] =$wishlist_itemid;
+					}
+				}
+				
+                
                 // array of offer
-                $offerarray =array(array("label"=>"trophy","text"=>"Money Back Guaranteed","image"=>""),array("label"=>"undo","text"=>"Enjoy hassle free returns with this offer.","image"=>""),array("label"=>"chevron","text"=>"Sold by Dream","image"=>""),array("label"=>"ship","text"=>" TRUSTED SHIPPING Free shipping when you spend $100 and above","image"=>""),array("label"=>"retweet","text"=>"EASY RETURNS Free returns on eligible items so you can shop with ease","image"=>""),array("label"=>"shield","text"=>"SECURE SHOPPING Your data is always protected","image"=>""));
+                $offerarray =array(array("label"=>"trophy","text"=>"Money Back Guaranteed","image"=>""),array("label"=>"undo","text"=>"Enjoy hassle free returns with this offer.","image"=>""),array("label"=>"chevron","text"=>"old by Dream","image"=>""),array("label"=>"ship","text"=>" TRUSTED SHIPPING Free shipping when you spend $100 and above","image"=>""),array("label"=>"retweet","text"=>"EASY RETURNS Free returns on eligible items so you can shop with ease","image"=>""),array("label"=>"shield","text"=>"SECURE SHOPPING Your data is always protected","image"=>""));
             
                 foreach($offerarray as $keys=>$details){
 					$offerdata['label']= $details['label'];
@@ -139,29 +172,42 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
                 
                 // add media gallery of products
                 $image = $product->getMediaGalleryImages();
-                $zarr = array();
-                $i = 0;
+             
+                //~ $zarr = array();
+                //~ $i = 0;
 
-                if (empty($zarr)) {
-                    $imgurl = '';
-                    if ($product->getImage() && (($product->getImage()) != 'no_selection')) {
-                        $imgurl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
-                    }
+                //~ if (empty($zarr)) {
+                    //~ $imgurl = '';
+                    //~ if ($product->getImage() && (($product->getImage()) != 'no_selection')) {
+                        //~ $imgurl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
+                    //~ }
 
-                    $zarr[$i]['url'] = $imgurl;
-                    $zarr[$i]['imgname'] = '';
-                    $i++;
-                }
+                    //~ $zarr[$i]['url'] = $imgurl;
+                    //~ $zarr[$i]['imgname'] = '';
+                    //~ $i++;
+                //~ }
+				//~ $imgurl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
+				    $zarr = array();
+					$i = 0;
+					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+					$product = $objectManager->create('Magento\Catalog\Model\Product')->load($prod_id);        
+					$images = $product->getMediaGalleryImages();
+					foreach($images as $child){ 
+						$zarr[$i]['url'] = $child->getUrl();
+						$zarr[$i]['imgname'] = $child->getFile();
+						$i++;
+					}
+					 $data['images'] = $zarr;			
+				
+                //~ foreach ($image as $img) {
+                    //~ if ($imgurl == $img->getUrl())
+                        //~ continue;
 
-                foreach ($image as $img) {
-                    if ($imgurl == $img->getUrl())
-                        continue;
-
-                    $zarr[$i]['url'] = $img->getUrl();
-                    $zarr[$i]['imgname'] = $img->getFile();
-                    $i++;
-                }
-                $data['images'] = $zarr;
+                    //~ $zarr[$i]['url'] = $img->getUrl();
+                    //~ $zarr[$i]['imgname'] = $img->getFile();
+                    //~ $i++;
+                //~ }
+                //~ $data['images'] = $zarr;
                 //ends here
                 
                 //code to check if product is in the stock
@@ -169,6 +215,11 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
                     $data["in_stock"] = 1;
                 else
                     $data["in_stock"] = 0;
+                    
+                    
+                //get review 
+					$data['review_list'] = $this->_listProductReviews();
+                //end here
                 
                 $reviewsCount = $this->_objectManager->get("Magento\Review\Model\ReviewFactory")->create()->getTotalReviews($product->getId(), true, $this->_storeManager->getStore()->getId());
 
@@ -177,17 +228,13 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
                 if ($ratings == false) {
                     $ratings = 0;
                 }
-                
-                //get review 
-					$data['review_list'] = $this->_listProductReviews();
-                //end here
-               
                 $data['review_count'] = $reviewsCount;
                 $data['rating_percent'] = (float)number_format($ratings, 2);
                 $purl = $product->getProductUrl(); //$store->getBaseUrl($store::URL_TYPE_WEB) . $ppath;
 				$data['product_url'] = $purl;
                
                 $jsonArray['data'] = $data;
+                $jsonArray['currency'] = $this->GetCurrency($param);
 				$jsonArray['message'] = "Get data Succesfully";
 				$jsonArray['status'] =  "success";
 				$jsonArray['status_code'] =  200;
@@ -215,5 +262,20 @@ class ProducDetail extends \Softprodigy\Minimart\Controller\AbstractAction imple
     public function validateForCsrf(RequestInterface $request): ?bool{
         return true;
     }
+    
+    public function CheckIfProductInWishList($userid,$productid){
+		$objectManager  = \Magento\Framework\App\ObjectManager::getInstance();
+		$id =  $userid;
+		$wishlist            = $objectManager->get('\Magento\Wishlist\Model\Wishlist');
+		$wishlist_collection = $wishlist->loadByCustomerId( $id , true)->getItemCollection();
+		$_in_wishlist        = "false";
+		foreach ($wishlist_collection->getData() as $key=>$wishlist_product){
+			if($productid == $wishlist_product['product_id']){
+			  $return= $wishlist_product['wishlist_item_id'];
+			  return $return;
+			}
+		}
+	}
+
     
 }

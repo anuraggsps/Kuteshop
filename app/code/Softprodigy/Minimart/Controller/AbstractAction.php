@@ -15,6 +15,8 @@ use Magento\Framework\App\ViewInterface;
 use Psr\Log\LoggerInterface as Logger;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Framework\Locale\Bundle\CurrencyBundle as CurrencyBundle;
+use Magento\Search\Model\AutocompleteInterface;
+use Magento\Search\Model\QueryFactory;
 /**
  * Description of AbstractAction
  *
@@ -80,14 +82,21 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
 	protected $_productCollectionFactory;
 	protected $_catalogProductVisibility;
 	protected $_categoryFactory;
-	protected $_ratingFactory;
-	protected $_reviewFactory;
-	
+	protected $_resourceFactory;
+	protected $_customerRepository;
+	protected $_encryptor;
+	protected $addressRepository;
+	protected $autocomplete;
+	protected $_queryFactory;
+	protected $_priceCurrency;
+	protected $cartManagementInterface;
+	protected $cartRepositoryInterface;
     /**
      * @param Context $context
      */
     public function __construct(
-    \Magento\Framework\App\Action\Context $context, \Magento\Store\Model\StoreManagerInterface $storeManager, \Magento\Framework\Session\SessionManagerInterface $session, \Softprodigy\Minimart\Helper\Data $__helper, \Magento\Catalog\Model\Config $catalogConfig, \Magento\Catalog\Model\Product $productFactory, \Magento\Catalog\Model\ResourceModel\Product\Collection $_productCollection, \Magento\Catalog\Model\ResourceModel\Product\Option\Collection $_productOptionCollection, \Magento\Cms\Model\Template\FilterProvider $filterProvider, ViewInterface $ViewInterface, \Magento\Framework\Pricing\Helper\Data $currencyHelper, \Magento\Framework\UrlInterface $actionBuilder, Logger $logger, \Magento\Quote\Model\Quote $quoteLoader, \Magento\Checkout\Model\Session $__checkoutSession, \Magento\Customer\Model\Session $__customerSession, \Magento\Checkout\Model\Cart $cart, \Magento\Catalog\Api\ProductRepositoryInterface $prodRepInf, AccountManagementInterface $customerAccountManagement, \Magento\Quote\Api\CartRepositoryInterface $quoteRepository, \Magento\Framework\Escaper $escaper, \Magento\Framework\Registry $registry, \Magento\Framework\View\LayoutFactory $layoutFactory,\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,\Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,\Magento\Catalog\Model\CategoryFactory $categoryFactory,\Magento\Integration\Model\Oauth\TokenFactory $tokenModelFactory,\Magento\Catalog\Helper\Image $imageHelper,\Magento\Review\Model\ReviewFactory $reviewFactory,\Magento\Review\Model\Rating $ratingFactory
+    \Magento\Framework\App\Action\Context $context, \Magento\Store\Model\StoreManagerInterface $storeManager, \Magento\Framework\Session\SessionManagerInterface $session, \Softprodigy\Minimart\Helper\Data $__helper, \Magento\Catalog\Model\Config $catalogConfig, \Magento\Catalog\Model\Product $productFactory, \Magento\Catalog\Model\ResourceModel\Product\Collection $_productCollection, \Magento\Catalog\Model\ResourceModel\Product\Option\Collection $_productOptionCollection, \Magento\Cms\Model\Template\FilterProvider $filterProvider, ViewInterface $ViewInterface, \Magento\Framework\Pricing\Helper\Data $currencyHelper, \Magento\Framework\UrlInterface $actionBuilder, Logger $logger, \Magento\Quote\Model\Quote $quoteLoader, \Magento\Checkout\Model\Session $__checkoutSession, \Magento\Customer\Model\Session $__customerSession, \Magento\Checkout\Model\Cart $cart, \Magento\Catalog\Api\ProductRepositoryInterface $prodRepInf, AccountManagementInterface $customerAccountManagement, \Magento\Quote\Api\CartRepositoryInterface $quoteRepository, \Magento\Framework\Escaper $escaper, \Magento\Framework\Registry $registry, \Magento\Framework\View\LayoutFactory $layoutFactory,\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,\Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,\Magento\Catalog\Model\CategoryFactory $categoryFactory,\Magento\Integration\Model\Oauth\TokenFactory $tokenModelFactory,\Magento\Catalog\Helper\Image $imageHelper,\Magento\Reports\Model\ResourceModel\Report\Collection\Factory $resourceFactory,\Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,\Magento\Framework\Encryption\Encryptor $encryptor,\Magento\Customer\Api\AddressRepositoryInterface $addressRepository,\Magento\Shipping\Model\Config $shipconfig,AutocompleteInterface $autocomplete,QueryFactory $queryFactory,\Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,\Magento\Quote\Api\CartRepositoryInterface $cartRepositoryInterface,\Magento\Quote\Api\CartManagementInterface $cartManagementInterface
+
     ) {
         parent::__construct($context);
         $this->__helper = $__helper;
@@ -117,8 +126,15 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $this->_categoryFactory = $categoryFactory;
         $this->_tokenModelFactory = $tokenModelFactory;
         $this->imageHelper = $imageHelper;
-        $this->_reviewFactory = $reviewFactory;
-        $this->_ratingFactory = $ratingFactory;
+        $this->_resourceFactory = $resourceFactory;
+        $this->_customerRepository = $customerRepository;
+        $this->_encryptor          = $encryptor;
+        $this->addressRepository = $addressRepository;
+        $this->autocomplete = $autocomplete;
+        $this->_queryFactory = $queryFactory;
+        $this->_priceCurrency = $priceCurrency;
+        $this->cartRepositoryInterface = $cartRepositoryInterface;
+		$this->cartManagementInterface = $cartManagementInterface;
     }
 
     /**
@@ -566,7 +582,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
             $products[$n]['name'] = $prod->getName();
             $products[$n]['final_price'] = number_format($this->currencyHelper->currency($prod->getFinalPrice(), false, false), 2);
             $products[$n]['price'] = number_format($this->currencyHelper->currency($prod->getPrice(), false, false), 2);
-            //~ $products[$n]['minimal_price'] = $this->getMinimalPrice($prod);
+            $products[$n]['minimal_price'] = $this->getMinimalPrice($prod);
 
             $products[$n]['inWishlist'] = '';
             try {
@@ -757,11 +773,17 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         // Only basic category data
 
         $result = [];
-        
+        $mediaPath = $this->_objectManager->get('Magento\Store\Model\StoreManagerInterface')
+                    ->getStore()
+                    ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
         if (empty($inCats) || in_array($node->getId(), $inCats)) {
             $result['category_id'] = $node->getId();
             $result['parent_id'] = $node->getParentId();
             $result['name'] = $node->getName();
+            $arrry = array("Electronics","Fashion","Home & Kitchen","Beauty & Fragrance","Baby & Kids","Grocery");
+            if(!in_array($node->getName(),$arrry)){
+				$result['image'] = $mediaPath.'magiccart/magicmenu/images/' . $node->getId() .'.png';
+			}
             $result['is_active'] = $node->getIsActive();
             $result['position'] = $node->getPosition();
             $result['level'] = $node->getLevel();
@@ -992,10 +1014,13 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $result = [];
         foreach ($collection as $country) {
             /* @var $country Mage_Directory_Model_Country */
-            $name = $country->getName(); // Loading name in default locale
-            $arr = $country->toArray(array('country_id', 'iso2_code', 'iso3_code', 'name'));
-            $arr['name'] = $name;
-            $result[] = $arr;
+            if($country->getName()!=null && $country->getName()!='')
+            {
+				$name = $country->getName(); // Loading name in default locale
+				$arr = $country->toArray(array('country_id', 'iso2_code', 'iso3_code', 'name'));
+				$arr['name'] = $name;
+				$result[] = $arr;
+			}
         }
         return $result;
     }
@@ -1527,8 +1552,27 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
 
     protected function getOrderList($param, $pageno, $limit) {
 
-        $yourCustomerId = $param['uid'];
+        $yourCustomerId = $param['user_id'];
         $field = 'customer_id';
+        $collection1 = $this->_objectManager->create("Magento\Sales\Model\Order")->getCollection()
+                        ->addAttributeToSelect('*')
+                        ->addAttributeToFilter($field, $yourCustomerId)->setOrder('created_at', 'desc');
+        $colcBkp = clone $collection1;
+        $prod_count = count($colcBkp);
+
+        $collection1 = $collection1->setPageSize($limit)->setCurPage($pageno)->load();
+
+        $order_product['order'] = [];
+       
+        
+        $totalcount = count($collection1);
+		$shouldrun = $totalcount/ $limit;
+		if(!is_int($shouldrun)){
+			$shoulrunnuber = explode(".",$shouldrun);
+			$shouldrun = $shoulrunnuber[0]+1;
+		}
+		if($pageno <= $shouldrun){  
+        
         $collection = $this->_objectManager->create("Magento\Sales\Model\Order")->getCollection()
                         ->addAttributeToSelect('*')
                         ->addAttributeToFilter($field, $yourCustomerId)->setOrder('created_at', 'desc');
@@ -1581,13 +1625,14 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
             ++$j;
         }
 
-        $more = count($collection);
 
-        if ($prod_count <= ($limit * $pageno))
-            $order_product['more'] = 0;
-        else
-            $order_product['more'] = 1;
-        return $order_product;
+
+			if ($prod_count <= ($limit * $pageno))
+				$order_product['more'] = 0;
+			else
+				$order_product['more'] = 1;
+			return $order_product;
+		}
     }
 
     protected function getOrderInfo($order, $result, $params) {
@@ -1629,7 +1674,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $data['tax'] = number_format($result['tax_amount'], 2);
         $data['grand_total'] = number_format($result['grand_total'], 2);
         $data['qty_ordered'] = number_format($result['total_qty_ordered'], 2);
-        $data['created'] = strtotime(date("Y-m-d H:i:s", strtotime($result['created_at'])));
+        $data['created'] = date("Y-m-d H:i:s", strtotime($result['created_at']));
         $data['weight'] = $result['weight'];
         $data['is_virtual'] = $result['is_virtual'];
         
@@ -1729,7 +1774,9 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         return $collection;
     }
 
-    protected function _getWishlistItems($customer_Id) {
+
+
+    protected function _getWishlistItems($customer_Id,$param) {
         $subs = $this->checkPackageSubcription();
         if ($subs['active_package']) {
             $this->activePackage = $subs['active_package'];
@@ -1751,6 +1798,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
             if (!empty($customerId)) {
                 try {
                     $customer = $this->_objectManager->get("Magento\Customer\Model\Customer")->load($customerId);
+             
                     if (!$customer->getId()) {
                         $return['msg'] = __('Invalid customer');
  						$return["result"] = $resultCode;
@@ -1763,18 +1811,27 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
                     //$return['wish_list_id'] = $wishListInstance->getId();
                     $_items = $wishListInstance->getItemCollection();
                     foreach ($_items as $_item) {
+							
                         $arry = [];
                         $arry = $_item->getData();
                         $_product = $_item->getProduct();
-
+					 
                         if ($_product->getStatus() != 1)
                             continue;
 
                         if (isset($arry['product']))
                             unset($arry['product']);
-
+                            $arry['is_configurable'] = false;
+						//check if product is configurable product
+							//~ $product = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($arry['product_id']);
+							//~ $productType = $product->getTypeID();
+							//~ $arry['is_configurable'] = false;
+							//~ if($productType == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE){
+								//~ $arry['is_configurable'] = true;
+							//~ }
+						//
                         $arry['qty'] = number_format($arry['qty'], 2);
-                        $arry['price'] = number_format($_product->getFinalPrice(), 2);
+                        $arry['price'] = number_format($this->GetConvertedPrice($param,$_product->getFinalPrice())?$this->GetConvertedPrice($param,$_product->getFinalPrice()):$_product->getFinalPrice(), 2);
 
                         $arry['price_html'] = '';
 
@@ -1815,8 +1872,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
                         unset($arry);
                     }
                    
-                    //~ $return['enabled'] = true;
-                    //~ $return['hasItems'] = count($_items) > 0 ? true : false;
+
                     $resultCode = 1;
                     $resultText = "success";
                 } catch (\Exception $ex) {
@@ -2073,6 +2129,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
                         $resultCode = 1;
                         $resultText = "success";
                     } else {
+						 $resultCode = 1;
                         $return['msg'] = __("Requested wishlist doesn't exist");
                     }
                 } catch (\Exception $ex) {
@@ -2087,11 +2144,11 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $finalreturn['data'] =[];
         $finalreturn['message'] = $return['msg'];
         $finalreturn['status'] = "success";
-        $finalreturn['status_code'] = 200;
-         array(
-            "result" => $resultCode,
-            "resultText" => $resultText
-        );
+        $statsucode = 200;
+        if($resultCode == 0){
+			 $statsucode = 201;
+		}
+        $finalreturn['status_code'] =  $statsucode;
 
         return $finalreturn;
     }
@@ -2398,11 +2455,10 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
     }
 
     protected function _listProductReviews() {
-         $request = $this->getRequest()->getContent();
-	     $param = json_decode($request, true);
-	    
+        $request = $this->getRequest()->getContent();
+	    $param = json_decode($request, true);
         $productId = $param['prod_id'];
-        $storeId = (isset($param['store_id']) and ! empty($param['store_id'])) ? $param['store_id'] : 6;
+        $storeId = (isset($param['store_id']) and ! empty($param['store_id'])) ? $param['store_id'] : $this->_storeManager->getStore()->getId();
 
         $page_no = (isset($param['page_id']) and ! empty($param['page_id'])) ? $param['page_id'] : 1;
 
@@ -2436,10 +2492,10 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
         $ix = 0;
 
         foreach ($reviewsCollection as $indx => $_item) {
+
             $itData = $_item->getData();
             unset($itData['rating_votes']);
             $itData['created_at'] = date('M d, Y', strtotime($itData['created_at']));
-            
             // review star rating according to price,qty,value
 				$resource = $this->_objectManager->get('Magento\Framework\App\ResourceConnection'); 
 				$connection = $resource->getConnection(); 
@@ -2479,8 +2535,9 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
     }
 
     protected function _getReviewRatingCodes() {
+        $param = $this->getRequest()->getParams();
 
-        $storeId = 6;
+        $storeId = (isset($param['store_id']) and ! empty($param['store_id'])) ? $param['store_id'] : $this->_storeManager->getStore()->getId();
         $ratingCollection = $this->_objectManager->get('Magento\Review\Model\Rating')
                 ->getResourceCollection()
                 ->addEntityFilter('product')
@@ -3250,7 +3307,6 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
             $customer = $this->_objectManager->get("Magento\Customer\Model\Customer")
                     ->setWebsiteId($this->_storeManager->getStore()->getWebsiteId())
                     ->loadByEmail($params['email']);
-
             if ($customer->getId()) {
                 try {
                     /* $newPassword = $customer->generatePassword();
@@ -3261,19 +3317,42 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
                     $customer->changeResetPasswordLinkToken($newResetPasswordLinkToken);
                     //$customer->sendPasswordResetConfirmationEmail();
 
-                    $jsonArray['response'] = __("If an account matches the email address, you should receive an email with instruction to reset password.");
-                    $jsonArray['returnCode'] = array('result' => 1, 'resultText' => 'success');
+                    //~ $jsonArray['response'] = __("We have sent you password reset email on your registered email Id.");
+                    //~ $jsonArray['returnCode'] = array('result' => 1, 'resultText' => 'success');
+                    
+                    
+                    $jsonArray['data'] = __("We have sent you password reset email on your registered email Id.");
+					$jsonArray['status'] =  'success';
+					$jsonArray['status_code'] =  200;
+							
+                    
+                    
                 } catch (\Exception $e) {
-                    $jsonArray['response'] = $e->getMessage();
-                    $jsonArray['returnCode'] = ['result' => 0, 'resultText' => 'fail'];
+                    //~ $jsonArray['response'] = $e->getMessage();
+                    //~ $jsonArray['returnCode'] = ['result' => 0, 'resultText' => 'fail'];
+                    
+                    $jsonArray['data'] = $e->getMessage();
+					$jsonArray['status'] =  'fail';
+					$jsonArray['status_code'] =  201;
+                    
                 }
             } else {
-                $jsonArray['response'] = __("Email Address Not Found");
-                $jsonArray['returnCode'] = ['result' => 1, 'resultText' => 'fail'];
+
+                
+                    $jsonArray['data'] = "Email Address Not Found";
+					$jsonArray['status'] =  'fail';
+					$jsonArray['status_code'] =  201;
+                
             }
         } catch (\Exception $e) {
-            $jsonArray['response'] = $e->getMessage();
-            $jsonArray['returnCode'] = ['result' => 0, 'resultText' => 'fail'];
+            //~ $jsonArray['response'] = $e->getMessage();
+            //~ $jsonArray['returnCode'] = ['result' => 0, 'resultText' => 'fail'];
+            
+                    $jsonArray['data'] = $e->getMessage();
+					$jsonArray['status'] =  'fail';
+					$jsonArray['status_code'] =  201;
+            
+            
         }
         return $jsonArray;
     }
@@ -3669,6 +3748,118 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
 		return $tokenKey;
 	}
 	
+	
+	
+	protected function ImageURL($id,$type=null){
+	
+			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+			$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+			$baseurl = $storeManager->getStore()->getBaseUrl();
+
+			$arra = json_encode(array("username"=>"vin009","password"=>'jbhjJHh^&^6756+#@$S'));
+            
+            $curl = curl_init();curl_setopt_array($curl, array(
+			CURLOPT_URL => $baseurl."rest/V1/integration/admin/token",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => $arra,
+			CURLOPT_HTTPHEADER => array(
+			  "Accept: /",
+			  "Accept-Encoding: gzip, deflate",
+			  "Cache-Control: no-cache",
+			   "Content-Type: application/json"
+			),
+			));$response = curl_exec($curl);
+			$err = curl_error($curl);curl_close($curl);if ($err) {
+			echo "cURL Error #:" . $err;
+			} else {
+			$admintoken=json_decode($response);
+			}
+
+		
+			if($type=="block")
+			{
+				 $curl = curl_init();curl_setopt_array($curl, array(
+				 CURLOPT_URL => $baseurl."rest/V1/cmsBlock/".$id,
+				 CURLOPT_RETURNTRANSFER => true,
+				 CURLOPT_ENCODING => "",
+				 CURLOPT_MAXREDIRS => 10,
+				 CURLOPT_TIMEOUT => 30,
+				 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				 CURLOPT_CUSTOMREQUEST => "GET",
+				 CURLOPT_HTTPHEADER => array(
+				   "Accept: /",
+				   "Accept-Encoding: gzip, deflate",
+				   "Authorization: Bearer $admintoken",
+				   "Cache-Control: no-cache",
+				   "Connection: keep-alive",
+				   "Content-Type: application/json"
+				 ),
+				 ));$response = curl_exec($curl);
+				 $err = curl_error($curl);curl_close($curl);if ($err) {
+				 echo "cURL Error #:" . $err;
+				 } else {
+					$response=json_decode($response);
+					$html=$response->content;
+					//~ echo $html; die;
+
+					preg_match_all("'{{media url=&quot;(.*?)&quot;}}'si", $html, $matches);
+					$imgSrc = $matches[1];
+					for ($i=0; $i < count($imgSrc); $i++) { 
+						$imgSrc[$i]=$baseurl."pub/media/".$imgSrc[$i];
+					}	
+				}
+			}elseif($type=="page"){
+				
+					$curl = curl_init();
+
+					curl_setopt_array($curl, array(
+					  CURLOPT_URL => $baseurl."rest/V1/cmsPage/".$id,
+					  CURLOPT_RETURNTRANSFER => true,
+					  CURLOPT_ENCODING => "",
+					  CURLOPT_MAXREDIRS => 10,
+					  CURLOPT_TIMEOUT => 30,
+					  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					  CURLOPT_CUSTOMREQUEST => "GET",
+					  CURLOPT_HTTPHEADER => array(
+						"Accept: */*",
+						"Accept-Encoding: gzip, deflate",
+						"Authorization: Bearer $admintoken",
+						"Connection: keep-alive",
+						"Cookie: PHPSESSID=4mclrkancka9k5cbofqt97fbgs",
+						"Host: 192.168.0.72",
+						"Postman-Token: a4ef1915-9e33-42ad-971e-31c5a23f860e,7832de04-5dc0-45f9-8bdf-2f4e5db2f1cd",
+						"User-Agent: PostmanRuntime/7.15.2",
+						"cache-control: no-cache,no-cache"
+					  ),
+					));
+
+					$response = curl_exec($curl);
+					$err = curl_error($curl);
+
+					curl_close($curl);
+
+					if ($err) {
+							echo "cURL Error #:" . $err;
+					} else {
+							$response=json_decode($response);
+							$html=$response->content;
+							//~ echo $html; die;
+
+							preg_match_all("'{{media url=&quot;(.*?)&quot;}}'si", $html, $matches);
+							$imgSrc = $matches[1];
+							for ($i=0; $i < count($imgSrc); $i++) { 
+								$imgSrc[$i]=$baseurl."pub/media/".$imgSrc[$i];
+							}	
+					}
+			}
+		return($imgSrc);
+ 	}
+	
 	public function getcustomerfromToken(){
 		
 		$custModel = $this->_objectManager->get("Magento\Customer\Model\Customer");
@@ -3697,7 +3888,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
 			
 		}else{
 			return false;
-		}
+		}  
 	}
 	
 	//~ public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
@@ -3707,6 +3898,83 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action {
     //~ public function validateForCsrf(RequestInterface $request): ?bool{
         //~ return true;
     //~ }
+			public  function get_rate($currencyne,$amount){
+		$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$currency = $objectManager->get('\Magento\Directory\Model\Currency');
+		$store = $storeManager->getStore();
+		$rate = $storeManager->getStore()->getBaseCurrency()->getRate($currencyne);  
+		if(!empty($amount)){
+		$var = round($rate,4)*$amount;
+		}else{
+		$var = "";	
+		} 
+		return  "$var";
+	}
 	
+	public function GetConvertedPrice($param,$amount){
+		if(isset($param["user_id"]) && $param["user_id"]!= ''){
+			$customer1 =  $this->_customerRepository->getById($param["user_id"]);
+			$curr = $customer1->getCustomAttribute('currency');
+			if(!empty($curr)){ 
+				if($curr->getValue() == 'USD' && $curr->getValue() != ''){
+					return $this->get_rate('USD',$amount);
+				}else{
+					return false;
+				}
+			}else{
+				if(isset($param['currency']) && $param['currency'] !=''&& $param['currency'] == 'USD'){
+					return $this->get_rate('USD',$amount);
+				}else{
+					return false;
+				}
+			}	
+		}else if(isset($param['currency']) && $param['currency'] !=''){
+			if($param['currency'] == 'USD'){
+				return $this->get_rate('USD',$amount);
+			}else{
+				return false;
+			} 
+			
+		}
+		
+	}
+	
+	public function SetQuoteCurrencyCode($code,$quote_id){
+		$quote = $this->quoteRepository->get($quote_id);
+		
+		$storeid = '';
+		$quote->setStoreId(6);
+		
+		$this->_storeManager->getStore()->setCurrentCurrencyCode($code);
+		$quote->setQuoteCurrencyCode($code);
+		$quote->collectTotals();
+		$this->quoteRepository->save($quote);
+		return true;
+	}
+
+	public function GetCurrency($param){
+		if(isset($param["user_id"]) && $param["user_id"]!= ''){
+			$customer1 =  $this->_customerRepository->getById($param["user_id"]);
+			$curr = $customer1->getCustomAttribute('currency');
+			if(!empty($curr)){ 
+				$currency = $this->_objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($curr->getValue());
+				$currencySymbol = $currency->getCurrencySymbol();
+					return $currency->getCurrencySymbol();;
+			}else{
+				if(isset($param['currency']) && $param['currency'] !=''&& $param['currency'] == 'USD'){
+					$currency = $this->_objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($param['currency']);
+					$currencySymbol = $currency->getCurrencySymbol();
+					return $currency->getCurrencySymbol();
+					
+				}
+			}	
+		}else if(isset($param['currency']) && $param['currency'] !=''){
+			$currency = $this->_objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($param['currency']);
+			$currencySymbol = $currency->getCurrencySymbol();
+				return $currency->getCurrencySymbol();
+		}
+		
+	}
 
 }

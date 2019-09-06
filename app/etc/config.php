@@ -235,6 +235,7 @@ return [
         'Magiccart_Shopbrand' => 1,
         'Magiccart_Testimonial' => 1,
         'Sebwite_SmartSearch' => 1,
+        'Softprodigy_Autoseek' => 1,
         'Softprodigy_Minimart' => 1,
         'Temando_Shipping' => 1,
         'Vertex_Tax' => 1

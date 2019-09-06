@@ -1,7 +1,9 @@
 <?php
 
 namespace Softprodigy\Minimart\Controller\Miniapi;
-
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,19 +15,20 @@ namespace Softprodigy\Minimart\Controller\Miniapi;
  *
  * @author mannu
  */
-class AssignShiptoQuote extends \Softprodigy\Minimart\Controller\AbstractAction {
+class AssignShiptoQuote extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface{
 
     public function execute() {
-        try {
-            $params = $this->getRequest()->getParams();
-
-            $quote = $this->_objectManager->get('Magento\Quote\Model\Quote')->loadActive($this->getRequest()->getParam('quote_id', null));
+        //~ try {
+            $request = $this->getRequest()->getContent();
+		    $params = json_decode($request, true);
+			
+            $quote = $this->_objectManager->get('Magento\Quote\Model\Quote')->loadActive($params['quote_id']);
 
             if (!$quote->getId()) {
                 throw new \Exception(__("Quote does not exist."));
             }
 
-            $result = $this->setShippingMethod($quote, $params['ship_method']);
+            $result = $this->setShippingMethod($quote, $params['ship_method'],$store =9);
             $data = [];
             if ($result) {
                 $totals = $quote->getTotals(); //Total object
@@ -75,14 +78,28 @@ class AssignShiptoQuote extends \Softprodigy\Minimart\Controller\AbstractAction 
                     $data['tax']["value"] = number_format($this->currencyHelper->currency($address->getBaseTaxAmount(), false, false), 2);
                 }
             }
-            $jsonArray['response'] = $data;
-            $jsonArray['returnCode'] = array('result' => 1, 'resultText' => 'success');
-        } catch (\Exception $e) {
-            $jsonArray['response'] = $e->getMessage();
-            $jsonArray['returnCode'] = array('result' => 0, 'resultText' => 'fail');
-        }
+					$jsonArray ['data'] = $data;
+					$string  = "Set Shipping method succesfully";
+					$jsonArray ['message'] = $string;
+					$jsonArray ['status_code'] = 200;
+					$jsonArray ['status'] = "Success";
+        //~ } catch (\Exception $e) {
+            //~ $jsonArray['data'] = null;
+			//~ $jsonArray['status_code'] = 201;
+			//~ $jsonArray['status'] = "Failure";
+			//~ $jsonArray['message'] = $e->getMessage();
+        //~ }
         $this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
         die;
     }
+	
+		public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
+			return null;
+		}
 
+		public function validateForCsrf(RequestInterface $request): ?bool{
+			return true;
+		}
+	
+	
 }

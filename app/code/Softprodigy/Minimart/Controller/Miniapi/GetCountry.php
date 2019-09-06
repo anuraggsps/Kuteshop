@@ -1,7 +1,9 @@
 <?php
 
 namespace Softprodigy\Minimart\Controller\Miniapi;
-
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,20 +15,30 @@ namespace Softprodigy\Minimart\Controller\Miniapi;
  *
  * @author mannu
  */
-class GetCountry extends \Softprodigy\Minimart\Controller\AbstractAction {
+class GetCountry extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface{
 
     public function execute() {
         try {
-            $countries = $this->getStoreCountries();
-            $jsonArray['response'] = $countries;
-            $jsonArray['returnCode'] = array('result' => 1, 'resultText' => 'success');
+				$countries = $this->getStoreCountries();
+				$jsonArray['data'] =  $countries;
+				$jsonArray['status'] =  'success';
+				$jsonArray['status_code'] = 200; 
+				$jsonArray['message'] =  "Get Data Succesfully";
         } catch (\Exception $e) {
-            $jsonArray['response'] = $e->getMessage();
-            $jsonArray['returnCode'] = array('result' => 0, 'resultText' => 'fail');
+				$jsonArray['data'] = null;
+				$jsonArray['message'] = $e->getMessage();
+				$jsonArray['status'] =  "failure";
+				$jsonArray['status_code'] =  201;	
         }
         $this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
         die;
     }
 
-   
+   		public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
+			return null;
+		}
+
+		public function validateForCsrf(RequestInterface $request): ?bool{
+			return true;
+		}
 }

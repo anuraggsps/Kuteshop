@@ -27,7 +27,7 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
 		$baseurl = $storeManager->getStore()->getBaseUrl();
 	
-        try {
+        //~ try {
 			$productId = $param['prod_id'];
 			$product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
 			$productType = $product->getTypeID();
@@ -70,13 +70,24 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 			}else{
 				
 				if(isset($param['is_login']) && $param['is_login'] == 0){
-					$cartData = [
-						'cartItem' => [
-						"quote_id" => $this->GetGuestCartToken(),
-						"sku" => $param['sku'],
-						"qty" => $param['qty'],
-						]
-					];
+					if(isset($param['token']) && $param['token'] != ''){
+						$tokens = $param['token'];
+						$cartData = [
+							'cartItem' => [
+							"quote_id" => $tokens,
+							"sku" => $param['sku'],
+							"qty" => $param['qty'],
+							]
+						];
+					}else{
+						$cartData = [
+							'cartItem' => [
+							"quote_id" => $this->GetGuestCartToken(),
+							"sku" => $param['sku'],
+							"qty" => $param['qty'],
+							]
+						];
+					}
 				}else{
 					$cartData = [
 						'cartItem' => [
@@ -95,8 +106,11 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 					$resultobj = $this->AddTogUESTCart($param,$cartData);
 					$name = $resultobj['name'];
 				}else{
-					$resultobj = $this->addItemInProduct($baseurl,$cartData,$param['user_id']);
-					$name = $resultobj->name;
+					$resultobj = (array)$this->addItemInProduct($baseurl,$cartData,$param);
+					if(!isset($resultobj['price'])){
+						$resultobj = $this->UpdateUserCart($cartData,$param['user_id'],$baseurl,$resultobj['item_id'],$param);
+					}
+					$name = $resultobj['name'];
 				}
 			//ends here
 
@@ -107,21 +121,21 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 			$this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
 			die;
             
-        } catch (\Magento\Framework\Exception\LocalizedException $e) {
-            $messages = '';
-            if ($this->__checkoutSession->getUseNotice(true)) {
-                $message = $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml($e->getMessage());
-            } else {
-                $messages = $e->getMessage();
-            }
-            $mnArray = explode(PHP_EOL, $messages);
-            $ewmessages = array_unique($mnArray);
-            $jsonArray['response'] = implode(', ', $ewmessages);
-        } catch (\Exception $e) {
-            $this->messageManager->addException($e, __('We can\'t add this item to your shopping cart right now.'));
-            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-            $jsonArray['msg'] = __('We can\'t add this item to your shopping cart right now.');
-        }
+        //~ } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            //~ $messages = '';
+            //~ if ($this->__checkoutSession->getUseNotice(true)) {
+                //~ $message = $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml($e->getMessage());
+            //~ } else {
+                //~ $messages = $e->getMessage();
+            //~ }
+            //~ $mnArray = explode(PHP_EOL, $messages);
+            //~ $ewmessages = array_unique($mnArray);
+            //~ $jsonArray['response'] = implode(', ', $ewmessages);
+        //~ } catch (\Exception $e) {
+            //~ $this->messageManager->addException($e, __('We can\'t add this item to your shopping cart right now.'));
+            //~ $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
+            //~ $jsonArray['msg'] = __('We can\'t add this item to your shopping cart right now.');
+        //~ }
         $data = [];
         $jsonArray['data'] = $data;
         $jsonArray['status'] = 'fail';
@@ -146,11 +160,12 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 		curl_setopt($chQuote, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "Authorization: Bearer ".$tokenKey));
 		curl_setopt($chQuote, CURLOPT_RETURNTRANSFER, true);
 		$quote = json_decode(curl_exec($chQuote));	
+	
 		return $quote->id;
 	}
-	public function addItemInProduct($baseurl,$cartData,$userid){
+	public function addItemInProduct($baseurl,$cartData,$param){
 		$customerToken = $this->_tokenModelFactory->create();
-        $tokenKey = $customerToken->createCustomerToken($userid)->getToken();
+        $tokenKey = $customerToken->createCustomerToken($param['user_id'])->getToken();
 		$url =$baseurl.'index.php/rest/V1/carts/mine/items';
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -158,6 +173,26 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($cartData));
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "Authorization: Bearer ".$tokenKey));
 		$result = json_decode(curl_exec($ch));
+		
+	   //get quote id from token and set currency code in the quote table according to their param or if user has set the code 
+		if(isset($param["user_id"]) && $param["user_id"]!= ''){
+			$customer1 =  $this->_customerRepository->getById($param["user_id"]);
+			$curr = $customer1->getCustomAttribute('currency');
+			if(!empty($curr)){ 
+				if($curr->getValue() !=''){
+					$this->SetQuoteCurrencyCode($curr->getValue(),$cartData['cartItem']['quote_id']);
+				}else if(isset($param['currency']) && $param['currency'] !=''){
+					$this->SetQuoteCurrencyCode($param['currency'],$cartData['cartItem']['quote_id']);
+				}
+			
+			}else{
+				if(isset($param['currency']) && $param['currency'] !=''){
+					$this->SetQuoteCurrencyCode($param['currency'],$cartData['cartItem']['quote_id']);
+				}
+			}
+			
+		}	
+
 		return $result;
 	}
 	// functionality for guest user
@@ -189,9 +224,9 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 				$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
 				$baseurl = $storeManager->getStore()->getBaseUrl();
-				return $this->addItemInProductForGuestUsers($baseurl,$cartData);
+				return $this->addItemInProductForGuestUsers($param,$baseurl,$cartData);
 			}
-			public function addItemInProductForGuestUsers($baseurl,$cartData){
+			public function addItemInProductForGuestUsers($param,$baseurl,$cartData){
 				 $token = $cartData['cartItem']['quote_id'];
 				 $curl = curl_init();
 				curl_setopt_array($curl, array(
@@ -213,9 +248,81 @@ class Addtocart extends \Softprodigy\Minimart\Controller\AbstractAction implemen
 				$response = curl_exec($curl);
 				$err = curl_error($curl);
 				curl_close($curl);
-				//~ echo "<pre>";print_r(json_decode($response));die;
+				//get quote id from token and set currency code in the quote table according to their param or if user has set the code 
+					if(isset($param['currency']) && $param['currency'] !=''){
+						$this->SetQuoteCurrencyCode($param['currency'],$this->GetQuoteIDFromGuestToken($token));
+					}
+				
 				return array_merge(array("token"=>$token),(array)json_decode($response));
 			}
+			public function UpdateUserCart($cartData,$user_id,$baseurl,$item_id,$param){
+			
+				$customerToken = $this->_tokenModelFactory->create();
+				$tokenKey = $customerToken->createCustomerToken($user_id)->getToken();
+				$curl = curl_init();
+				curl_setopt_array($curl, array(
+				  CURLOPT_URL => $baseurl."index.php/rest/V1/carts/mine/items/".$item_id,
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => "",
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 30,
+				  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				  CURLOPT_CUSTOMREQUEST => "PUT",
+				  CURLOPT_POSTFIELDS => json_encode($cartData),
+				  CURLOPT_HTTPHEADER => array(
+					"Authorization: Bearer ".$tokenKey,
+					"Cache-Control: no-cache",
+					"Content-Type: application/json",
+					"Postman-Token: e84cba18-f11a-4845-99cf-c2de157a0700"
+				  ),
+				));
+				$response = curl_exec($curl);
+				$err = curl_error($curl);
+				curl_close($curl);
+				$results = (array)json_decode($response);
+				
+				
+			  
+		   //get quote id from token and set currency code in the quote table according to their param or if user has set the code 
+			if(isset($param["user_id"]) && $param["user_id"]!= ''){
+				$customer1 =  $this->_customerRepository->getById($param["user_id"]);
+				$curr = $customer1->getCustomAttribute('currency');
+				if(!empty($curr)){ 
+					if($curr->getValue() !=''){
+						$this->SetQuoteCurrencyCode($curr->getValue(),$cartData['cartItem']['quote_id']);
+					}else if(isset($param['currency']) && $param['currency'] !=''){
+						$this->SetQuoteCurrencyCode($param['currency'],$cartData['cartItem']['quote_id']);
+					}
+				
+				}else{
+					if(isset($param['currency']) && $param['currency'] !=''){
+						
+						$this->SetQuoteCurrencyCode($param['currency'],$cartData['cartItem']['quote_id']);
+					}
+				}
+				
+			}
+				
+				
+				if (isset($results['message'])) {
+				  return $results['msg'] = $results['message'];
+				} else {
+				  return $results;
+				}
+			}
+			
+		    public function GetQuoteIDFromGuestToken($token){
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
+				$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+				$connection = $resource->getConnection();
+				$tableName = $resource->getTableName('quote_id_mask'); //gives table name with prefix
+
+				//Select Data from table
+				$sql = "Select * FROM " . $tableName ." where masked_id = '$token'";
+				$result = $connection->fetchAll($sql);
+				return $result[0]['quote_id'] ;
+			}	
+			
 			
 	//ends here
 }

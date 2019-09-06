@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1567771816;s:6:"expire";i:9999999999;s:4:"tags";s:19:"898_CONFIG,898_MAGE";}
+{"braintree":"PAYMENT_CARD","braintree_paypal":"PAYPAL_ACCOUNT","paypal_express":"PAYPAL_ACCOUNT","paypal_express_bml":"PAYPAL_ACCOUNT","payflow_express":"PAYPAL_ACCOUNT","payflow_express_bml":"PAYPAL_ACCOUNT","payflowpro":"PAYMENT_CARD","payflow_link":"PAYMENT_CARD","payflow_advanced":"PAYMENT_CARD","hosted_pro":"PAYMENT_CARD","authorizenet_directpost":"PAYMENT_CARD","worldpay":"PAYMENT_CARD","eway":"PAYMENT_CARD","cybersource":"PAYMENT_CARD","free":"FREE"}

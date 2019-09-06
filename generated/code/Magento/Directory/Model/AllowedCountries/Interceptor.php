@@ -26,30 +26,4 @@ class Interceptor extends \Magento\Directory\Model\AllowedCountries implements \
             return $this->___callPlugins('getAllowedCountries', func_get_args(), $pluginInfo);
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function makeCountriesUnique(array $allowedCountries)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'makeCountriesUnique');
-        if (!$pluginInfo) {
-            return parent::makeCountriesUnique($allowedCountries);
-        } else {
-            return $this->___callPlugins('makeCountriesUnique', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCountriesFromConfig($scope, $scopeCode)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getCountriesFromConfig');
-        if (!$pluginInfo) {
-            return parent::getCountriesFromConfig($scope, $scopeCode);
-        } else {
-            return $this->___callPlugins('getCountriesFromConfig', func_get_args(), $pluginInfo);
-        }
-    }
 }

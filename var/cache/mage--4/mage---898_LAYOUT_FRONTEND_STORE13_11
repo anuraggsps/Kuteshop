@@ -1,4 +1,4 @@
-a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1566454524;s:6:"expire";i:9999999999;s:4:"tags";s:37:"898_LAYOUT_GENERAL_CACHE_TAG,898_MAGE";}
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1567771815;s:6:"expire";i:9999999999;s:4:"tags";s:37:"898_LAYOUT_GENERAL_CACHE_TAG,898_MAGE";}
 <?xml version="1.0"?>
 <layouts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><handle id="catalog_category_view"><body/>
 </handle><handle id="catalogsearch_advanced_index"><body/>
@@ -783,14 +783,6 @@ a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1566454524;s:6:"expire";i:9999999999;s:4:"t
    </referenceBlock>
 </body>
 </handle><handle id="default"><body>
-   <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
-      <arguments>
-         <argument name="price_render_handle" xsi:type="string">catalog_product_prices</argument>
-         <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
-      </arguments>
-   </block>
-</body>
-</handle><handle id="default"><body>
    <referenceContainer name="before.body.end">
       <block class="Magento\Catalog\Block\FrontendStorageManager" name="frontend-storage-manager" before="-" template="Magento_Catalog::frontend_storage_manager.phtml">
          <arguments>
@@ -844,6 +836,14 @@ a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1566454524;s:6:"expire";i:9999999999;s:4:"t
       <block class="Magento\Framework\View\Element\Js\Components" name="head.components" as="components" template="Magento_Catalog::js/components.phtml"/>
    </referenceContainer>
    <block class="Magento\Framework\View\Element\Template" name="head.additional" as="head.additional" template="Magento_Theme::html/container.phtml"/>
+</body>
+</handle><handle id="default"><body>
+   <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+      <arguments>
+         <argument name="price_render_handle" xsi:type="string">catalog_product_prices</argument>
+         <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+      </arguments>
+   </block>
 </body>
 </handle><handle id="empty"><body>
    <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
@@ -9329,6 +9329,23 @@ a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1566454524;s:6:"expire";i:9999999999;s:4:"t
       <referenceBlock name="top.search">
          <action method="setTemplate">
             <argument name="template" xsi:type="string">Sebwite_SmartSearch::form.mini.phtml</argument>
+         </action>
+      </referenceBlock>
+   </referenceContainer>
+</body>
+</handle><handle id="search_ajax_suggest" layout="2columns-left"><body>
+   <referenceContainer name="content">
+      <block class="Magento\CatalogSearch\Block\SearchResult\ListProduct" name="search_result_list" template="product/list.phtml" cacheable="false"/>
+   </referenceContainer>
+</body>
+</handle><handle id="default"><head>
+   <css src="Softprodigy_Autoseek::css/module.css"/>
+</head>
+<body>
+   <referenceContainer name="header-wrapper">
+      <referenceBlock name="top.search">
+         <action method="setTemplate">
+            <argument name="template" xsi:type="string">Softprodigy_Autoseek::form.mini.phtml</argument>
          </action>
       </referenceBlock>
    </referenceContainer>

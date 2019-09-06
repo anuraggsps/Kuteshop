@@ -1,0 +1,103 @@
+/** ================================================================
+  *                         SEARCH
+  * ============================================================= */
+#search.loading {
+
+}
+#search_autocomplete {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.c-search {
+  text-transform: uppercase;
+}
+.c-search__overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 998;
+}
+.c-search__wrapper {
+  position: absolute;
+  width: 99.6%;
+  top: 32px;
+  z-index: 999;
+  left: 7px;
+  border: 1px solid #ededed;
+  box-shadow: 0px 1px 4px 0px #ededed;
+  background: #FFFFFF;
+}
+.c-search__wrapper--inner {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+}
+.c-search__content {
+  background-color: white;
+}
+.c-search__product {
+  border-top: 1px solid #f2f2f2;
+  padding: 15px 15px;
+}
+.c-search__title {
+  text-decoration: none;
+  float: left;
+  clear: both;
+}
+.c-search {
+  .c-search__sale--accent {
+    color: #3a3a3a;
+  }
+  .c-search__price {
+    float: left;
+
+    > span {
+      padding-right: 2px;
+    }
+  }
+  .u-strike-through {
+    text-decoration: line-through;
+  }
+  .col-8-8 {
+    width: 89%;
+    float: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .col-2-8 {
+    width: 22.89157%;
+    float: left;
+    margin-right: 2.81124%;
+  }
+  .col-6-8 {
+    width: 72%;
+    float: right;
+    margin-right: 0;
+    margin-top: -4px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .c-search__wrapper--inner {
+    max-width: 100% !important;
+  }
+
+  .c-search__wrapper {
+    top: 50px !important;
+  }
+
+  .c-search__image {
+    text-align: center;
+
+    img {
+      max-height: 150px;
+      width: auto;
+    }
+  }
+}

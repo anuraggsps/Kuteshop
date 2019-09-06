@@ -256,8 +256,9 @@ class Menu extends \Magento\Catalog\Block\Navigation
         $last = count($catListTop);
         $dropdownIds = explode(',', $this->_sysCfg->general['dropdown']);
         $counter = 1;
-        
+       
         foreach ($catListTop as $catTop){
+	
             $parentPositionClass = '';
             $itemPositionClassPrefix = $parentPositionClass ? $parentPositionClass . '-' : 'nav-';
             $idTop    = $catTop->getEntityId();
@@ -475,6 +476,7 @@ class Menu extends \Magento\Catalog\Block\Navigation
 
     public function getImage($object)
     {
+				
         $url = '';
         $image = $this->_dirMedia . 'magiccart/magicmenu/images/' . $object->getId() .'.png';
         if(file_exists($image)) $url = $this->_urlMedia . 'magiccart/magicmenu/images/' . $object->getId() .'.png';

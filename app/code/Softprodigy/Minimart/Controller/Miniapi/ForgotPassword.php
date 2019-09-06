@@ -16,7 +16,7 @@ use Magento\Framework\App\Request\InvalidRequestException;
  *
  * @author mannu
  */
-class ForgotPassword extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface {
+class ForgotPassword extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface  {
 
     public function execute() { //
         $finalreturn = $this->iForgotPassword();

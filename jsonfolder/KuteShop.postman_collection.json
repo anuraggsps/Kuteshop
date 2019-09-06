@@ -1,0 +1,1044 @@
+{
+	"info": {
+		"_postman_id": "1383eb01-d910-4c38-91be-e92e44b131ea",
+		"name": "KuteShop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ClearCart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/ClearCart",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"ClearCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"anugau.123@gmail.com\",\"password\":\"Admin@1234\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/login",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ViewCart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 53e8cx3vb7rytwh1qv1j3u535d1drmct"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"token\":\"\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/ViewCart",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"ViewCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletefromcart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"item_id\":\"308\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/Deletefromcart",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"Deletefromcart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddtoCart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer fb3jcujn6ynybbgkhp8a2t8ji7eg4907",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Postman-Token",
+						"value": "4f3a2127-1e95-497c-b5f3-de0b1df861b1,d3b2e38d-4c65-4593-819f-4b7a757a2379",
+						"disabled": true
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache,no-cache",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"7\",\n    \"prod_id\": \"24\",\n    \"sku\": \"kts02\",\n    \"qty\": \"1\",\n    \"is_login\":\"1\",\n    \"token\":\"\",\n    \"attributes\": [\n\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/AddtoCart",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"AddtoCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HomePage",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"token\":\"\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/HomePage",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"HomePage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWishlistItems",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cust_id\": \"7\"}"
+				},
+				"url": {
+					"raw": "http://demo.softprodigyphp.in/kuteshop/minimart/miniapi/GetWishlistItems",
+					"protocol": "http",
+					"host": [
+						"demo",
+						"softprodigyphp",
+						"in"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"GetWishlistItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"an1ugauqw1792qw55.123@gmail.com\",\"password\":\"Admin@123\",\"device_type\":\"ios\",\"firstname\":\"anurag\",\"lastname\":\"gautam\",\"device_id\":\"ghjhvjkvjbjklbjklbjkbjkbjkbjkbjklbjkbjkljkl\",\"device_type\":\"ios\"}\n"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/Registration",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"Registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ViewAll",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"limit\": \"20\",\n    \"categoryId\": \"6\",\n    \"user_id\": \"7\",\n    \"token\": \"\",\n    \"page\": \"1\",\n    \"title\": \"\",\n    \"sort\": \n        { \n        \t\"sortkey\": \"price\",\"sortorder\": \"DESC\"\n        \t\n        }\n    ,\n    \"filter\": [\n    \t{\"price\":\"10-90\"}\n\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/ViewAll",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"ViewAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrderList",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"uid\":\"7\",\"page_no\":\"1\"}"
+				},
+				"url": {
+					"raw": "http://demo.softprodigyphp.in/kuteshop/minimart/miniapi/OrderList",
+					"protocol": "http",
+					"host": [
+						"demo",
+						"softprodigyphp",
+						"in"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"OrderList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MyProfile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\": \"7\"}"
+				},
+				"url": {
+					"raw": "http://192.168.0.6/kuteshop/minimart/miniapi/MyProfile",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"6"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"MyProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddProductToWishList",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"prod_id\": \"259\",\"cust_id\":\"28\",\"qty\":\"1\"}"
+				},
+				"url": {
+					"raw": "http://192.168.0.6/kuteshop/minimart/miniapi/AddProductToWishList",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"6"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"AddProductToWishList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWishlistItems",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cust_id\": \"7\"}"
+				},
+				"url": {
+					"raw": "http://demo.softprodigyphp.in/kuteshop/minimart/miniapi/GetWishlistItems",
+					"protocol": "http",
+					"host": [
+						"demo",
+						"softprodigyphp",
+						"in"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"GetWishlistItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClearCart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"30\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/ClearCart",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"ClearCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Deletefromcart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"item_id\":\"196\"}"
+				},
+				"url": {
+					"raw": "http://demo.softprodigyphp.in/kuteshop/minimart/miniapi/Deletefromcart",
+					"protocol": "http",
+					"host": [
+						"demo",
+						"softprodigyphp",
+						"in"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"Deletefromcart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProducDetail",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"prod_id\":\"330\",\"user_id\":\"7\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/ProducDetail",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"ProducDetail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filters",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"category_id\": \"8\"\n}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/Filters",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"Filters"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateCart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"qty\":\"1\",\"item_id\":\"370\",\"user_id\":\"7\",\"token\":\"\",\"quote_id\":\"119\",\"sku\":\"Sexy Lady\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/UpdateCart",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"UpdateCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangePassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"new_password\":\"Admin@1234\",\"current_password\":\"Admin@123\"}"
+				},
+				"url": {
+					"raw": "http://192.168.0.6/kuteshop/minimart/miniapi/ChangePassword",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"6"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"ChangePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditProfile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstname\":\"AnuragG\",\"lastname\":\"Gautam\",\"user_id\":\"7\"}"
+				},
+				"url": {
+					"raw": "http://192.168.0.6/kuteshop/minimart/miniapi/EditProfile",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"6"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"EditProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deals",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"token\":\"\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/Deals",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"Deals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCountry",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/GetCountry",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"GetCountry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStateByCountry",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"country_code\":\"AF\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/GetStateByCountry",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"GetStateByCountry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CustAddress",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"8\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/CustAddress",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"CustAddress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RemoveAddress",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"entity_id\":\"10\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/RemoveAddress",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"RemoveAddress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddNewAddress",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"first_name\": \"anuragg\",\"last_name\":\"gautam\",\"country_code\":\"IN\",\"region_code\":\"544\",\"post_code\":\"160055\",\"city\":\"chandigarh\",\"phone_no\":\"1234567890\",\"company\":\"test\",\"street\":\"sector 67\",\"is_default_shipping\":\"1\",\"is_default_billing\":\"0\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/AddNewAddress",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"AddNewAddress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateAddress",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"entity_id\":\"12\",\"first_name\": \"anuraggbdbsdblkbkljsdjk\",\"last_name\":\"gautam\",\"country_code\":\"IN\",\"region_code\":\"544\",\"post_code\":\"160055\",\"city\":\"chandigarh\",\"phone_no\":\"1234567890\",\"company\":\"test\",\"street\":[\"sector 67\"],\"is_default_shipping\":\"1\",\"is_default_billing\":\"0\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/UpdateAddress",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"UpdateAddress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetShippingMethods",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"address_id\":\"19\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/GetShippingMethods",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"GetShippingMethods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetShippingMethods",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"7\",\"address_id\":\"19\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/GetShippingMethods",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"GetShippingMethods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddCoupon",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"coupon_code\":\"10off\",\"quote_id\":\"119\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/AddCoupon?",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"AddCoupon"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "a",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RemCoupon",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"quote_id\":\"119\"}"
+				},
+				"url": {
+					"raw": "http://182.75.88.145/kuteshop/minimart/miniapi/RemCoupon",
+					"protocol": "http",
+					"host": [
+						"182",
+						"75",
+						"88",
+						"145"
+					],
+					"path": [
+						"kuteshop",
+						"minimart",
+						"miniapi",
+						"RemCoupon"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,4 +1,4 @@
-@import url("{{base_url_path}}frontend/_view/{{locale}}/css/email-fonts.css");
+@import url("{{base_url_path}}frontend/Alothemes/kuteshop7/{{locale}}/css/email-fonts.css");
 body {
   margin: 0;
   padding: 0;

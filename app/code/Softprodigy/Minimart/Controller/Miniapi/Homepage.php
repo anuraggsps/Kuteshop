@@ -1,9 +1,6 @@
 <?php
 
 namespace Softprodigy\Minimart\Controller\Miniapi;
-use Magento\Framework\App\CsrfAwareActionInterface;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Request\InvalidRequestException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,7 +13,7 @@ use Magento\Framework\App\Request\InvalidRequestException;
  *
  * @author mannu
  */
-class Homepage extends \Softprodigy\Minimart\Controller\AbstractAction  implements CsrfAwareActionInterface  {
+class Homepage extends \Softprodigy\Minimart\Controller\AbstractAction {
 
     public function execute() {
         try {
@@ -345,11 +342,5 @@ class Homepage extends \Softprodigy\Minimart\Controller\AbstractAction  implemen
         die;
         //echo json_encode($jsonArray); die;
     }
-	    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
-        return null;
-    }
 
-    public function validateForCsrf(RequestInterface $request): ?bool{
-        return true;
-    }
 }

@@ -192,7 +192,7 @@ class Login extends \Softprodigy\Minimart\Controller\AbstractAction implements C
             
             $status_code = 200;
             if($data['cust_id'] == ''){
-				$data = [];
+				$data = (object) array();;
 				$status_code = 201;
 			}
 			
@@ -254,7 +254,7 @@ class Login extends \Softprodigy\Minimart\Controller\AbstractAction implements C
             $jsonArray['message']   = $respMsg;
             
         } catch (\Exception $e) {
-			$jsonArray['data'] = null;
+			$jsonArray['data'] =  (object) array();;
 			$jsonArray['message'] = "Invalid email or password.";//$e->getMessage();
 			$jsonArray['status'] =  "failure";
             $jsonArray['status_code'] =  201;

@@ -40,12 +40,25 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			}else if(isset($param['token']) && $param['token'] !=''){
 				$itemidsarray = $this->GetitemsForGuestUsers($param['token']);
 			}
+			  
 		
 			$staticdata['type'] = "0";
+			//~ $res = $this->ImageURL(59,"block");
+			//~ $thiscount=0;
+			//~ foreach($res as $banner)
+			//~ {
+				//~ $id=$thiscount+1;
+				//~ $staticdata['multiple_banners'][$thiscount]['image']=$banner;
+				//~ $staticdata['multiple_banners'][$thiscount]['id']=strval($id);
+				//~ $thiscount++;
+			//~ }
+		
+			//~ echo "<pre>";print_r($staticdata);die;
 			$staticdata['multiple_banners'][0]['image'] ="https://dreamarkets.com/pub/media/magiccart/magicslider/b/g/bg12.png";
 			$staticdata['multiple_banners'][0]['id'] = "1";
 			$staticdata['multiple_banners'][1]['image'] = "https://dreamarkets.com/pub/media/magiccart/magicslider/b/g/bg23.png";
 			$staticdata['multiple_banners'][1]['id'] = "2";
+			//~ echo "<pre>"; print_r($staticdata); die;
 			$data[] =$staticdata;
 			
 			// code for best selling products
@@ -53,9 +66,9 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			// ends here
 			
 			$static1data['type'] = "3";
-			$static1data['two_banners'][0]['image'] = "http://dreamarkets.com/pub/media/magiccart/magicproduct/catalog//f/3/f3.jpg";
+			$static1data['two_banners'][0]['image'] = "http://182.75.88.145/kuteshop/pub/media/wysiwyg/alothemes/static/demo7/home7-1.jpg";
 			$static1data['two_banners'][0]['id'] = "1";
-			$static1data['two_banners'][1]['image'] = "http://dreamarkets.com/pub/media/magiccart/magicproduct/catalog//f/6/f6.jpg";
+			$static1data['two_banners'][1]['image'] = "http://182.75.88.145/kuteshop/pub/media/wysiwyg/alothemes/static/demo7/home7-2.jpg";
 			$static1data['two_banners'][1]['id'] = "2";
 			$data[] =$static1data;
 			
@@ -64,7 +77,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			// ends here
 			
 				$singleimagedata['type'] = "4";
-				$singleimagedata['onebanners'][0]['image'] = "http://demo.softprodigyphp.in/kuteshop/pub/media/wysiwyg/alothemes/static/demo1/home1-18.jpg";
+				$singleimagedata['onebanners'][0]['image'] = "http://182.75.88.145/kuteshop/pub/media/wysiwyg/alothemes/static/demo1/home1-18.jpg";
 				$singleimagedata['onebanners'][0]['id'] = "1";
 				$data[] =$singleimagedata;
 			
@@ -74,7 +87,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			// ends here
 
 			//code for other categories
-				$categories =array(3,6,62,7,8,93);
+				$categories =array(128,129,127,130,131,132);
 				foreach ($categories as $category) {
 					$data[]  = $this->getProductCollection($category,$param,$itemidsarray);
 				}	
@@ -84,7 +97,9 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		
 
             
+            
             $jsonArray['data'] = $data;
+            $jsonArray['currency'] = $this->GetCurrency($param);
             $jsonArray['status'] =  'success';
             $jsonArray['status_code'] =  200;
             
@@ -123,21 +138,48 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$othercategoryproducts['type'] = "1";
 			$othercategoryproducts['title'] = $category->getName();
 			$othercategoryproducts['category_id'] = $categoryId;
+			
+			if ($categoryId==128) {
+				$res = $this->ImageURL(53,"block");
+                $othercategoryproducts['banner_image']=$res[0];
+			}elseif ($categoryId==129) {
+				$res = $this->ImageURL(54,"block");
+				 $othercategoryproducts['banner_image']=$res[0];
+			}elseif ($categoryId==127) {
+				$res = $this->ImageURL(55,"block");
+				 $othercategoryproducts['banner_image']=$res[0];
+			}elseif ($categoryId==130) {
+				$res = $this->ImageURL(56,"block");
+				 $othercategoryproducts['banner_image']=$res[0];
+			}elseif ($categoryId==131) {
+				$res = $this->ImageURL(57,"block");
+				 $othercategoryproducts['banner_image']=$res[0];
+			}elseif ($categoryId==132) {
+				$res = $this->ImageURL(58,"block");
+				 $othercategoryproducts['banner_image']=$res[0];
+			}
+			
+			
+			 
 			$x= 0;
 			foreach ($collection as $item) {
 				$othercategoryproducts['products'][$x]['id'] = $item->getEntityId();
 				$othercategoryproducts['products'][$x]['image'] = $baseurl."pub/media/catalog/product".$item->getImage();
 				$othercategoryproducts['products'][$x]['name'] = $item->getname();
-				$othercategoryproducts['products'][$x]['original_price'] = $item->getPrice();
-				$othercategoryproducts['products'][$x]['discounted_price'] = strval($item->getFinalPrice());
+			$othercategoryproducts['products'][$x]['original_price'] = $this->GetConvertedPrice($param,$item->getPrice())?$this->GetConvertedPrice($param,$item->getPrice()):$item->getPrice();
+			$othercategoryproducts['products'][$x]['discounted_price'] = strval($this->GetConvertedPrice($param,$item->getFinalPrice()))?strval($this->GetConvertedPrice($param,$item->getFinalPrice())):strval($item->getFinalPrice());
 				$othercategoryproducts['products'][$x]['sku'] =  $item->getSku();
 				$othercategoryproducts['products'][$x]['qty'] =  $this->GetQty($item->getEntityId());
 				$othercategoryproducts['products'][$x]['is_configurable'] = "0";
 				$othercategoryproducts['products'][$x]['is_wishlist'] = false;
 				
 				if(isset($param["user_id"]) && $param["user_id"] !=''){
-					if($this->CheckIfProductInWishList($param["user_id"],$item->getEntityId()) == 1){
+					$othercategoryproducts['products'][$x]['wishlist_id'] = '';
+					if(!empty($this->CheckIfProductInWishList($param["user_id"],$item->getEntityId()))){
+						
+						$wishlistarray = $this->CheckIfProductInWishList($param["user_id"],$item->getEntityId());
 						$othercategoryproducts['products'][$x]['is_wishlist'] = true;
+						$othercategoryproducts['products'][$x]['wishlist_id'] = $wishlistarray[$item->getEntityId()];
 					}
 				}
 				
@@ -147,7 +189,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 					if(!empty($itemidsarray)){
 						if(array_key_exists($item->getSku(), $itemidsarray)){
 							$othercategoryproducts['products'][$x]['is_addtocart'] = true;
-							$othercategoryproducts['products'][$x]['item_id'] = $itemidsarray[$item->getSku()];
+							$othercategoryproducts['products'][$x]['item_id'] = strval($itemidsarray[$item->getSku()]);
 						} 
 					}
 				//ends here
@@ -193,25 +235,32 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 			$collection
 		)->addStoreFilter()->addAttributeToFilter('entity_id', array('in' => $producIds));
 		$bestsellingproducts['type'] = "1";
-		$bestsellingproducts['title'] = "best selling";
+		$bestsellingproducts['title'] = "Best Selling";
 		$x= 0;
 		foreach ($collection as $item) {
 			$bestsellingproducts['products'][$x]['id'] = $item->getEntityId();
 			$bestsellingproducts['products'][$x]['image'] = $baseurl."pub/media/catalog/product".$item->getImage();
 			$bestsellingproducts['products'][$x]['company'] = "";
 			$bestsellingproducts['products'][$x]['name'] = $item->getname();
-			$bestsellingproducts['products'][$x]['original_price'] = $item->getMaxPrice();
-			$bestsellingproducts['products'][$x]['discounted_price'] = strval($item->getFinalPrice());
+			
+			
+			$bestsellingproducts['products'][$x]['original_price'] = $this->GetConvertedPrice($param,$item->getPrice())?$this->GetConvertedPrice($param,$item->getPrice()):$item->getPrice();
+			$bestsellingproducts['products'][$x]['discounted_price'] = strval($this->GetConvertedPrice($param,$item->getFinalPrice()))?strval($this->GetConvertedPrice($param,$item->getFinalPrice())):strval($item->getFinalPrice());
+			//~ $bestsellingproducts['products'][$x]['original_price'] = $item->getMaxPrice();
+			//~ $bestsellingproducts['products'][$x]['discounted_price'] = strval($item->getFinalPrice());
 			$bestsellingproducts['products'][$x]['sku'] = $item->getSku();
 			$bestsellingproducts['products'][$x]['qty'] =  $this->GetQty($item->getEntityId());
 			$bestsellingproducts['products'][$x]['is_configurable'] = "0";
 			$bestsellingproducts['products'][$x]['is_wishlist'] = false;
 			
 			if(isset($param["user_id"]) && $param["user_id"] !=''){
-					if($this->CheckIfProductInWishList($param["user_id"],$item->getEntityId()) == 1){
-						$bestsellingproducts['products'][$x]['is_wishlist'] = true;
-					}
+				$bestsellingproducts['products'][$x]['wishlist_id'] = '';
+				if(!empty($this->CheckIfProductInWishList($param["user_id"],$item->getEntityId()))){
+					$wishlistarray = $this->CheckIfProductInWishList($param["user_id"],$item->getEntityId());
+					$bestsellingproducts['products'][$x]['is_wishlist'] = true;
+					$bestsellingproducts['products'][$x]['wishlist_id'] = $wishlistarray[$item->getEntityId()];
 				}
+			}
 			
 				//check if product is in the cart
 					$bestsellingproducts['products'][$x]['is_addtocart'] = false;
@@ -219,7 +268,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 					if(!empty($itemidsarray)){
 						if(array_key_exists($item->getSku(), $itemidsarray)){
 							$bestsellingproducts['products'][$x]['is_addtocart'] = true;
-							$bestsellingproducts['products'][$x]['item_id'] = $itemidsarray[$item->getSku()];
+							$bestsellingproducts['products'][$x]['item_id'] = strval($itemidsarray[$item->getSku()]);
 						} 
 					}
 				//ends here
@@ -266,24 +315,27 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 					->setPageSize(4)->setCurPage(1);;
 		$xf= 0;			
 		$featureproducts['type'] = "2";
-		$featureproducts['title'] = "fetured products";
+		$featureproducts['title'] = "Featured Products";
 		foreach ($collection as $items){
 			$featureproducts['products'][$xf]['id'] = $items->getEntityId();
 			$featureproducts['products'][$xf]['image'] = $baseurl."pub/media/catalog/product".$items->getImage();
 			$featureproducts['products'][$xf]['company'] = "";
 			$featureproducts['products'][$xf]['name'] = $items->getname();
-			$featureproducts['products'][$xf]['original_price'] = $items->getMaxPrice();
-			$featureproducts['products'][$xf]['discounted_price'] = strval($items->getFinalPrice());
+			$featureproducts['products'][$xf]['original_price'] = $this->GetConvertedPrice($param,$items->getPrice())?$this->GetConvertedPrice($param,$items->getPrice()):$items->getPrice();
+			$featureproducts['products'][$xf]['discounted_price'] = strval($this->GetConvertedPrice($param,$items->getFinalPrice()))?strval($this->GetConvertedPrice($param,$items->getFinalPrice())):strval($items->getFinalPrice());
 			$featureproducts['products'][$xf]['sku'] =  $items->getSku();
 			$featureproducts['products'][$xf]['qty'] =  $this->GetQty($items->getEntityId());
 			$featureproducts['products'][$xf]['is_configurable'] = "0";
 			$featureproducts['products'][$xf]['is_wishlist'] = false;
 			
 			if(isset($param["user_id"]) && $param["user_id"] !=''){
-					if($this->CheckIfProductInWishList($param["user_id"],$items->getEntityId()) == 1){
-						$featureproducts['products'][$xf]['is_wishlist'] = true;
-					}
+				$featureproducts['products'][$xf]['wishlist_id'] = '';
+				if(!empty($this->CheckIfProductInWishList($param["user_id"],$items->getEntityId()))){
+					$wishlistarray = $this->CheckIfProductInWishList($param["user_id"],$items->getEntityId());
+					$featureproducts['products'][$xf]['is_wishlist'] = true;
+					$featureproducts['products'][$xf]['wishlist_id'] = $wishlistarray[$items->getEntityId()];
 				}
+			}
 			
 				//check if product is in the cart
 					$featureproducts['products'][$xf]['is_addtocart'] = false;
@@ -291,7 +343,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 					if(!empty($itemidsarray)){
 						if(array_key_exists($items->getSku(), $itemidsarray)){
 							$featureproducts['products'][$xf]['is_addtocart'] = true;
-							$featureproducts['products'][$xf]['item_id'] = $itemidsarray[$items->getSku()];
+							$featureproducts['products'][$xf]['item_id'] = strval($itemidsarray[$items->getSku()]);
 						} 
 					}
 				//ends here
@@ -336,22 +388,25 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		$collection->setPageSize(4)->setCurPage(1);
 		$xf= 0;			
 		$randomproducts['type'] = "1";
-		$randomproducts['title'] = "random products";
+		$randomproducts['title'] = "Random Products";
 		foreach ($collection as $items){
 			$randomproducts['products'][$xf]['id'] = $items->getEntityId();
 			$randomproducts['products'][$xf]['image'] = $baseurl."pub/media/catalog/product".$items->getImage();
 			$randomproducts['products'][$xf]['company'] = "";
 			$randomproducts['products'][$xf]['name'] = $items->getname();
-			$randomproducts['products'][$xf]['original_price'] = $items->getMaxPrice();
-			$randomproducts['products'][$xf]['discounted_price'] = strval($items->getFinalPrice());
+			$randomproducts['products'][$xf]['original_price'] = $this->GetConvertedPrice($param,$items->getMaxPrice())?$this->GetConvertedPrice($param,$items->getMaxPrice()):$items->getMaxPrice();
+			$randomproducts['products'][$xf]['discounted_price'] = strval($this->GetConvertedPrice($param,$items->getFinalPrice()))?strval($this->GetConvertedPrice($param,$items->getFinalPrice())):strval($items->getFinalPrice());
 			$randomproducts['products'][$xf]['sku'] = $items->getSku();
 			$randomproducts['products'][$xf]['qty'] = $this->GetQty($items->getEntityId());
 			$randomproducts['products'][$xf]['is_configurable'] = "0";
 			$randomproducts['products'][$xf]['is_wishlist'] = false;
 			
 				if(isset($param["user_id"]) && $param["user_id"] !=''){
-					if($this->CheckIfProductInWishList($param["user_id"],$items->getEntityId()) == 1){
+					$randomproducts['products'][$xf]['wishlist_id'] = '';
+					if(!empty($this->CheckIfProductInWishList($param["user_id"],$items->getEntityId()))){
+						$wishlistarray = $this->CheckIfProductInWishList($param["user_id"],$items->getEntityId());
 						$randomproducts['products'][$xf]['is_wishlist'] = true;
+						$randomproducts['products'][$xf]['wishlist_id'] = $wishlistarray[$items->getEntityId()];
 					}
 				}
 			
@@ -361,7 +416,7 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 					if(!empty($itemidsarray)){
 						if(array_key_exists($items->getSku(), $itemidsarray)){
 							$randomproducts['products'][$xf]['is_addtocart'] = true;
-							$randomproducts['products'][$xf]['item_id'] = $itemidsarray[$items->getSku()];
+							$randomproducts['products'][$xf]['item_id'] = strval($itemidsarray[$items->getSku()]);
 						} 
 					}
 				//ends here
@@ -398,12 +453,13 @@ class HomePage extends \Softprodigy\Minimart\Controller\AbstractAction implement
 		$wishlist            = $objectManager->get('\Magento\Wishlist\Model\Wishlist');
 		$wishlist_collection = $wishlist->loadByCustomerId( $id , true)->getItemCollection();
 		$_in_wishlist        = "false";
+		$arary =[];
 		foreach ($wishlist_collection->getData() as $key=>$wishlist_product){
 			if($productid == $wishlist_product['product_id']){
-			  $return = true;
-			  return $return;
+				$arary[$wishlist_product['product_id']] = $wishlist_product['wishlist_item_id'];
 			}
 		}
+		return  (array)$arary;
 	}
 	
 	public function GetItems($userid){

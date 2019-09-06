@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\CatalogSearch\Model\Autocomplete\DataProvider" type="Softprodigy\Autoseek\Model\Autocomplete\SearchDataProvider" />
+    <preference for="Magento\Search\Controller\Ajax\Suggest" type="Softprodigy\Autoseek\Controller\Seek\Ajax\Suggest"/>
+</config>
+
+

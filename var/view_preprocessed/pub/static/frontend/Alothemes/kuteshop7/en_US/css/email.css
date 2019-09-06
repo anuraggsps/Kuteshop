@@ -1,4 +1,4 @@
-@import url("{{base_url_path}}frontend/_view/{{locale}}/css/email-fonts.css");
+@import url("{{base_url_path}}frontend/Alothemes/kuteshop7/{{locale}}/css/email-fonts.css");
 html {
   font-size: 62.5%;
   -webkit-text-size-adjust: 100%;

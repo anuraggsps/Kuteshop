@@ -26,8 +26,10 @@ class FilterRenderer extends Template implements FilterRendererInterface
     public function render(FilterInterface $filter)
     {
         $this->assign('filterItems', $filter->getItems());
+        //~ echo "<pre>";print_r($this->assign('filterItems', $filter->getItems()));
         $html = $this->_toHtml();
         $this->assign('filterItems', []);
+         //~ echo "<pre>";print_r($this->assign('filterItems', $filter->getItems()));
         return $html;
     }
 }

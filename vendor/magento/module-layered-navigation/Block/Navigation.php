@@ -97,6 +97,7 @@ class Navigation extends \Magento\Framework\View\Element\Template
      */
     public function getFilters()
     {
+		//~ echo "<pre>";print_r($this->filterList->getFilters($this->_catalogLayer));die("test");
         return $this->filterList->getFilters($this->_catalogLayer);
     }
 

@@ -1,9 +1,6 @@
 <?php
 
 namespace Softprodigy\Minimart\Controller\Miniapi;
-use Magento\Framework\App\CsrfAwareActionInterface;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Request\InvalidRequestException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,13 +13,12 @@ use Magento\Framework\App\Request\InvalidRequestException;
  *
  * @author mannu
  */
-class ProductDetail extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface{
+class ProductDetail extends \Softprodigy\Minimart\Controller\AbstractAction {
 
     public function execute() {
         try {
             $result = [];
-            $request = $this->getRequest()->getContent();
-			$param = json_decode($request, true);
+            $param = $this->getRequest()->getParams();
             $prod_id = $param['prod_id'];
             $pro_data = [];
 
@@ -314,7 +310,7 @@ class ProductDetail extends \Softprodigy\Minimart\Controller\AbstractAction impl
                         $related_prod[$r]['name'] = $related->getName();
                         $related_prod[$r]['id'] = $related->getId();
                         $related_prod[$r]['name'] = $related->getName();
-                        //~ $related_prod[$r]['minimal_price'] = $this->getMinimalPrice($related);
+                        $related_prod[$r]['minimal_price'] = $this->getMinimalPrice($related);
 
                         $imageUrl = '';
                         if ($related->getImage() && (($related->getImage()) != 'no_selection')) {
@@ -510,6 +506,30 @@ class ProductDetail extends \Softprodigy\Minimart\Controller\AbstractAction impl
                 }
                 $pro_data['downloadable_options'] = $downloadable;
 
+                /* try {
+                  $customerid = $this->getRequest()->getParam('cust_id');
+                  $visitorid = $this->getRequest()->getParam('visitor_id');
+
+                  $prodIndx = Mage::getModel('reports/product_index_viewed')
+                  ->setProductId($product->getId());
+                  if (!empty($visitorid)) {
+                  $log_visitor = Mage::getSingleton('log/visitor')->load($visitorid);
+
+                  Mage::getModel('core/session')->setVisitorData($log_visitor->getData());
+                  }
+
+                  $prodIndx->setVisitorId($visitorid);
+
+                  if (!empty($customerid) && $customerid != 'null') {
+                  $prodIndx->setCustomerId($customerid);
+                  }
+
+                  $prodIndx->calculate()->save();
+
+                  $this->_event(Mage_Reports_Model_Event::EVENT_PRODUCT_VIEW, $productId);
+                  } catch (\Exception $ex) {
+                  Mage::log($ex);
+                  } */
                 try {
                     $visitorid = $this->getRequest()->getParam('visitor_id', false);
                     if (!empty($visitorid)) {
@@ -576,13 +596,5 @@ class ProductDetail extends \Softprodigy\Minimart\Controller\AbstractAction impl
         $this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
         die;
     }
-	
-	public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
-        return null;
-    }
 
-    public function validateForCsrf(RequestInterface $request): ?bool{
-        return true;
-    }
-    
 }

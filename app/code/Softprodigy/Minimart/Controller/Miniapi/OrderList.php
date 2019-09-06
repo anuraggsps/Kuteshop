@@ -18,7 +18,7 @@ use Magento\Framework\App\Request\InvalidRequestException;
 class OrderList extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface {
 
     public function execute() {
-        try {
+        //~ try {
             //~ $param = $this->getRequest()->getParams();
 			$request = $this->getRequest()->getContent();
 			$param = json_decode($request, true);
@@ -29,21 +29,24 @@ class OrderList extends \Softprodigy\Minimart\Controller\AbstractAction implemen
             $message = "Get data successfully";
             
             if(empty($order_data['order'])){
+				//~ echo "<pre>";print_r();die;
+				$orders_data =array("order"=>array());
 				$message = "You don't have any orders";
-				$order_data = [];
+				$order_data = $orders_data;
 			}
             
 			$jsonArray['data'] = $order_data;
+			$jsonArray['currency'] = $this->GetCurrency($param);
 			$jsonArray['status'] = "success";
 			$jsonArray['status_code'] = 200;
 			$jsonArray['message'] = $message;
             
-        } catch (\Exception $e) {
-           $jsonArray['data'] = "";
-		   $jsonArray['message'] = "Something went wrong";
-		   $jsonArray['status'] = "failure";
-		   $jsonArray['status_code'] = 201;
-        }
+        //~ } catch (\Exception $e) {
+           //~ $jsonArray['data'] = "";
+		   //~ $jsonArray['message'] = "Something went wrong";
+		   //~ $jsonArray['status'] = "failure";
+		   //~ $jsonArray['status_code'] = 201;
+        //~ }
         $this->getResponse()->setBody(json_encode($jsonArray))->sendResponse();
         die;
     }

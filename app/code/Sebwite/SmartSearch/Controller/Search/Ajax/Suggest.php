@@ -103,8 +103,14 @@ class Suggest extends \Magento\Search\Controller\Ajax\Suggest
             $resultRedirect->setUrl($this->_url->getBaseUrl());
             return $resultRedirect;
         }
+        
+        //~ echo $this->getRequest()->getParam('q');die;
+        
         $query = $this->_queryFactory->get();
         $autocompleteItems = $this->autocomplete->getItems();
+        
+        //~ echo "<pre>";print_r($autocompleteItems);die;
+        
         if ($query->getQueryText() != '') {
             if ($this->_objectManager->get('Magento\CatalogSearch\Helper\Data')->isMinQueryLength()) {
                 $query->setId(0)->setIsActive(1)->setIsProcessed(1);
@@ -117,6 +123,10 @@ class Suggest extends \Magento\Search\Controller\Ajax\Suggest
         $responseData = $this->_formatData($autocompleteItems, $query);
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         $resultJson->setData($responseData);
+        
+        
+        
+        
         return $resultJson;
     }
 }

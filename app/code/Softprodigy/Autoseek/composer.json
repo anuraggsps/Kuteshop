@@ -1,0 +1,29 @@
+{
+  "name": "softprodigy/magento2-autoseek",
+  "description": "Magento 2.0 Autoseek",
+  "type": "magento2-module",
+  "version": "1.0.3",
+  "license": [
+    "OSL-3.0",
+    "AFL-3.0"
+  ],
+  "require": {
+    "php": "~5.5.0|~7.0",
+    "magento/magento-composer-installer": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Softprodigy\\Autoseek\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  },
+  "scripts": {
+    "post-package-install": [
+      "bin/magento module:enable softprodigy_Autoseek",
+      "bin/magento setup:upgrade",
+      "bin/magento cache:clear"
+    ]
+  }
+}

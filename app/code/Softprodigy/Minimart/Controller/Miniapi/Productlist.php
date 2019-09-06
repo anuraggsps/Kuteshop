@@ -1,7 +1,9 @@
 <?php
 
 namespace Softprodigy\Minimart\Controller\Miniapi;
-
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,7 +15,7 @@ namespace Softprodigy\Minimart\Controller\Miniapi;
  *
  * @author mannu
  */
-class Productlist extends \Softprodigy\Minimart\Controller\AbstractAction {
+class Productlist extends \Softprodigy\Minimart\Controller\AbstractAction implements CsrfAwareActionInterface{
 
     public function execute() {
         try {
@@ -24,8 +26,9 @@ class Productlist extends \Softprodigy\Minimart\Controller\AbstractAction {
                   } */
             }
 
-            $param = $this->getRequest()->getParams();
-            $limit = 20;
+           		$request = $this->getRequest()->getContent();
+				$param = json_decode($request, true);
+            $limit = 10;
             $cat_id = isset($param['cat_id']) ? $param['cat_id'] : false;
             if (empty($cat_id)) {
                 $jsonArray['response'] = __("Please enter valid category id.");
@@ -213,11 +216,12 @@ class Productlist extends \Softprodigy\Minimart\Controller\AbstractAction {
                 }
                 
                 $data['product'][$i]['product_id'] = $product->getId();
+                $data['product'][$i]['company'] = $product->getAttributeText('manufacturer');;
                 $data['product'][$i]['type_id'] = $product->getTypeId();
                 $data['product'][$i]['name'] = $product->getName();
                 $data['product'][$i]['final_price'] = $this->currencyHelper->currency($product->getFinalPrice(), false, false);
                 $data['product'][$i]['price'] = $this->currencyHelper->currency($product->getPrice(), false, false);
-                $data['product'][$i]['minimal_price'] = $this->getMinimalPrice($product);
+                //~ $data['product'][$i]['minimal_price'] = $this->getMinimalPrice($product);
                 
                 $data['product'][$i]['inWishlist'] = '';
                 try {
@@ -296,5 +300,12 @@ class Productlist extends \Softprodigy\Minimart\Controller\AbstractAction {
         die;
         //echo json_encode($jsonArray); die;
     }
+	
+	public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException{
+        return null;
+    }
 
+    public function validateForCsrf(RequestInterface $request): ?bool{
+        return true;
+    }
 }
